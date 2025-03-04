@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import GameCanvas from './GameCanvas';
 
 interface BuildingInfo {
   id: string;
@@ -8,29 +7,33 @@ interface BuildingInfo {
   description: string;
   gameType: string;
   color: string;
+  route: string;
 }
 
 const buildingData: Record<string, BuildingInfo> = {
-  'chococrisps': {
-    id: 'chococrisps',
-    name: 'ChocoCrisps',
-    description: 'Recolecta piezas de chocolate para obtener puntaje.',
-    gameType: 'collect',
-    color: 'bg-amber-800'
+  'choco-krispis': {
+    id: 'choco-krispis',
+    name: 'Choco Krispis',
+    description: 'Ayuda a Melvin el elefante a recolectar chocolates en este desafío cronometrado',
+    gameType: 'choco-krispis',
+    color: '#663300',
+    route: '/games/choco-krispis'
   },
-  'suscaritas': {
-    id: 'suscaritas',
-    name: 'Sus Caritas',
-    description: 'Ayuda al gato a atrapar los ratones.',
-    gameType: 'catch',
-    color: 'bg-orange-500'
+  'zucaritas': {
+    id: 'zucaritas',
+    name: 'Zucaritas',
+    description: 'Únete a Tony el Tigre y recoge los cereales en este desafío de habilidad',
+    gameType: 'zucaritas',
+    color: '#FF9900',
+    route: '/games/zucaritas'
   },
-  'arcade': {
-    id: 'arcade',
-    name: 'Arcade',
-    description: 'Juegos clásicos para todos.',
-    gameType: 'arcade',
-    color: 'bg-purple-700'
+  'froot-loops': {
+    id: 'froot-loops',
+    name: 'Froot Loops',
+    description: 'Vuela con Sam el tucán a través de los aros de colores',
+    gameType: 'froot-loops',
+    color: '#9900FF',
+    route: '/games/froot-loops'
   }
 };
 
@@ -38,27 +41,20 @@ const Building = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [buildingInfo, setBuildingInfo] = useState<BuildingInfo | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [score, setScore] = useState(0);
 
   useEffect(() => {
-    // Obtener información del edificio basado en el ID
     if (id && buildingData[id]) {
       setBuildingInfo(buildingData[id]);
     } else {
-      // Si no se encuentra el edificio, redirigir al menú principal
+      // Si no se encuentra, regresar al menú
       navigate('/menu');
     }
   }, [id, navigate]);
 
   const handleStartGame = () => {
-    setIsPlaying(true);
-    setScore(0);
-  };
-
-  const handleEndGame = (finalScore: number) => {
-    setIsPlaying(false);
-    setScore(finalScore);
+    if (buildingInfo) {
+      navigate(buildingInfo.route);
+    }
   };
 
   const handleGoBack = () => {
@@ -66,64 +62,34 @@ const Building = () => {
   };
 
   if (!buildingInfo) {
-    return (
-      <div className="min-h-screen bg-background flex justify-center items-center">
-        <p>Cargando...</p>
-      </div>
-    );
+    return <div className="loading">Cargando...</div>;
   }
 
   return (
-    <div className={`min-h-screen ${buildingInfo.color} text-white`}>
-      {/* Encabezado */}
-      <header className="p-4 flex justify-between items-center bg-black/30">
-        <div>
-          <h1 className="text-2xl font-display">{buildingInfo.name}</h1>
-          <p className="text-sm opacity-80">{buildingInfo.description}</p>
-        </div>
-        <button 
-          onClick={handleGoBack}
-          className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg"
-        >
-          Salir
-        </button>
-      </header>
-
-      {/* Contenido principal */}
-      <div className="p-4 flex flex-col items-center justify-center">
-        {isPlaying ? (
-          <div className="w-full max-w-lg aspect-square bg-black/40 rounded-xl overflow-hidden shadow-lg">
-            <GameCanvas 
-              gameType={buildingInfo.gameType} 
-              onGameEnd={handleEndGame} 
-            />
-          </div>
-        ) : (
-          <div className="card max-w-md w-full text-black">
-            <div className="text-center mb-6">
-              <h2 className="text-xl font-display text-primary mb-2">
-                Bienvenido a {buildingInfo.name}
-              </h2>
-              <p className="text-gray-600">
-                {buildingInfo.description}
-              </p>
-            </div>
-
-            {score > 0 && (
-              <div className="mb-6 bg-primary/10 p-4 rounded-lg text-center">
-                <p className="text-sm text-gray-700">Tu último puntaje</p>
-                <p className="text-2xl font-display text-primary">{score} pts</p>
-              </div>
-            )}
-
-            <button 
-              onClick={handleStartGame}
-              className="btn btn-primary w-full"
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
+      <div 
+        className="w-full max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden" 
+        style={{ borderTop: `8px solid ${buildingInfo.color}` }}
+      >
+        <div className="p-6">
+          <h2 className="text-3xl font-display text-primary mb-4">{buildingInfo.name}</h2>
+          <p className="text-gray-700 mb-6">{buildingInfo.description}</p>
+          
+          <div className="flex justify-between items-center">
+            <button
+              className="btn btn-secondary"
+              onClick={handleGoBack}
             >
-              {score > 0 ? 'Jugar de nuevo' : 'Comenzar juego'}
+              Volver al Menú
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={handleStartGame}
+            >
+              Comenzar Juego
             </button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

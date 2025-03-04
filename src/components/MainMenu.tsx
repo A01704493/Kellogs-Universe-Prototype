@@ -47,7 +47,7 @@ const MainMenu = () => {
   }, []);
 
   const handleBuildingClick = (buildingId: string) => {
-    navigate(`/building/${buildingId}`);
+    navigate(`/games/${buildingId}`);
   };
 
   const handleAvatarClick = () => {
