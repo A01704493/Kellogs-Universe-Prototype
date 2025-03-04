@@ -38,6 +38,27 @@ const SimpleGame = ({ gameType }) => {
     setScore(0);
   };
   
+  // Efecto para ajustar el tamaño del canvas al viewport
+  useEffect(() => {
+    const handleResize = () => {
+      if (canvasRef.current) {
+        const canvas = canvasRef.current;
+        const container = canvas.parentElement;
+        if (container) {
+          canvas.width = container.clientWidth;
+          canvas.height = Math.min(container.clientWidth * 0.75, window.innerHeight * 0.6);
+        }
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  
   // Efecto para el juego
   useEffect(() => {
     if (!gameStarted || gameOver) return;
@@ -47,10 +68,6 @@ const SimpleGame = ({ gameType }) => {
     
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    
-    // Ajustar tamaño del canvas
-    canvas.width = Math.min(800, window.innerWidth * 0.9);
-    canvas.height = canvas.width * 0.75;
     
     // Variables del juego
     let playerX = canvas.width / 2;
@@ -225,47 +242,48 @@ const SimpleGame = ({ gameType }) => {
   }, [gameStarted, gameOver, gameType, backgroundImages]);
   
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-      <h1 className="text-3xl font-bold mb-6 text-center">
+    <div className="h-full w-full flex flex-col bg-gray-100">
+      <h1 className="text-3xl font-bold text-center py-4">
         {gameType === 'zucaritas' && 'Zucaritas: Aventura con Tony'}
         {gameType === 'choco-krispis' && 'Choco Krispis: Aventura con Melvin'}
         {gameType === 'froot-loops' && 'Froot Loops: Aventura con Sam'}
         {!gameType && 'Minijuego Kelloggs'}
       </h1>
       
-      <div className="w-full max-w-[800px] bg-white rounded-xl shadow-lg overflow-hidden">
-        <canvas 
-          ref={canvasRef} 
-          className="w-full"
-          style={{ maxHeight: '600px' }}
-        ></canvas>
-      </div>
-      
-      <div className="mt-6 flex gap-4 justify-center">
-        {!gameStarted && !gameOver && (
-          <button 
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600"
-            onClick={startGame}
-          >
-            Comenzar
-          </button>
-        )}
+      <div className="flex-grow flex flex-col items-center justify-center p-4">
+        <div className="w-full max-w-[800px] bg-white rounded-xl shadow-lg overflow-hidden">
+          <canvas 
+            ref={canvasRef} 
+            className="w-full"
+          ></canvas>
+        </div>
         
-        {gameOver && (
+        <div className="mt-6 flex gap-4 justify-center">
+          {!gameStarted && !gameOver && (
+            <button 
+              className="px-6 py-3 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600"
+              onClick={startGame}
+            >
+              Comenzar
+            </button>
+          )}
+          
+          {gameOver && (
+            <button 
+              className="px-6 py-3 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600"
+              onClick={tryAgain}
+            >
+              Intentar de nuevo
+            </button>
+          )}
+          
           <button 
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg text-lg hover:bg-blue-600"
-            onClick={tryAgain}
+            className="px-6 py-3 bg-gray-500 text-white rounded-lg text-lg hover:bg-gray-600"
+            onClick={goToMenu}
           >
-            Intentar de nuevo
+            Volver al Menú
           </button>
-        )}
-        
-        <button 
-          className="px-6 py-3 bg-gray-500 text-white rounded-lg text-lg hover:bg-gray-600"
-          onClick={goToMenu}
-        >
-          Volver al Menú
-        </button>
+        </div>
       </div>
     </div>
   );

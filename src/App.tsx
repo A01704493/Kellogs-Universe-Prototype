@@ -8,7 +8,7 @@ import SimpleGame from './components/SimpleGame';
 
 function App() {
   return (
-    <div className="app">
+    <div className="app full-viewport">
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/menu" element={<MainMenu />} />

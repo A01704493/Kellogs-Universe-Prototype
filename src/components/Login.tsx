@@ -24,7 +24,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-secondary p-4">
+    <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-primary to-secondary p-4">
       <div className="card max-w-md w-full">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-display text-primary mb-2">Kellogs Universe</h1>

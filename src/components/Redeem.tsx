@@ -3,25 +3,25 @@ import { useNavigate } from 'react-router-dom';
 
 // Códigos de redención simulados y sus recompensas
 const validCodes: Record<string, { type: string; name: string; description: string; }> = {
-  'CHOCO123': { 
+  'ZUCARITAS': { 
     type: 'accessory', 
-    name: 'Sombrero de Chocolate', 
-    description: 'Un sombrero con forma de barra de chocolate' 
+    name: 'Gorra de Tony el Tigre', 
+    description: 'Una gorra con las orejas de Tony el Tigre' 
   },
-  'GATO456': { 
+  'CHOCOKRISPIS': { 
     type: 'accessory', 
-    name: 'Orejas de Gato', 
-    description: 'Orejas de gato para tu avatar' 
+    name: 'Sombrero de Melvin', 
+    description: 'Un sombrero con forma de Melvin el elefante' 
   },
-  'CEREAL789': { 
+  'FROOTLOOPS': { 
     type: 'currency', 
-    name: '100 Monedas', 
-    description: 'Monedas para gastar en la tienda' 
+    name: 'Collar de Sam el tucán', 
+    description: 'Un collar colorido como Sam el tucán' 
   },
   'KELLOGS2023': { 
     type: 'special', 
-    name: 'Capa de Superhéroe', 
-    description: 'Una capa especial de edición limitada' 
+    name: 'Capa de Superhéroe Kelloggs', 
+    description: 'Una capa especial de edición limitada con el logo de Kelloggs' 
   }
 };
 
@@ -50,7 +50,7 @@ const Redeem = () => {
         
         // Almacenar la recompensa (en un caso real, esto se haría en la base de datos)
         // Para la demo, lo guardamos en localStorage
-        const redeemedCodes = JSON.parse(localStorage.getItem('calypsoRedeemedCodes') || '[]');
+        const redeemedCodes = JSON.parse(localStorage.getItem('kellogsRedeemedCodes') || '[]');
         
         if (redeemedCodes.includes(trimmedCode)) {
           setResult({
@@ -60,17 +60,17 @@ const Redeem = () => {
         } else {
           // Añadir código a la lista de canjeados
           redeemedCodes.push(trimmedCode);
-          localStorage.setItem('calypsoRedeemedCodes', JSON.stringify(redeemedCodes));
+          localStorage.setItem('kellogsRedeemedCodes', JSON.stringify(redeemedCodes));
           
           // Si es un accesorio, añadirlo a los items del usuario
           if (reward.type === 'accessory') {
-            const userItems = JSON.parse(localStorage.getItem('calypsoUserItems') || '[]');
+            const userItems = JSON.parse(localStorage.getItem('kellogsUserItems') || '[]');
             userItems.push({
               id: trimmedCode,
               name: reward.name,
               type: reward.type
             });
-            localStorage.setItem('calypsoUserItems', JSON.stringify(userItems));
+            localStorage.setItem('kellogsUserItems', JSON.stringify(userItems));
           }
           
           setResult({
@@ -96,7 +96,7 @@ const Redeem = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4 flex flex-col items-center justify-center">
+    <div className="h-full w-full bg-background p-4 flex flex-col items-center justify-center">
       <div className="card max-w-md w-full">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-display text-primary mb-2">Canjear Código</h1>
@@ -114,7 +114,7 @@ const Redeem = () => {
               className="input w-full uppercase"
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              placeholder="Ej: CHOCO123"
+              placeholder="Ej: ZUCARITAS"
               disabled={isLoading}
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -171,10 +171,10 @@ const Redeem = () => {
               Códigos para pruebas (Demo)
             </summary>
             <div className="mt-2 text-xs text-gray-600 space-y-1">
-              <p>CHOCO123 - Sombrero de Chocolate</p>
-              <p>GATO456 - Orejas de Gato</p>
-              <p>CEREAL789 - 100 Monedas</p>
-              <p>KELLOGS2023 - Capa de Superhéroe</p>
+              <p>ZUCARITAS - Gorra de Tony el Tigre</p>
+              <p>CHOCOKRISPIS - Sombrero de Melvin</p>
+              <p>FROOTLOOPS - Collar de Sam el tucán</p>
+              <p>KELLOGS2023 - Capa de Superhéroe Kelloggs</p>
             </div>
           </details>
         </div>

@@ -63,7 +63,7 @@ const MainMenu = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-background overflow-hidden">
+    <div className="h-full w-full relative bg-background">
       {/* Cielo y fondo */}
       <div className="absolute inset-0 bg-gradient-to-b from-red-300 to-red-400 z-0"></div>
       
@@ -94,7 +94,7 @@ const MainMenu = () => {
       </header>
       
       {/* Contenedor de edificios */}
-      <div className="relative z-20 h-screen w-full">
+      <div className="relative z-20 h-full w-full">
         {buildings.map((building) => (
           <div
             key={building.id}
@@ -106,11 +106,12 @@ const MainMenu = () => {
             onClick={() => handleBuildingClick(building.id)}
           >
             {/* Imagen del edificio/minijuego */}
-            <div className="w-32 h-32 rounded-lg shadow-lg flex items-center justify-center overflow-hidden">
+            <div className="w-32 h-32 flex items-center justify-center">
               <img 
                 src={building.image} 
                 alt={building.name} 
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain filter drop-shadow-lg"
+                style={{ filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))' }}
               />
             </div>
             <div className="text-center mt-2 text-white text-sm font-medium drop-shadow-md">

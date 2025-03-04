@@ -62,11 +62,11 @@ const Building = () => {
   };
 
   if (!buildingInfo) {
-    return <div className="loading">Cargando...</div>;
+    return <div className="h-full w-full flex items-center justify-center bg-gray-100">Cargando...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
+    <div className="h-full w-full flex flex-col items-center justify-center p-6 bg-background">
       <div 
         className="w-full max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden" 
         style={{ borderTop: `8px solid ${buildingInfo.color}` }}

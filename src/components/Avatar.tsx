@@ -54,15 +54,15 @@ const Avatar = () => {
 
   useEffect(() => {
     // Recuperar nombre de usuario del localStorage
-    const savedUsername = localStorage.getItem('calypsoUsername');
+    const savedUsername = localStorage.getItem('kellogsUsername');
     if (savedUsername) {
       setUsername(savedUsername);
     }
 
     // Recuperar configuración guardada del avatar
-    const savedHead = localStorage.getItem('calypsoAvatarHead') || 'head1';
-    const savedBody = localStorage.getItem('calypsoAvatarBody') || 'body1';
-    const savedAccessory = localStorage.getItem('calypsoAvatarAccessory') || '';
+    const savedHead = localStorage.getItem('kellogsAvatarHead') || 'head1';
+    const savedBody = localStorage.getItem('kellogsAvatarBody') || 'body1';
+    const savedAccessory = localStorage.getItem('kellogsAvatarAccessory') || '';
 
     setSelectedHead(savedHead);
     setSelectedBody(savedBody);
@@ -73,15 +73,15 @@ const Avatar = () => {
     switch (partId) {
       case 'head':
         setSelectedHead(optionId);
-        localStorage.setItem('calypsoAvatarHead', optionId);
+        localStorage.setItem('kellogsAvatarHead', optionId);
         break;
       case 'body':
         setSelectedBody(optionId);
-        localStorage.setItem('calypsoAvatarBody', optionId);
+        localStorage.setItem('kellogsAvatarBody', optionId);
         break;
       case 'accessory':
         setSelectedAccessory(optionId);
-        localStorage.setItem('calypsoAvatarAccessory', optionId);
+        localStorage.setItem('kellogsAvatarAccessory', optionId);
         break;
     }
   };
@@ -91,7 +91,7 @@ const Avatar = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background p-4">
+    <div className="h-full w-full bg-background p-4 overflow-auto">
       <header className="mb-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-display text-primary">Personaliza tu Avatar</h1>

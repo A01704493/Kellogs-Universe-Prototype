@@ -3,8 +3,14 @@
 @tailwind utilities;
 
 @layer base {
+  html, body, #root, .app {
+    @apply h-full w-full overflow-hidden;
+    margin: 0;
+    padding: 0;
+  }
+  
   body {
-    @apply bg-background text-gray-900 min-h-screen;
+    @apply bg-background text-gray-900;
     font-family: 'Poppins', sans-serif;
   }
   
@@ -37,4 +43,12 @@
   .input {
     @apply px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary;
   }
+}
+
+.full-viewport {
+  height: 100vh;
+  height: 100dvh; /* Para soporte en dispositivos modernos */
+  width: 100vw;
+  width: 100dvw; /* Para soporte en dispositivos modernos */
+  overflow: hidden;
 } 
