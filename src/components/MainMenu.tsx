@@ -141,23 +141,20 @@ const MainMenu = () => {
 
   return (
     <div className="h-full w-full relative overflow-hidden">
-      {/* Contenedor extendido para el fondo con efecto parallax */}
-      <div className="absolute" style={{
-        left: '-15%',
-        top: '-15%',
-        width: '130%',
-        height: '130%',
-        zIndex: 0
-      }}>
-        <div 
-          className="w-full h-full"
-          style={{ 
-            backgroundImage: `url(${menuBackground})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
+      {/* Implementación del fondo con parallax usando una imagen con posicionamiento absoluto */}
+      <div 
+        className="absolute inset-0 z-0 overflow-hidden"
+      >
+        <img 
+          src={menuBackground} 
+          alt="Background" 
+          className="absolute w-[150%] h-[150%] object-cover"
+          style={{
+            left: '-25%',
+            top: '-25%',
             ...getParallaxStyle()
           }}
-        ></div>
+        />
       </div>
       
       {/* Capa de oscurecimiento para mejorar contraste */}
