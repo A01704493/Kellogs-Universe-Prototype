@@ -7,31 +7,40 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      injectRegister: 'auto',
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
         name: 'Calypso Universe',
         short_name: 'Calypso',
-        description: 'Mundo virtual interactivo inspirado en Club Penguin',
-        theme_color: '#ffffff',
+        description: 'Una aplicación inspirada en Club Penguin para Kellogg\'s',
+        theme_color: '#1E40AF',
+        background_color: '#F0F9FF',
         icons: [
           {
-            src: 'pwa-192x192.png',
+            src: '/icons/pwa-192x192.svg',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/svg+xml',
+            purpose: 'any'
           },
           {
-            src: 'pwa-512x512.png',
+            src: '/icons/pwa-512x512.svg',
             sizes: '512x512',
-            type: 'image/png'
+            type: 'image/svg+xml',
+            purpose: 'any'
           },
           {
-            src: 'pwa-512x512.png',
+            src: '/icons/maskable-512x512.svg',
             sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any maskable'
+            type: 'image/svg+xml',
+            purpose: 'maskable'
           }
         ]
+      },
+      strategies: 'generateSW',
+      // Asegurarse de que el plugin encuentre el index.html en la raíz
+      devOptions: {
+        enabled: true
       }
     })
   ]
