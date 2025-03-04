@@ -11,11 +11,11 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Calypso Universe',
-        short_name: 'Calypso',
+        name: 'Kellogs Universe',
+        short_name: 'Kellogs',
         description: 'Una aplicación inspirada en Club Penguin para Kellogg\'s',
-        theme_color: '#1E40AF',
-        background_color: '#F0F9FF',
+        theme_color: '#ef0e44',
+        background_color: '#FFF9F9',
         icons: [
           {
             src: '/icons/pwa-192x192.svg',

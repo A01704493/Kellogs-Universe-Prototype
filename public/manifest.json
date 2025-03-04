@@ -1,11 +1,11 @@
 {
-  "name": "Calypso Universe",
-  "short_name": "Calypso",
+  "name": "Kellogs Universe",
+  "short_name": "Kellogs",
   "description": "Una aplicación inspirada en Club Penguin para Kellogg's",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#F0F9FF",
-  "theme_color": "#1E40AF",
+  "background_color": "#FFF9F9",
+  "theme_color": "#ef0e44",
   "orientation": "portrait",
   "categories": ["games", "entertainment", "kids"],
   "screenshots": [
@@ -14,14 +14,14 @@
       "sizes": "750x1334",
       "type": "image/svg+xml",
       "platform": "wide",
-      "label": "Pantalla de inicio de sesión de Calypso Universe"
+      "label": "Pantalla de inicio de sesión de Kellogs Universe"
     },
     {
       "src": "/screenshots/home.svg",
       "sizes": "750x1334",
       "type": "image/svg+xml",
       "platform": "wide",
-      "label": "Menú principal de Calypso Universe"
+      "label": "Menú principal de Kellogs Universe"
     }
   ],
   "icons": [
@@ -58,6 +58,27 @@
       "description": "Redime códigos de productos Kellogg's para obtener recompensas exclusivas",
       "url": "/redeem",
       "icons": [{ "src": "/icons/redeem-shortcut.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Minijuego Zucaritas",
+      "short_name": "Zucaritas",
+      "description": "¡Juega con Tony el Tigre en el mundo de Zucaritas!",
+      "url": "/games/zucaritas",
+      "icons": [{ "src": "/icons/zucaritas-shortcut.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Minijuego Choco Krispis",
+      "short_name": "Choco Krispis",
+      "description": "¡Aventuras con Melvin el elefante en Choco Krispis!",
+      "url": "/games/choco-krispis",
+      "icons": [{ "src": "/icons/choco-krispis-shortcut.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Minijuego Froot Loops",
+      "short_name": "Froot Loops",
+      "description": "¡Diversión colorida con Sam el tucán en Froot Loops!",
+      "url": "/games/froot-loops",
+      "icons": [{ "src": "/icons/froot-loops-shortcut.svg", "sizes": "96x96" }]
     }
   ]
 } 
