@@ -1,0 +1,63 @@
+{
+  "name": "Calypso Universe",
+  "short_name": "Calypso",
+  "description": "Una aplicación inspirada en Club Penguin para Kellogg's",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F0F9FF",
+  "theme_color": "#1E40AF",
+  "orientation": "portrait",
+  "categories": ["games", "entertainment", "kids"],
+  "screenshots": [
+    {
+      "src": "/screenshots/login.svg",
+      "sizes": "750x1334",
+      "type": "image/svg+xml",
+      "platform": "wide",
+      "label": "Pantalla de inicio de sesión de Calypso Universe"
+    },
+    {
+      "src": "/screenshots/home.svg",
+      "sizes": "750x1334",
+      "type": "image/svg+xml",
+      "platform": "wide",
+      "label": "Menú principal de Calypso Universe"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/icons/pwa-192x192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pwa-512x512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-512x512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Personalizar Avatar",
+      "short_name": "Avatar",
+      "description": "Personaliza tu avatar con diferentes prendas y accesorios",
+      "url": "/avatar",
+      "icons": [{ "src": "/icons/avatar-shortcut.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Redimir Código",
+      "short_name": "Código",
+      "description": "Redime códigos de productos Kellogg's para obtener recompensas exclusivas",
+      "url": "/redeem",
+      "icons": [{ "src": "/icons/redeem-shortcut.svg", "sizes": "96x96" }]
+    }
+  ]
+} 

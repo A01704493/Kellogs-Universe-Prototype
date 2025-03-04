@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="750" height="1334" viewBox="0 0 750 1334" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="750" height="1334" fill="#F0F9FF"/>
+  
+  <!-- Header -->
+  <rect width="750" height="80" fill="#1E40AF"/>
+  <text x="375" y="50" font-family="Arial" font-size="24" fill="white" text-anchor="middle">Calypso Universe</text>
+  
+  <!-- Logo -->
+  <circle cx="375" cy="300" r="120" fill="#1E40AF"/>
+  <circle cx="375" cy="300" r="100" fill="#F0F9FF"/>
+  <path d="M335 300C335 277.909 352.909 260 375 260C397.091 260 415 277.909 415 300C415 322.091 397.091 340 375 340C352.909 340 335 322.091 335 300Z" fill="#1E40AF"/>
+  <path d="M325 400C325 400 345 360 375 360C405 360 425 400 425 400H325Z" fill="#1E40AF"/>
+  
+  <!-- Login Form -->
+  <rect x="175" y="500" width="400" height="400" rx="10" fill="white" stroke="#E0E7FF" stroke-width="2"/>
+  
+  <!-- Form Elements -->
+  <rect x="225" y="550" width="300" height="50" rx="5" fill="#F0F9FF" stroke="#E0E7FF"/>
+  <text x="240" y="580" font-family="Arial" font-size="18" fill="#94A3B8">Username</text>
+  
+  <rect x="225" y="630" width="300" height="50" rx="5" fill="#F0F9FF" stroke="#E0E7FF"/>
+  <text x="240" y="660" font-family="Arial" font-size="18" fill="#94A3B8">Password</text>
+  
+  <rect x="225" y="710" width="300" height="50" rx="5" fill="#1E40AF"/>
+  <text x="375" y="742" font-family="Arial" font-size="18" fill="white" text-anchor="middle">Log In</text>
+  
+  <rect x="225" y="780" width="300" height="50" rx="5" fill="#F0F9FF" stroke="#1E40AF"/>
+  <text x="375" y="812" font-family="Arial" font-size="18" fill="#1E40AF" text-anchor="middle">Create Account</text>
+  
+  <!-- Footer -->
+  <text x="375" y="1250" font-family="Arial" font-size="16" fill="#94A3B8" text-anchor="middle">Calypso Universe © 2023</text>
+  <text x="375" y="1280" font-family="Arial" font-size="14" fill="#94A3B8" text-anchor="middle">Powered by Kellogg's</text>
+</svg> 
