@@ -17,7 +17,7 @@ const buildingData: Record<string, BuildingInfo> = {
     description: 'Ayuda a Melvin el elefante a recolectar chocolates en este desafío cronometrado',
     gameType: 'choco-krispis',
     color: '#663300',
-    route: '/games/choco-krispis'
+    route: '/minigames/choco-krispis'
   },
   'zucaritas': {
     id: 'zucaritas',
@@ -25,7 +25,7 @@ const buildingData: Record<string, BuildingInfo> = {
     description: 'Únete a Tony el Tigre y recoge los cereales en este desafío de habilidad',
     gameType: 'zucaritas',
     color: '#FF9900',
-    route: '/games/zucaritas'
+    route: '/minigames/zucaritas'
   },
   'froot-loops': {
     id: 'froot-loops',
@@ -33,7 +33,7 @@ const buildingData: Record<string, BuildingInfo> = {
     description: 'Vuela con Sam el tucán a través de los aros de colores',
     gameType: 'froot-loops',
     color: '#9900FF',
-    route: '/games/froot-loops'
+    route: '/minigames/froot-loops'
   }
 };
 

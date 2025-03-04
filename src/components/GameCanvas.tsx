@@ -11,6 +11,13 @@ const GameCanvas = () => {
   const [score, setScore] = useState<number>(0);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [gameOver, setGameOver] = useState<boolean>(false);
+  // Referencias para los event listeners
+  const keyDownHandlerRef = useRef<(e: KeyboardEvent) => void>();
+  const keyUpHandlerRef = useRef<(e: KeyboardEvent) => void>();
+  const touchStartHandlerRef = useRef<(e: TouchEvent) => void>();
+  const touchMoveHandlerRef = useRef<(e: TouchEvent) => void>();
+  const touchEndHandlerRef = useRef<(e: TouchEvent) => void>();
+  const clickHandlerRef = useRef<(e: MouseEvent) => void>();
   
   useEffect(() => {
     // Determinar el tipo de juego basado en la URL
@@ -27,6 +34,30 @@ const GameCanvas = () => {
     return () => {
       // Limpiar el ciclo de animación cuando se desmonte el componente
       cancelAnimationFrame(animationRef.current);
+      
+      // Limpiar todos los event listeners
+      if (keyDownHandlerRef.current) {
+        window.removeEventListener('keydown', keyDownHandlerRef.current);
+      }
+      if (keyUpHandlerRef.current) {
+        window.removeEventListener('keyup', keyUpHandlerRef.current);
+      }
+      
+      const canvas = canvasRef.current;
+      if (canvas) {
+        if (touchStartHandlerRef.current) {
+          canvas.removeEventListener('touchstart', touchStartHandlerRef.current);
+        }
+        if (touchMoveHandlerRef.current) {
+          canvas.removeEventListener('touchmove', touchMoveHandlerRef.current);
+        }
+        if (touchEndHandlerRef.current) {
+          canvas.removeEventListener('touchend', touchEndHandlerRef.current);
+        }
+        if (clickHandlerRef.current) {
+          canvas.removeEventListener('click', clickHandlerRef.current);
+        }
+      }
     };
   }, [id, location]);
   
@@ -82,16 +113,20 @@ const GameCanvas = () => {
     // Control de movimiento del tigre
     const keys: {[key: string]: boolean} = {};
     
-    window.addEventListener('keydown', (e) => {
+    keyDownHandlerRef.current = (e: KeyboardEvent) => {
       keys[e.key] = true;
-    });
+    };
     
-    window.addEventListener('keyup', (e) => {
+    keyUpHandlerRef.current = (e: KeyboardEvent) => {
       keys[e.key] = false;
-    });
+    };
+    
+    // Agregar event listeners
+    window.addEventListener('keydown', keyDownHandlerRef.current);
+    window.addEventListener('keyup', keyUpHandlerRef.current);
     
     // Para control táctil/móvil
-    canvas.addEventListener('touchmove', (e) => {
+    touchMoveHandlerRef.current = (e: TouchEvent) => {
       e.preventDefault();
       const touch = e.touches[0];
       const rect = canvas.getBoundingClientRect();
@@ -100,7 +135,9 @@ const GameCanvas = () => {
       // Mantener dentro de los límites
       if (tigerX < 0) tigerX = 0;
       if (tigerX > canvas.width - tigerWidth) tigerX = canvas.width - tigerWidth;
-    });
+    };
+    
+    canvas.addEventListener('touchmove', touchMoveHandlerRef.current);
     
     // Bucle principal del juego
     let lastTime = 0;
@@ -217,38 +254,46 @@ const GameCanvas = () => {
     // Control de movimiento del elefante
     const keys: {[key: string]: boolean} = {};
     
-    window.addEventListener('keydown', (e) => {
+    keyDownHandlerRef.current = (e: KeyboardEvent) => {
       keys[e.key] = true;
-    });
+    };
     
-    window.addEventListener('keyup', (e) => {
+    keyUpHandlerRef.current = (e: KeyboardEvent) => {
       keys[e.key] = false;
-    });
+    };
+    
+    // Agregar event listeners
+    window.addEventListener('keydown', keyDownHandlerRef.current);
+    window.addEventListener('keyup', keyUpHandlerRef.current);
     
     // Para control táctil/móvil
     let touchX: number | null = null;
     let touchY: number | null = null;
     
-    canvas.addEventListener('touchstart', (e) => {
+    touchStartHandlerRef.current = (e: TouchEvent) => {
       e.preventDefault();
       const touch = e.touches[0];
       const rect = canvas.getBoundingClientRect();
       touchX = touch.clientX - rect.left;
       touchY = touch.clientY - rect.top;
-    });
+    };
     
-    canvas.addEventListener('touchmove', (e) => {
+    touchMoveHandlerRef.current = (e: TouchEvent) => {
       e.preventDefault();
       const touch = e.touches[0];
       const rect = canvas.getBoundingClientRect();
       touchX = touch.clientX - rect.left;
       touchY = touch.clientY - rect.top;
-    });
+    };
     
-    canvas.addEventListener('touchend', () => {
+    touchEndHandlerRef.current = () => {
       touchX = null;
       touchY = null;
-    });
+    };
+    
+    canvas.addEventListener('touchstart', touchStartHandlerRef.current);
+    canvas.addEventListener('touchmove', touchMoveHandlerRef.current);
+    canvas.addEventListener('touchend', touchEndHandlerRef.current);
     
     // Tiempo límite (30 segundos)
     let timeRemaining = 30;
@@ -387,7 +432,7 @@ const GameCanvas = () => {
     const pipeWidth = 80;
     const pipeGap = 150;
     const colors = ['#FF0000', '#FF9900', '#FFFF00', '#33CC33', '#3366FF', '#9900FF'];
-    let pipes: {x: number, topHeight: number, color: string}[] = [];
+    let pipes: {x: number, topHeight: number, color: string, passed?: boolean}[] = [];
     
     // Generar primer par de obstáculos
     pipes.push({
@@ -404,20 +449,25 @@ const GameCanvas = () => {
     };
     
     // Eventos para PC y móviles
-    window.addEventListener('keydown', (e) => {
+    keyDownHandlerRef.current = (e: KeyboardEvent) => {
       if (e.code === 'Space') {
         handleJump();
       }
-    });
+    };
     
-    canvas.addEventListener('touchstart', (e) => {
+    window.addEventListener('keydown', keyDownHandlerRef.current);
+    
+    touchStartHandlerRef.current = (e: TouchEvent) => {
       e.preventDefault();
       handleJump();
-    });
+    };
     
-    canvas.addEventListener('click', () => {
+    clickHandlerRef.current = () => {
       handleJump();
-    });
+    };
+    
+    canvas.addEventListener('touchstart', touchStartHandlerRef.current);
+    canvas.addEventListener('click', clickHandlerRef.current);
     
     // Bucle principal del juego
     let lastTime = 0;
@@ -533,6 +583,33 @@ const GameCanvas = () => {
   };
   
   const handleGoBack = () => {
+    // Limpiar el ciclo de animación antes de navegar
+    cancelAnimationFrame(animationRef.current);
+    
+    // Limpiar listeners
+    if (keyDownHandlerRef.current) {
+      window.removeEventListener('keydown', keyDownHandlerRef.current);
+    }
+    if (keyUpHandlerRef.current) {
+      window.removeEventListener('keyup', keyUpHandlerRef.current);
+    }
+    
+    const canvas = canvasRef.current;
+    if (canvas) {
+      if (touchStartHandlerRef.current) {
+        canvas.removeEventListener('touchstart', touchStartHandlerRef.current);
+      }
+      if (touchMoveHandlerRef.current) {
+        canvas.removeEventListener('touchmove', touchMoveHandlerRef.current);
+      }
+      if (touchEndHandlerRef.current) {
+        canvas.removeEventListener('touchend', touchEndHandlerRef.current);
+      }
+      if (clickHandlerRef.current) {
+        canvas.removeEventListener('click', clickHandlerRef.current);
+      }
+    }
+    
     navigate('/menu');
   };
   
