@@ -34,7 +34,7 @@ const MainMenu = () => {
       description: 'Aventuras con Melvin el elefante',
       position: { x: 25, y: 55 },
       image: chocoKrispiesIcon,
-      scale: 0.9
+      scale: 1.2
     },
     {
       id: 'zucaritas',
@@ -42,7 +42,7 @@ const MainMenu = () => {
       description: 'Desafíos con Tony el Tigre',
       position: { x: 70, y: 45 },
       image: frostedFlakesIcon,
-      scale: 1
+      scale: 1.3
     },
     {
       id: 'froot-loops',
@@ -50,7 +50,7 @@ const MainMenu = () => {
       description: 'Diversión colorida con Sam el tucán',
       position: { x: 45, y: 70 },
       image: frootLoopsIcon,
-      scale: 0.8
+      scale: 1.1
     }
   ];
 
@@ -135,7 +135,7 @@ const MainMenu = () => {
           const isHovered = hoveredIsland === building.id;
           
           // Calcular el tamaño basado en el viewport y la escala de la isla
-          const baseSize = Math.min(viewportSize.width, viewportSize.height) * 0.22;
+          const baseSize = Math.min(viewportSize.width, viewportSize.height) * 0.35;
           const size = building.scale * baseSize;
           
           return (
@@ -153,28 +153,28 @@ const MainMenu = () => {
               onMouseEnter={() => handleIslandHover(building.id)}
               onMouseLeave={() => handleIslandHover(null)}
             >
+              {/* Efecto de brillo - ahora detrás de la imagen */}
+              <div className="island-glow absolute inset-0 z-0"></div>
+              
               {/* Imagen de la isla */}
-              <div className="relative h-full w-full">
+              <div className="relative h-full w-full z-10">
                 <img 
                   src={building.image} 
                   alt={building.name} 
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain relative z-10"
                   style={{ 
                     filter: `drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4))`,
                   }}
                 />
-                
-                {/* Efecto de brillo */}
-                <div className="island-glow"></div>
               </div>
               
               {/* Nombre de la isla */}
               <div 
-                className={`absolute left-1/2 -bottom-6 transform -translate-x-1/2 transition-all duration-300 ${
+                className={`absolute left-1/2 -bottom-6 transform -translate-x-1/2 transition-all duration-300 z-20 ${
                   isHovered ? 'opacity-100' : 'opacity-0'
                 }`}
               >
-                <div className="text-white text-base font-bold drop-shadow-lg bg-primary/80 px-3 py-1 rounded-lg backdrop-blur-sm">
+                <div className="text-white text-lg font-bold drop-shadow-lg bg-primary/80 px-4 py-1.5 rounded-lg backdrop-blur-sm">
                   {building.name}
                 </div>
               </div>
