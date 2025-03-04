@@ -130,28 +130,35 @@ const MainMenu = () => {
   // Calcular la transformación para el efecto parallax
   const getParallaxStyle = () => {
     // Usar los valores del ratón para el parallax con intensidad reducida
-    const x = mousePosition.x * 8; 
-    const y = mousePosition.y * 8;
+    const x = mousePosition.x * 10; 
+    const y = mousePosition.y * 10;
     
     return {
       transform: `translate(${x}px, ${y}px)`,
-      transition: 'transform 0.3s ease-out', // Transición ligeramente más lenta para mayor suavidad
-      // Ya no incluimos backgroundSize aquí para evitar conflictos
+      transition: 'transform 0.3s ease-out'
     };
   };
 
   return (
     <div className="h-full w-full relative overflow-hidden">
-      {/* Fondo del menú con efecto parallax */}
-      <div 
-        className="absolute inset-0 z-0 bg-center"
-        style={{ 
-          backgroundImage: `url(${menuBackground})`,
-          backgroundPosition: 'center',
-          backgroundSize: '130%', // Zoom aplicado directamente a la imagen de fondo
-          ...getParallaxStyle()
-        }}
-      ></div>
+      {/* Contenedor extendido para el fondo con efecto parallax */}
+      <div className="absolute" style={{
+        left: '-15%',
+        top: '-15%',
+        width: '130%',
+        height: '130%',
+        zIndex: 0
+      }}>
+        <div 
+          className="w-full h-full"
+          style={{ 
+            backgroundImage: `url(${menuBackground})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            ...getParallaxStyle()
+          }}
+        ></div>
+      </div>
       
       {/* Capa de oscurecimiento para mejorar contraste */}
       <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
