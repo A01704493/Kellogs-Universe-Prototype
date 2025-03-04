@@ -137,7 +137,7 @@ const MainMenu = () => {
       transform: `translate(${x}px, ${y}px)`,
       transition: 'transform 0.3s ease-out', // Transición ligeramente más lenta para mayor suavidad
       // Aumentar aún más el tamaño para evitar bordes blancos durante el movimiento
-      backgroundSize: '120%' 
+      backgroundSize: '130%' 
     };
   };
 
