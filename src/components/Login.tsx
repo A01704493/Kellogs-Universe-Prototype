@@ -15,9 +15,9 @@ const Login = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center relative overflow-hidden bg-primary/10">
-      {/* Fondo con gradiente */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary/20 to-blue-900/30"></div>
+    <div className="h-full w-full flex flex-col justify-center items-center relative overflow-hidden">
+      {/* Fondo con gradientes animados */}
+      <div className="absolute inset-0 z-0 animated-gradient"></div>
       
       {/* Capa de oscurecimiento para mejorar contraste */}
       <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
