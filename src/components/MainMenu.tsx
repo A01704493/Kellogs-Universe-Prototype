@@ -5,7 +5,7 @@ import chocoKrispiesIcon from '../assets/images/ChocoKrispies_Island.png';
 import frootLoopsIcon from '../assets/images/FrootLoops_Island.png';
 import frostedFlakesIcon from '../assets/images/FrostedFlakes_Island.png';
 // Importar el fondo del menú
-import menuBackground from '../assets/images/Menu_Background.jpg';
+import menuBackground from '../assets/images/Menu_Background.png';
 
 interface Building {
   id: string;
