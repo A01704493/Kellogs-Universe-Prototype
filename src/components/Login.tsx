@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import kellogsLogo from '../assets/images/KellogsUniverse_Logo.png';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +28,9 @@ const Login = () => {
     <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-primary to-secondary p-4">
       <div className="card max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-display text-primary mb-2">Kellogs Universe</h1>
+          <div className="flex justify-center mb-2">
+            <img src={kellogsLogo} alt="Kellogs Universe" className="h-16 object-contain" />
+          </div>
           <p className="text-gray-600">¡Ingresa a un mundo de diversión!</p>
         </div>
         

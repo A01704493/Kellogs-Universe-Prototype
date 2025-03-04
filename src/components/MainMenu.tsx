@@ -4,8 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import chocoKrispiesIcon from '../assets/images/ChocoKrispies_Island.png';
 import frootLoopsIcon from '../assets/images/FrootLoops_Island.png';
 import frostedFlakesIcon from '../assets/images/FrostedFlakes_Island.png';
-// Importar el fondo del menú
+// Importar el fondo del menú y el logo
 import menuBackground from '../assets/images/Menu_Background.png';
+import kellogsLogo from '../assets/images/KellogsUniverse_Logo.png';
 
 interface Building {
   id: string;
@@ -32,7 +33,7 @@ const MainMenu = () => {
       id: 'choco-krispis',
       name: 'Choco Krispis',
       description: 'Aventuras con Melvin el elefante',
-      position: { x: 25, y: 55 },
+      position: { x: 25, y: 40 },
       image: chocoKrispiesIcon,
       scale: 1.2
     },
@@ -40,7 +41,7 @@ const MainMenu = () => {
       id: 'zucaritas',
       name: 'Zucaritas',
       description: 'Desafíos con Tony el Tigre',
-      position: { x: 70, y: 45 },
+      position: { x: 70, y: 35 },
       image: frostedFlakesIcon,
       scale: 1.3
     },
@@ -48,7 +49,7 @@ const MainMenu = () => {
       id: 'froot-loops',
       name: 'Froot Loops',
       description: 'Diversión colorida con Sam el tucán',
-      position: { x: 45, y: 70 },
+      position: { x: 45, y: 55 },
       image: frootLoopsIcon,
       scale: 1.1
     }
@@ -108,9 +109,9 @@ const MainMenu = () => {
       
       {/* Encabezado */}
       <header className="relative z-20 p-4 flex justify-between items-center">
-        <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 shadow-md">
-          <h1 className="text-xl font-display text-primary">Kellogs Universe</h1>
-          <p className="text-sm text-gray-600">Hola, {username}!</p>
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 shadow-md flex flex-col items-start">
+          <img src={kellogsLogo} alt="Kellogs Universe" className="h-12 object-contain" />
+          <p className="text-sm text-gray-600 mt-1">Hola, {username}!</p>
         </div>
         
         <div className="flex gap-2">
@@ -135,7 +136,7 @@ const MainMenu = () => {
           const isHovered = hoveredIsland === building.id;
           
           // Calcular el tamaño basado en el viewport y la escala de la isla
-          const baseSize = Math.min(viewportSize.width, viewportSize.height) * 0.35;
+          const baseSize = Math.min(viewportSize.width, viewportSize.height) * 0.32;
           const size = building.scale * baseSize;
           
           return (
