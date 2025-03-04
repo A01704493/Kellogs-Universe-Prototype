@@ -46,7 +46,7 @@ const Login = () => {
           
           <button
             type="submit"
-            className="w-full px-4 py-3 text-white bg-primary hover:bg-primary-dark rounded-lg transition-colors"
+            className="w-full px-4 py-3 text-white bg-primary hover:bg-primary-dark rounded-lg transition-colors pulsing-button"
           >
             Comenzar Aventura
           </button>

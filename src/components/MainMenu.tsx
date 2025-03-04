@@ -129,15 +129,15 @@ const MainMenu = () => {
 
   // Calcular la transformación para el efecto parallax
   const getParallaxStyle = () => {
-    // Usar los valores del ratón para el parallax
-    const x = mousePosition.x * 15; // 15px de movimiento máximo
-    const y = mousePosition.y * 15;
+    // Usar los valores del ratón para el parallax con intensidad reducida
+    const x = mousePosition.x * 8; // Redujo de 15px a 8px para un efecto más sutil
+    const y = mousePosition.y * 8;
     
     return {
       transform: `translate(${x}px, ${y}px)`,
-      transition: 'transform 0.2s ease-out',
-      // Aumentar el tamaño para evitar bordes blancos durante el movimiento
-      backgroundSize: '110%' 
+      transition: 'transform 0.3s ease-out', // Transición ligeramente más lenta para mayor suavidad
+      // Aumentar aún más el tamaño para evitar bordes blancos durante el movimiento
+      backgroundSize: '120%' 
     };
   };
 
