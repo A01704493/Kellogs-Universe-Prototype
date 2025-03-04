@@ -27,6 +27,11 @@ const MainMenu = () => {
   });
   const islandContainerRef = useRef<HTMLDivElement>(null);
   
+  // Estado para el efecto parallax
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [deviceOrientation, setDeviceOrientation] = useState({ beta: 0, gamma: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+  
   // Lista de edificios/islas en la plaza
   const buildings: Building[] = [
     {
@@ -55,6 +60,17 @@ const MainMenu = () => {
     }
   ];
 
+  // Detectar si es dispositivo móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      const userAgent = typeof window.navigator === 'undefined' ? '' : navigator.userAgent;
+      const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i;
+      setIsMobile(mobileRegex.test(userAgent));
+    };
+    
+    checkMobile();
+  }, []);
+
   // Efecto para manejar el cambio de tamaño de la ventana
   useEffect(() => {
     const handleResize = () => {
@@ -69,6 +85,42 @@ const MainMenu = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  // Efecto para el parallax con mouse
+  useEffect(() => {
+    if (isMobile) return; // No aplicar en móviles
+
+    const handleMouseMove = (e: MouseEvent) => {
+      // Convertir la posición del mouse a valores entre -1 y 1
+      const x = (e.clientX / window.innerWidth - 0.5) * 2;
+      const y = (e.clientY / window.innerHeight - 0.5) * 2;
+      setMousePosition({ x, y });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [isMobile]);
+
+  // Efecto para el parallax con giroscopio en móviles
+  useEffect(() => {
+    if (!isMobile) return; // Solo aplicar en móviles
+
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      if (e.beta !== null && e.gamma !== null) {
+        // Limitar los valores para un movimiento sutil
+        const beta = Math.max(-10, Math.min(10, e.beta)) / 10; // -1 a 1
+        const gamma = Math.max(-10, Math.min(10, e.gamma)) / 10; // -1 a 1
+        setDeviceOrientation({ beta, gamma });
+      }
+    };
+
+    window.addEventListener('deviceorientation', handleOrientation as EventListener);
+    return () => {
+      window.removeEventListener('deviceorientation', handleOrientation as EventListener);
+    };
+  }, [isMobile]);
 
   // Efecto para recuperar el nombre de usuario
   useEffect(() => {
@@ -95,17 +147,33 @@ const MainMenu = () => {
     setHoveredIsland(buildingId);
   };
 
+  // Calcular la transformación para el efecto parallax
+  const getParallaxStyle = () => {
+    // Usar los valores del giroscopio si es móvil, de lo contrario usar posición del mouse
+    const x = isMobile ? deviceOrientation.gamma * 15 : mousePosition.x * 15; // 15px de movimiento máximo
+    const y = isMobile ? deviceOrientation.beta * 15 : mousePosition.y * 15;
+    
+    return {
+      transform: `translate(${x}px, ${y}px)`,
+      transition: 'transform 0.2s ease-out'
+    };
+  };
+
   return (
     <div className="h-full w-full relative overflow-hidden">
-      {/* Fondo del menú */}
+      {/* Fondo del menú con efecto parallax */}
       <div 
-        className="absolute inset-0 z-0 bg-cover bg-center" 
+        className="absolute inset-0 z-0 bg-cover bg-center"
         style={{ 
           backgroundImage: `url(${menuBackground})`,
           backgroundSize: 'cover',
-          backgroundPosition: 'center'
+          backgroundPosition: 'center',
+          ...getParallaxStyle()
         }}
       ></div>
+      
+      {/* Capa de oscurecimiento para mejorar contraste */}
+      <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
       
       {/* Encabezado */}
       <header className="relative z-20 p-4 flex justify-between items-center">
