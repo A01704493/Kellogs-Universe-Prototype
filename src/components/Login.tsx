@@ -1,63 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import loginBackground from '../assets/images/Login_Background.png';
 import kellogsLogo from '../assets/images/KellogsUniverse_Logo.png';
 
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
-  
-  // Estado para el efecto parallax
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [deviceOrientation, setDeviceOrientation] = useState({ beta: 0, gamma: 0 });
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Detectar si es dispositivo móvil
-  useEffect(() => {
-    const checkMobile = () => {
-      const userAgent = typeof window.navigator === 'undefined' ? '' : navigator.userAgent;
-      const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Windows Phone/i;
-      setIsMobile(mobileRegex.test(userAgent));
-    };
-    
-    checkMobile();
-  }, []);
-
-  // Efecto para el parallax con mouse
-  useEffect(() => {
-    if (isMobile) return; // No aplicar en móviles
-
-    const handleMouseMove = (e: MouseEvent) => {
-      // Convertir la posición del mouse a valores entre -1 y 1
-      const x = (e.clientX / window.innerWidth - 0.5) * 2;
-      const y = (e.clientY / window.innerHeight - 0.5) * 2;
-      setMousePosition({ x, y });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [isMobile]);
-
-  // Efecto para el parallax con giroscopio en móviles
-  useEffect(() => {
-    if (!isMobile) return; // Solo aplicar en móviles
-
-    const handleOrientation = (e: DeviceOrientationEvent) => {
-      if (e.beta !== null && e.gamma !== null) {
-        // Limitar los valores para un movimiento sutil
-        const beta = Math.max(-10, Math.min(10, e.beta)) / 10; // -1 a 1
-        const gamma = Math.max(-10, Math.min(10, e.gamma)) / 10; // -1 a 1
-        setDeviceOrientation({ beta, gamma });
-      }
-    };
-
-    window.addEventListener('deviceorientation', handleOrientation as EventListener);
-    return () => {
-      window.removeEventListener('deviceorientation', handleOrientation as EventListener);
-    };
-  }, [isMobile]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,30 +14,10 @@ const Login = () => {
     }
   };
 
-  // Calcular la transformación para el efecto parallax
-  const getParallaxStyle = () => {
-    // Usar los valores del giroscopio si es móvil, de lo contrario usar posición del mouse
-    const x = isMobile ? deviceOrientation.gamma * 15 : mousePosition.x * 15; // 15px de movimiento máximo
-    const y = isMobile ? deviceOrientation.beta * 15 : mousePosition.y * 15;
-    
-    return {
-      transform: `translate(${x}px, ${y}px)`,
-      transition: 'transform 0.2s ease-out'
-    };
-  };
-
   return (
-    <div className="h-full w-full flex flex-col justify-center items-center relative overflow-hidden">
-      {/* Fondo con efecto parallax */}
-      <div 
-        className="absolute inset-0 z-0 bg-cover bg-center"
-        style={{ 
-          backgroundImage: `url(${loginBackground})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          ...getParallaxStyle()
-        }}
-      ></div>
+    <div className="h-full w-full flex flex-col justify-center items-center relative overflow-hidden bg-primary/10">
+      {/* Fondo con gradiente */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary/20 to-blue-900/30"></div>
       
       {/* Capa de oscurecimiento para mejorar contraste */}
       <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
