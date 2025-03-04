@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// Importar las imágenes de los juegos
+import chocoKrispiesIcon from '../assets/images/ChocoKrispies_Island.png';
+import frootLoopsIcon from '../assets/images/FrootLoops_Island.png';
+import frostedFlakesIcon from '../assets/images/FrostedFlakes_Island.png';
 
 interface Building {
   id: string;
@@ -20,21 +24,21 @@ const MainMenu = () => {
       name: 'Choco Krispis',
       description: 'Aventuras con Melvin el elefante',
       position: { x: 20, y: 30 },
-      image: '/edificio-choco-krispis.png'
+      image: chocoKrispiesIcon
     },
     {
       id: 'zucaritas',
       name: 'Zucaritas',
       description: 'Desafíos con Tony el Tigre',
       position: { x: 60, y: 40 },
-      image: '/edificio-zucaritas.png'
+      image: frostedFlakesIcon
     },
     {
       id: 'froot-loops',
       name: 'Froot Loops',
       description: 'Diversión colorida con Sam el tucán',
       position: { x: 40, y: 70 },
-      image: '/edificio-froot-loops.png'
+      image: frootLoopsIcon
     }
   ];
 
@@ -101,12 +105,13 @@ const MainMenu = () => {
             }}
             onClick={() => handleBuildingClick(building.id)}
           >
-            {/* Placeholder para imagen de edificio */}
-            <div className="w-24 h-24 bg-white rounded-lg shadow-lg flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-lg font-display text-primary">{building.name}</div>
-                <div className="text-xs text-gray-600">Click para entrar</div>
-              </div>
+            {/* Imagen del edificio/minijuego */}
+            <div className="w-32 h-32 rounded-lg shadow-lg flex items-center justify-center overflow-hidden">
+              <img 
+                src={building.image} 
+                alt={building.name} 
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="text-center mt-2 text-white text-sm font-medium drop-shadow-md">
               {building.name}

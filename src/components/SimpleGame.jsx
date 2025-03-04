@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// Importar las imágenes de fondos
+import chocoKrispiesBackground from '../assets/images/ChocoKrispies_Island.png';
+import frootLoopsBackground from '../assets/images/FrootLoops_Island.png';
+import frostedFlakesBackground from '../assets/images/FrostedFlakes_Island.png';
 
 const SimpleGame = ({ gameType }) => {
   const canvasRef = useRef(null);
@@ -7,6 +11,13 @@ const SimpleGame = ({ gameType }) => {
   const [gameStarted, setGameStarted] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const navigate = useNavigate();
+  
+  // Referencias a las imágenes
+  const backgroundImages = {
+    'zucaritas': frostedFlakesBackground,
+    'choco-krispis': chocoKrispiesBackground,
+    'froot-loops': frootLoopsBackground
+  };
   
   // Iniciar juego
   const startGame = () => {
@@ -47,19 +58,19 @@ const SimpleGame = ({ gameType }) => {
     const playerSize = 40;
     
     // Color según el juego
-    let backgroundColor = '#333';
     let playerColor = '#f00';
     
     if (gameType === 'zucaritas') {
-      backgroundColor = '#FF9900';
       playerColor = '#FF6600';
     } else if (gameType === 'choco-krispis') {
-      backgroundColor = '#663300';
       playerColor = '#8B4513';
     } else if (gameType === 'froot-loops') {
-      backgroundColor = '#9900FF';
       playerColor = '#6600CC';
     }
+    
+    // Cargar la imagen de fondo
+    const backgroundImage = new Image();
+    backgroundImage.src = backgroundImages[gameType] || '';
     
     // Controles
     let rightPressed = false;
@@ -125,9 +136,17 @@ const SimpleGame = ({ gameType }) => {
       // Limpiar canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Dibujar fondo
-      ctx.fillStyle = backgroundColor;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Dibujar fondo con imagen
+      if (backgroundImage.complete) {
+        // Oscurecer un poco la imagen para que se vea mejor el juego
+        ctx.globalAlpha = 0.3;
+        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+        ctx.globalAlpha = 1.0;
+      } else {
+        // Fondo de respaldo si la imagen no está cargada
+        ctx.fillStyle = '#333';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
       
       // Mover jugador
       if (rightPressed && playerX < canvas.width - playerSize) {
@@ -203,7 +222,7 @@ const SimpleGame = ({ gameType }) => {
       canvas.removeEventListener('touchend', touchEndHandler);
       cancelAnimationFrame(animationId);
     };
-  }, [gameStarted, gameOver, gameType]);
+  }, [gameStarted, gameOver, gameType, backgroundImages]);
   
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
