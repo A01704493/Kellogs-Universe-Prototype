@@ -4,7 +4,7 @@ import MainMenu from './components/MainMenu';
 import Avatar from './components/Avatar';
 import Redeem from './components/Redeem';
 import Building from './components/Building';
-import GameCanvas from './components/GameCanvas';
+import SimpleGame from './components/SimpleGame';
 
 function App() {
   return (
@@ -14,9 +14,9 @@ function App() {
         <Route path="/menu" element={<MainMenu />} />
         <Route path="/avatar" element={<Avatar />} />
         <Route path="/redeem" element={<Redeem />} />
-        <Route path="/minigames/zucaritas" element={<GameCanvas />} />
-        <Route path="/minigames/choco-krispis" element={<GameCanvas />} />
-        <Route path="/minigames/froot-loops" element={<GameCanvas />} />
+        <Route path="/minigames/zucaritas" element={<SimpleGame gameType="zucaritas" />} />
+        <Route path="/minigames/choco-krispis" element={<SimpleGame gameType="choco-krispis" />} />
+        <Route path="/minigames/froot-loops" element={<SimpleGame gameType="froot-loops" />} />
         <Route path="/games/:id" element={<Building />} />
       </Routes>
     </div>
