@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Importar las imágenes de los juegos
 import chocoKrispiesIcon from '../assets/images/ChocoKrispies_Island.png';
 import frootLoopsIcon from '../assets/images/FrootLoops_Island.png';
 import frostedFlakesIcon from '../assets/images/FrostedFlakes_Island.png';
+// Importar el fondo del menú
+import menuBackground from '../assets/images/Menu_Background.jpg';
 
 interface Building {
   id: string;
@@ -11,11 +13,18 @@ interface Building {
   description: string;
   position: { x: number; y: number };
   image: string;
+  scale: number;
 }
 
 const MainMenu = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('Aventurero');
+  const [hoveredIsland, setHoveredIsland] = useState<string | null>(null);
+  const [viewportSize, setViewportSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight
+  });
+  const islandContainerRef = useRef<HTMLDivElement>(null);
   
   // Lista de edificios/islas en la plaza
   const buildings: Building[] = [
@@ -23,27 +32,45 @@ const MainMenu = () => {
       id: 'choco-krispis',
       name: 'Choco Krispis',
       description: 'Aventuras con Melvin el elefante',
-      position: { x: 20, y: 30 },
-      image: chocoKrispiesIcon
+      position: { x: 25, y: 55 },
+      image: chocoKrispiesIcon,
+      scale: 0.9
     },
     {
       id: 'zucaritas',
       name: 'Zucaritas',
       description: 'Desafíos con Tony el Tigre',
-      position: { x: 60, y: 40 },
-      image: frostedFlakesIcon
+      position: { x: 70, y: 45 },
+      image: frostedFlakesIcon,
+      scale: 1
     },
     {
       id: 'froot-loops',
       name: 'Froot Loops',
       description: 'Diversión colorida con Sam el tucán',
-      position: { x: 40, y: 70 },
-      image: frootLoopsIcon
+      position: { x: 45, y: 70 },
+      image: frootLoopsIcon,
+      scale: 0.8
     }
   ];
 
+  // Efecto para manejar el cambio de tamaño de la ventana
   useEffect(() => {
-    // Recuperar nombre de usuario del localStorage
+    const handleResize = () => {
+      setViewportSize({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // Efecto para recuperar el nombre de usuario
+  useEffect(() => {
     const savedUsername = localStorage.getItem('kellogsUsername');
     if (savedUsername) {
       setUsername(savedUsername);
@@ -62,13 +89,22 @@ const MainMenu = () => {
     navigate('/redeem');
   };
 
+  // Función para manejar hover de las islas
+  const handleIslandHover = (buildingId: string | null) => {
+    setHoveredIsland(buildingId);
+  };
+
   return (
-    <div className="h-full w-full relative bg-background">
-      {/* Cielo y fondo */}
-      <div className="absolute inset-0 bg-gradient-to-b from-red-300 to-red-400 z-0"></div>
-      
-      {/* Tierra/isla */}
-      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-yellow-800 to-yellow-600 rounded-t-full z-10"></div>
+    <div className="h-full w-full relative overflow-hidden">
+      {/* Fondo del menú */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-center" 
+        style={{ 
+          backgroundImage: `url(${menuBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      ></div>
       
       {/* Encabezado */}
       <header className="relative z-20 p-4 flex justify-between items-center">
@@ -93,32 +129,58 @@ const MainMenu = () => {
         </div>
       </header>
       
-      {/* Contenedor de edificios */}
-      <div className="relative z-20 h-full w-full">
-        {buildings.map((building) => (
-          <div
-            key={building.id}
-            className="absolute cursor-pointer transform hover:scale-110 transition-transform"
-            style={{
-              left: `${building.position.x}%`,
-              top: `${building.position.y}%`,
-            }}
-            onClick={() => handleBuildingClick(building.id)}
-          >
-            {/* Imagen del edificio/minijuego */}
-            <div className="w-32 h-32 flex items-center justify-center">
-              <img 
-                src={building.image} 
-                alt={building.name} 
-                className="w-full h-full object-contain filter drop-shadow-lg"
-                style={{ filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3))' }}
-              />
+      {/* Contenedor de islas */}
+      <div ref={islandContainerRef} className="relative z-10 h-full w-full">
+        {buildings.map((building) => {
+          const isHovered = hoveredIsland === building.id;
+          
+          // Calcular el tamaño basado en el viewport y la escala de la isla
+          const baseSize = Math.min(viewportSize.width, viewportSize.height) * 0.22;
+          const size = building.scale * baseSize;
+          
+          return (
+            <div
+              key={building.id}
+              className={`absolute cursor-pointer island-hover ${isHovered ? 'z-20' : 'z-10'}`}
+              style={{
+                left: `${building.position.x}%`,
+                top: `${building.position.y}%`,
+                width: size,
+                height: size,
+                transform: isHovered ? 'translate(-50%, -50%) scale(1.15)' : 'translate(-50%, -50%)'
+              }}
+              onClick={() => handleBuildingClick(building.id)}
+              onMouseEnter={() => handleIslandHover(building.id)}
+              onMouseLeave={() => handleIslandHover(null)}
+            >
+              {/* Imagen de la isla */}
+              <div className="relative h-full w-full">
+                <img 
+                  src={building.image} 
+                  alt={building.name} 
+                  className="w-full h-full object-contain"
+                  style={{ 
+                    filter: `drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4))`,
+                  }}
+                />
+                
+                {/* Efecto de brillo */}
+                <div className="island-glow"></div>
+              </div>
+              
+              {/* Nombre de la isla */}
+              <div 
+                className={`absolute left-1/2 -bottom-6 transform -translate-x-1/2 transition-all duration-300 ${
+                  isHovered ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                <div className="text-white text-base font-bold drop-shadow-lg bg-primary/80 px-3 py-1 rounded-lg backdrop-blur-sm">
+                  {building.name}
+                </div>
+              </div>
             </div>
-            <div className="text-center mt-2 text-white text-sm font-medium drop-shadow-md">
-              {building.name}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

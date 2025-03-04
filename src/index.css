@@ -51,4 +51,40 @@
   width: 100vw;
   width: 100dvw; /* Para soporte en dispositivos modernos */
   overflow: hidden;
+}
+
+/* Animaciones para las islas */
+.island-hover {
+  transition: all 0.3s ease-in-out;
+  transform-origin: center;
+}
+
+.island-hover:hover {
+  transform: scale(1.15);
+  filter: brightness(1.1);
+}
+
+.island-name {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease-in-out;
+}
+
+.island-hover:hover .island-name {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.island-glow {
+  position: absolute;
+  inset: -20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.island-hover:hover .island-glow {
+  opacity: 1;
 } 
