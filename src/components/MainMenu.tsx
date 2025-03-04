@@ -130,14 +130,13 @@ const MainMenu = () => {
   // Calcular la transformación para el efecto parallax
   const getParallaxStyle = () => {
     // Usar los valores del ratón para el parallax con intensidad reducida
-    const x = mousePosition.x * 8; // Redujo de 15px a 8px para un efecto más sutil
+    const x = mousePosition.x * 8; 
     const y = mousePosition.y * 8;
     
     return {
       transform: `translate(${x}px, ${y}px)`,
       transition: 'transform 0.3s ease-out', // Transición ligeramente más lenta para mayor suavidad
-      // Aumentar aún más el tamaño para evitar bordes blancos durante el movimiento
-      backgroundSize: '130%' 
+      // Ya no incluimos backgroundSize aquí para evitar conflictos
     };
   };
 
@@ -149,6 +148,7 @@ const MainMenu = () => {
         style={{ 
           backgroundImage: `url(${menuBackground})`,
           backgroundPosition: 'center',
+          backgroundSize: '130%', // Zoom aplicado directamente a la imagen de fondo
           ...getParallaxStyle()
         }}
       ></div>
