@@ -16,31 +16,31 @@ const MainMenu = () => {
   // Lista de edificios/islas en la plaza
   const buildings: Building[] = [
     {
-      id: 'chococrisps',
-      name: 'ChocoCrisps',
-      description: 'Juegos y aventuras chocolatosas',
+      id: 'choco-krispis',
+      name: 'Choco Krispis',
+      description: 'Aventuras con Melvin el elefante',
       position: { x: 20, y: 30 },
-      image: '/edificio-chococrisps.png'
+      image: '/edificio-choco-krispis.png'
     },
     {
-      id: 'suscaritas',
-      name: 'Sus Caritas',
-      description: 'Desafíos para gatitos aventureros',
+      id: 'zucaritas',
+      name: 'Zucaritas',
+      description: 'Desafíos con Tony el Tigre',
       position: { x: 60, y: 40 },
-      image: '/edificio-suscaritas.png'
+      image: '/edificio-zucaritas.png'
     },
     {
-      id: 'arcade',
-      name: 'Arcade',
-      description: 'Minijuegos para todos',
+      id: 'froot-loops',
+      name: 'Froot Loops',
+      description: 'Diversión colorida con Sam el tucán',
       position: { x: 40, y: 70 },
-      image: '/edificio-arcade.png'
+      image: '/edificio-froot-loops.png'
     }
   ];
 
   useEffect(() => {
     // Recuperar nombre de usuario del localStorage
-    const savedUsername = localStorage.getItem('calypsoUsername');
+    const savedUsername = localStorage.getItem('kellogsUsername');
     if (savedUsername) {
       setUsername(savedUsername);
     }
@@ -61,15 +61,15 @@ const MainMenu = () => {
   return (
     <div className="relative min-h-screen bg-background overflow-hidden">
       {/* Cielo y fondo */}
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-300 to-blue-500 z-0"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-red-300 to-red-400 z-0"></div>
       
       {/* Tierra/isla */}
-      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-green-800 to-green-600 rounded-t-full z-10"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-yellow-800 to-yellow-600 rounded-t-full z-10"></div>
       
       {/* Encabezado */}
       <header className="relative z-20 p-4 flex justify-between items-center">
         <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 shadow-md">
-          <h1 className="text-xl font-display text-primary">Calypso Universe</h1>
+          <h1 className="text-xl font-display text-primary">Kellogs Universe</h1>
           <p className="text-sm text-gray-600">Hola, {username}!</p>
         </div>
         

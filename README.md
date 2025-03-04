@@ -1,15 +1,15 @@
-# Calypso Universe - Prototipo
+# Kellogs Universe - Prototipo
 
 Un mundo virtual interactivo inspirado en Club Penguin, desarrollado como prototipo para Kellogg's.
 
 ## Descripción
 
-Calypso Universe es una web app interactiva que permite a los usuarios (principalmente en iPads y celulares):
+Kellogs Universe es una web app interactiva que permite a los usuarios (principalmente en iPads y celulares):
 
 - Ingresar mediante una pantalla de "login" simulada (sin validación real)
-- Navegar por un menú principal (tipo plaza con edificios) que representan distintas marcas/personajes
+- Navegar por un menú principal (tipo plaza con edificios) que representan distintas marcas de cereales
 - Personalizar su avatar
-- Entrar a edificios que contienen minijuegos simples
+- Entrar a edificios que contienen minijuegos específicos para cada marca
 - Usar un módulo de "redeem" para canjear códigos promocionales
 
 ## Instrucciones de Instalación
@@ -23,8 +23,8 @@ Calypso Universe es una web app interactiva que permite a los usuarios (principa
 
 1. Clonar el repositorio:
    ```
-   git clone https://github.com/tu-usuario/calypso-universe-prototype.git
-   cd calypso-universe-prototype
+   git clone https://github.com/tu-usuario/kellogs-universe-prototype.git
+   cd kellogs-universe-prototype
    ```
 
 2. Instalar dependencias:
@@ -36,9 +36,9 @@ Calypso Universe es una web app interactiva que permite a los usuarios (principa
 
 3. Iniciar el servidor de desarrollo:
    ```
-   npm run start
+   npm run dev
    # o si usas yarn
-   yarn start
+   yarn dev
    ```
 
 4. La aplicación estará disponible en `http://localhost:5173`
@@ -46,16 +46,19 @@ Calypso Universe es una web app interactiva que permite a los usuarios (principa
 ## Características
 
 - **Login Simulado**: Cualquier usuario/contraseña será aceptado
-- **Plaza Interactiva**: Edificios para cada marca (ChocoCrisps, Sus Caritas, etc.)
+- **Plaza Interactiva**: Edificios para cada marca de cereales:
+  - **Zucaritas**: Aventuras con Tony el Tigre
+  - **Choco Krispis**: Aventuras con Melvin el elefante
+  - **Froot Loops**: Diversión con Sam el tucán
 - **Personalización de Avatar**: Personaliza cabeza, cuerpo y accesorios
-- **Minijuegos**: Juegos simples dentro de los edificios
+- **Minijuegos**: Juegos específicos para cada marca de cereal
 - **Sistema de Redención**: Códigos promocionales simulados
 
 ### Códigos para Pruebas
 
-- `CHOCO123` - Sombrero de Chocolate
-- `GATO456` - Orejas de Gato
-- `CEREAL789` - 100 Monedas
+- `ZUCARITAS123` - Disfraz de tigre
+- `CHOCOKRISPIS456` - Orejas de elefante
+- `FROOTLOOPS789` - Pico de tucán
 - `KELLOGS2023` - Capa de Superhéroe
 
 ## Tecnologías Utilizadas
@@ -76,4 +79,4 @@ El proyecto está configurado para ser desplegado en Vercel:
 
 ## Créditos
 
-Desarrollado como prototipo para Kellogg's por [Tu Nombre]. 
+Desarrollado como prototipo para Kellogg's. 

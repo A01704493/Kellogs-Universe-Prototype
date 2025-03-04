@@ -7,10 +7,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#1E40AF",
-        secondary: "#7C3AED",
+        primary: "#ef0e44",
+        secondary: "#FF9900",
         accent: "#F97316",
-        background: "#F0F9FF",
+        background: "#FFF9F9",
       },
       fontFamily: {
         sans: ['Poppins', 'ui-sans-serif', 'system-ui'],

@@ -17,7 +17,7 @@ const Login = () => {
     }
     
     // Almacenar el nombre de usuario en localStorage para usarlo en toda la app
-    localStorage.setItem('calypsoUsername', username);
+    localStorage.setItem('kellogsUsername', username);
     
     // Redireccionar al menú principal
     navigate('/menu');
@@ -27,7 +27,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary to-secondary p-4">
       <div className="card max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-display text-primary mb-2">Calypso Universe</h1>
+          <h1 className="text-4xl font-display text-primary mb-2">Kellogs Universe</h1>
           <p className="text-gray-600">¡Ingresa a un mundo de diversión!</p>
         </div>
         
