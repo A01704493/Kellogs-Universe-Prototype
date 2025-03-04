@@ -127,32 +127,25 @@ const MainMenu = () => {
     setHoveredIsland(buildingId);
   };
 
-  // Calcular la transformación para el efecto parallax
-  const getParallaxStyle = () => {
-    // Usar los valores del ratón para el parallax con intensidad reducida
-    const x = mousePosition.x * 10; 
-    const y = mousePosition.y * 10;
-    
-    return {
-      transform: `translate(${x}px, ${y}px)`,
-      transition: 'transform 0.3s ease-out'
-    };
-  };
-
   return (
     <div className="h-full w-full relative overflow-hidden">
       {/* Implementación del fondo con parallax usando una imagen con posicionamiento absoluto */}
       <div 
         className="absolute inset-0 z-0 overflow-hidden"
+        style={{ backgroundColor: '#1a1a1a' }} /* Color de fondo por si acaso hay espacios */
       >
         <img 
           src={menuBackground} 
           alt="Background" 
-          className="absolute w-[150%] h-[150%] object-cover"
+          className="absolute object-cover"
           style={{
-            left: '-25%',
-            top: '-25%',
-            ...getParallaxStyle()
+            width: '180%',
+            height: '180%',
+            left: '-40%',
+            top: '-40%',
+            maxWidth: 'none',
+            transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)`,
+            transition: 'transform 0.3s ease-out'
           }}
         />
       </div>
