@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Importar las imágenes de los juegos
 import chocoKrispiesIcon from '../assets/images/ChocoKrispies_Island.png';
@@ -31,6 +31,16 @@ interface Building {
   image: string;
   scale: number;
   floatSpeed: number;
+}
+
+// Definición de una estrella para la animación de fondo
+interface Star {
+  id: number;
+  size: number;
+  left: number;
+  duration: number;
+  delay: number;
+  opacity: number;
 }
 
 const MainMenu = () => {
@@ -81,6 +91,19 @@ const MainMenu = () => {
       floatSpeed: 4 // Velocidad intermedia
     }
   ];
+
+  // Generar estrellas para el fondo
+  const stars = useMemo(() => {
+    const count = 35; // Cantidad de estrellas
+    return Array.from({ length: count }, (_, i) => ({
+      id: i,
+      size: Math.random() * 1.5 + 0.5, // Tamaño entre 0.5px y 2px
+      left: Math.random() * 100, // Posición horizontal
+      duration: Math.random() * 15 + 15, // Duración entre 15 y 30 segundos
+      delay: Math.random() * 10, // Retraso para que no empiecen todas a la vez
+      opacity: Math.random() * 0.5 + 0.3 // Opacidad entre 0.3 y 0.8
+    }));
+  }, []);
 
   // Efecto para cargar la configuración del avatar
   useEffect(() => {
@@ -206,6 +229,24 @@ const MainMenu = () => {
       
       {/* Capa de oscurecimiento para mejorar contraste */}
       <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
+      
+      {/* Capa de estrellas flotantes */}
+      <div className="stars">
+        {stars.map((star) => (
+          <div
+            key={star.id}
+            className="star"
+            style={{
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+              left: `${star.left}%`,
+              opacity: star.opacity,
+              animationDuration: `${star.duration}s`,
+              animationDelay: `${star.delay}s`
+            }}
+          />
+        ))}
+      </div>
       
       {/* Avatar flotante */}
       {avatarConfig && (
