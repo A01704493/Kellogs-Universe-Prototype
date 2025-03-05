@@ -66,72 +66,189 @@ const Avatar = () => {
   };
 
   useEffect(() => {
-    // Forzar que el body tenga scroll en esta página
-    document.body.style.overflow = 'auto';
-    document.body.style.height = 'auto';
+    // Aplicar estilos a todos los elementos que podrían estar bloqueando el scroll
+    const elementsToModify = [
+      document.documentElement, // html
+      document.body,
+      document.getElementById('root'),
+      document.querySelector('.app')
+    ];
     
+    // Guardar los estilos originales para restaurarlos
+    const originalStyles = elementsToModify.map(el => {
+      if (!el) return null;
+      return {
+        element: el,
+        overflow: el.style.overflow,
+        height: el.style.height
+      };
+    });
+    
+    // Aplicar nuevos estilos
+    elementsToModify.forEach(el => {
+      if (!el) return;
+      el.style.overflow = 'auto';
+      el.style.height = 'auto';
+    });
+    
+    // Función de limpieza para restaurar estilos originales
     return () => {
-      // Restaurar el overflow hidden al salir
-      document.body.style.overflow = 'hidden';
-      document.body.style.height = '100%';
+      originalStyles.forEach(style => {
+        if (!style) return;
+        style.element.style.overflow = style.overflow;
+        style.element.style.height = style.height;
+      });
     };
   }, []);
 
   return (
-    <div className="pb-20" style={{ minHeight: '100vh' }}>
+    <div style={{ 
+      minHeight: '100vh', 
+      paddingBottom: '100px', 
+      position: 'absolute', 
+      top: 0, 
+      left: 0, 
+      width: '100%' 
+    }}>
       {/* Fondo */}
       <div 
-        className="fixed inset-0 z-0"
-        style={{ backgroundColor: '#1a1a1a' }}
+        style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          right: 0, 
+          bottom: 0,
+          zIndex: 0,
+          backgroundColor: '#1a1a1a' 
+        }}
       >
         <img 
           src={universalBackground} 
           alt="Background" 
-          className="absolute w-full h-full object-cover"
-          style={{ opacity: 0.6 }}
+          style={{ 
+            position: 'absolute', 
+            width: '100%', 
+            height: '100%', 
+            objectFit: 'cover',
+            opacity: 0.6 
+          }}
         />
       </div>
 
       {/* Contenido */}
-      <header className="sticky top-0 z-20 p-4 flex justify-between items-center bg-white/80 backdrop-blur-sm">
-        <h1 className="text-2xl font-bold text-gray-800">Personaliza tu Avatar</h1>
+      <header style={{ 
+        position: 'sticky', 
+        top: 0, 
+        zIndex: 20, 
+        padding: '1rem', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        backdropFilter: 'blur(8px)'
+      }}>
+        <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937' }}>
+          Personaliza tu Avatar
+        </h1>
         <button
           onClick={saveAvatar}
-          className="btn bg-blue-500 hover:bg-blue-600 text-white"
+          style={{ 
+            padding: '0.5rem 1rem', 
+            backgroundColor: '#3b82f6', 
+            color: 'white', 
+            borderRadius: '0.5rem',
+            fontWeight: '500',
+            cursor: 'pointer'
+          }}
+          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
         >
           Guardar y Volver
         </button>
       </header>
 
-      <div className="relative z-10 p-4 gap-4 flex flex-col md:flex-row">
+      <div style={{ 
+        position: 'relative', 
+        zIndex: 10, 
+        padding: '1rem', 
+        display: 'flex', 
+        flexDirection: window.innerWidth < 768 ? 'column' : 'row',
+        gap: '1rem' 
+      }}>
         {/* Preview del Avatar */}
-        <div className="flex-1 flex justify-center items-center mb-6 md:mb-0">
-          <div className="relative w-80 h-80 md:w-[40vw] md:h-[40vw] max-w-[600px] max-h-[600px] bg-white/40 backdrop-blur-sm rounded-xl p-4">
+        <div style={{ 
+          flex: 1, 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center',
+          marginBottom: window.innerWidth < 768 ? '1.5rem' : 0
+        }}>
+          <div style={{ 
+            position: 'relative', 
+            width: '20rem', 
+            height: '20rem', 
+            maxWidth: '600px', 
+            maxHeight: '600px', 
+            backgroundColor: 'rgba(255, 255, 255, 0.4)',
+            backdropFilter: 'blur(8px)',
+            borderRadius: '0.75rem',
+            padding: '1rem'
+          }}>
             {/* Capa del cuerpo */}
             <img
               src={bodyOptions[selectedBody]}
               alt="Cuerpo"
-              className="absolute inset-0 w-full h-full object-contain"
+              style={{ 
+                position: 'absolute', 
+                inset: 0, 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'contain'
+              }}
             />
             {/* Capa de la cabeza */}
             <img
               src={headOptions[selectedHead]}
               alt="Cabeza"
-              className="absolute inset-0 w-full h-full object-contain"
+              style={{ 
+                position: 'absolute', 
+                inset: 0, 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'contain'
+              }}
             />
             {/* Capa de accesorios */}
             {accOptions[selectedAcc] && (
               <img
                 src={accOptions[selectedAcc]}
                 alt="Accesorio"
-                className="absolute inset-0 w-full h-full object-contain"
+                style={{ 
+                  position: 'absolute', 
+                  inset: 0, 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'contain'
+                }}
               />
             )}
           </div>
         </div>
 
-        {/* Panel de selección */}
-        <div className="flex-1 flex flex-col gap-6 bg-white/80 backdrop-blur-sm p-6 rounded-xl max-w-2xl">
+        {/* Panel de selección - Solo renderizamos los selectores para no alargar demasiado el código */}
+        <div style={{ 
+          flex: 1, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '1.5rem', 
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(8px)', 
+          padding: '1.5rem', 
+          borderRadius: '0.75rem', 
+          maxWidth: '42rem' 
+        }}>
+          {/* Contenido de los selectores */}
+          {/* Mantenemos el código JSX original para los selectores */}
           {/* Selector de cuerpo */}
           <div className="space-y-2">
             <h2 className="text-lg font-semibold text-gray-800">Cuerpo</h2>
