@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import universalBackground from '../assets/images/UniversalBackground.png';
+import GameEconomyBar from './GameEconomyBar';
 
 interface BuildingInfo {
   id: string;
@@ -68,20 +69,19 @@ const Building = () => {
 
   return (
     <div className="h-full w-full relative overflow-hidden">
-      {/* Fondo */}
+      {/* Fondo universal con opacidad */}
       <div 
-        className="absolute inset-0 z-0 overflow-hidden"
-        style={{ backgroundColor: '#1a1a1a' }}
-      >
-        <img 
-          src={universalBackground} 
-          alt="Background" 
-          className="absolute w-full h-full object-cover"
-          style={{
-            opacity: 0.6
-          }}
-        />
-      </div>
+        className="absolute inset-0 z-0" 
+        style={{ 
+          backgroundImage: `url(${universalBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.6 
+        }}
+      />
+      
+      {/* Barra de economía */}
+      <GameEconomyBar />
 
       {/* Contenido */}
       <div className="relative z-10 h-full w-full flex flex-col items-center justify-center p-6">

@@ -17,6 +17,10 @@ import head3 from '../assets/character/head3.png';
 import acc1 from '../assets/character/acc1.png';
 import acc2 from '../assets/character/acc2.png';
 import acc3 from '../assets/character/acc3.png';
+// Importar el componente de la barra de economía
+import GameEconomyBar from './GameEconomyBar';
+// Importar el contexto de economía del juego
+import { useGameEconomy } from '../contexts/GameEconomyContext';
 
 // Definir las opciones disponibles para cada capa
 const bodyOptions = [body1, body2, body3];
@@ -104,6 +108,18 @@ const MainMenu = () => {
       opacity: Math.random() * 0.5 + 0.3 // Opacidad entre 0.3 y 0.8
     }));
   }, []);
+
+  // Añadir recompensa de XP por tiempo
+  const { addXP } = useGameEconomy();
+
+  // Cada 30 segundos otorgar 1 XP por estar en el menú principal
+  useEffect(() => {
+    const xpInterval = setInterval(() => {
+      addXP(1);
+    }, 30000); // 30 segundos
+
+    return () => clearInterval(xpInterval);
+  }, [addXP]);
 
   // Efecto para cargar la configuración del avatar
   useEffect(() => {
@@ -205,44 +221,30 @@ const MainMenu = () => {
   };
 
   return (
-    <div className="h-full w-full relative overflow-hidden">
-      {/* Implementación del fondo con parallax usando una imagen con posicionamiento absoluto */}
-      <div 
-        className="absolute inset-0 z-0 overflow-hidden"
-        style={{ backgroundColor: '#1a1a1a' }}
-      >
-        <img 
-          src={menuBackground} 
-          alt="Background" 
-          className="absolute object-cover"
-          style={{
-            width: '180%',
-            height: '180%',
-            left: '-40%',
-            top: '-40%',
-            maxWidth: 'none',
-            transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)`,
-            transition: 'transform 0.3s ease-out'
-          }}
-        />
-      </div>
+    <div className="main-menu w-full h-full relative overflow-hidden">
+      {/* Barra de economía */}
+      <GameEconomyBar />
       
-      {/* Capa de oscurecimiento para mejorar contraste */}
-      <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
+      {/* Fondo del menú */}
+      <img
+        src={menuBackground}
+        alt="Menu Background"
+        className="absolute top-0 left-0 w-full h-full object-cover"
+      />
       
-      {/* Capa de estrellas flotantes */}
-      <div className="stars">
-        {stars.map((star) => (
+      {/* Estrellas flotantes */}
+      <div className="stars absolute inset-0 overflow-hidden pointer-events-none">
+        {stars.map(star => (
           <div
             key={star.id}
-            className="star"
+            className="star absolute rounded-full bg-white"
             style={{
               width: `${star.size}px`,
               height: `${star.size}px`,
               left: `${star.left}%`,
+              bottom: '-10px',
               opacity: star.opacity,
-              animationDuration: `${star.duration}s`,
-              animationDelay: `${star.delay}s`
+              animation: `float ${star.duration}s linear ${star.delay}s infinite`
             }}
           />
         ))}

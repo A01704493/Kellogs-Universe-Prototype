@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import universalBackground from '../assets/images/UniversalBackground.png';
+import GameEconomyBar from './GameEconomyBar';
+import { useGameEconomy } from '../contexts/GameEconomyContext';
 
 // Códigos de redención simulados y sus recompensas
 const validCodes: Record<string, { type: string; name: string; description: string; }> = {
@@ -31,6 +33,7 @@ const Redeem = () => {
   const [code, setCode] = useState('');
   const [result, setResult] = useState<{ success: boolean; message: string; reward?: typeof validCodes[keyof typeof validCodes] } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const { addKDiamonds, addXP } = useGameEconomy();
 
   const handleRedeemCode = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,9 +77,13 @@ const Redeem = () => {
             localStorage.setItem('kellogsUserItems', JSON.stringify(userItems));
           }
           
+          // Otorgar 1 diamante K y 50 XP por canjear un código exitosamente
+          addKDiamonds(1);
+          addXP(50);
+          
           setResult({
             success: true,
-            message: '¡Código canjeado con éxito!',
+            message: '¡Código canjeado con éxito! Has recibido 1 Diamante K y 50 XP.',
             reward
           });
         }
@@ -98,20 +105,19 @@ const Redeem = () => {
 
   return (
     <div className="h-full w-full relative overflow-hidden">
-      {/* Fondo */}
+      {/* Fondo universal con opacidad */}
       <div 
-        className="absolute inset-0 z-0 overflow-hidden"
-        style={{ backgroundColor: '#1a1a1a' }}
-      >
-        <img 
-          src={universalBackground} 
-          alt="Background" 
-          className="absolute w-full h-full object-cover"
-          style={{
-            opacity: 0.6
-          }}
-        />
-      </div>
+        className="absolute inset-0 z-0" 
+        style={{ 
+          backgroundImage: `url(${universalBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.6 
+        }}
+      />
+      
+      {/* Barra de economía */}
+      <GameEconomyBar />
 
       {/* Contenido */}
       <div className="relative z-10 h-full w-full p-4 flex flex-col items-center justify-center">
