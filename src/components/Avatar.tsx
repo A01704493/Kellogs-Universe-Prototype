@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import universalBackground from '../assets/images/UniversalBackground.png';
 
 // Importar los assets para el preview
 import body1 from '../assets/character/body1.png';
@@ -65,22 +66,37 @@ const Avatar = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col bg-gradient-to-br from-primary/10 to-blue-900/20 overflow-auto">
-      {/* Header */}
-      <header className="sticky top-0 z-30 p-4 flex justify-between items-center bg-white/80 backdrop-blur-sm">
+    <div className="h-full w-full flex flex-col relative overflow-hidden">
+      {/* Fondo */}
+      <div 
+        className="absolute inset-0 z-0 overflow-hidden"
+        style={{ backgroundColor: '#1a1a1a' }}
+      >
+        <img 
+          src={universalBackground} 
+          alt="Background" 
+          className="absolute w-full h-full object-cover"
+          style={{
+            opacity: 0.6
+          }}
+        />
+      </div>
+
+      {/* Contenido */}
+      <header className="relative z-20 sticky top-0 p-4 flex justify-between items-center bg-white/80 backdrop-blur-sm">
         <h1 className="text-2xl font-bold text-gray-800">Personaliza tu Avatar</h1>
         <button
           onClick={saveAvatar}
-          className="btn btn-primary"
+          className="btn bg-blue-500 hover:bg-blue-600 text-white"
         >
           Guardar y Volver
         </button>
       </header>
 
-      <div className="flex-1 flex flex-col md:flex-row p-4 gap-4 min-h-[600px]">
+      <div className="relative z-10 flex-1 flex flex-col md:flex-row p-4 gap-4 min-h-[600px]">
         {/* Preview del Avatar */}
         <div className="flex-1 flex justify-center items-center">
-          <div className="relative w-80 h-80 md:w-[40vw] md:h-[40vw] max-w-[600px] max-h-[600px]">
+          <div className="relative w-80 h-80 md:w-[40vw] md:h-[40vw] max-w-[600px] max-h-[600px] bg-white/40 backdrop-blur-sm rounded-xl p-4">
             {/* Capa del cuerpo */}
             <img
               src={bodyOptions[selectedBody]}
@@ -105,7 +121,7 @@ const Avatar = () => {
         </div>
 
         {/* Panel de selección */}
-        <div className="flex-1 flex flex-col gap-6 bg-white/90 backdrop-blur-sm p-6 rounded-xl max-w-2xl">
+        <div className="flex-1 flex flex-col gap-6 bg-white/80 backdrop-blur-sm p-6 rounded-xl max-w-2xl">
           {/* Selector de cuerpo */}
           <div className="space-y-2">
             <h2 className="text-lg font-semibold text-gray-800">Cuerpo</h2>

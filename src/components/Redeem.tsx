@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import universalBackground from '../assets/images/UniversalBackground.png';
 
 // Códigos de redención simulados y sus recompensas
 const validCodes: Record<string, { type: string; name: string; description: string; }> = {
@@ -96,87 +97,74 @@ const Redeem = () => {
   };
 
   return (
-    <div className="h-full w-full bg-background p-4 flex flex-col items-center justify-center">
-      <div className="card max-w-md w-full">
-        <div className="text-center mb-6">
-          <h1 className="text-2xl font-display text-primary mb-2">Canjear Código</h1>
-          <p className="text-gray-600">Ingresa el código de tu producto para recibir recompensas exclusivas</p>
-        </div>
-        
-        <form onSubmit={handleRedeemCode} className="space-y-4">
-          <div>
-            <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
-              Código
-            </label>
-            <input
-              id="code"
-              type="text"
-              className="input w-full uppercase"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="Ej: ZUCARITAS"
-              disabled={isLoading}
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Puedes encontrar códigos en los productos Kellogg's participantes
-            </p>
+    <div className="h-full w-full relative overflow-hidden">
+      {/* Fondo */}
+      <div 
+        className="absolute inset-0 z-0 overflow-hidden"
+        style={{ backgroundColor: '#1a1a1a' }}
+      >
+        <img 
+          src={universalBackground} 
+          alt="Background" 
+          className="absolute w-full h-full object-cover"
+          style={{
+            opacity: 0.6
+          }}
+        />
+      </div>
+
+      {/* Contenido */}
+      <div className="relative z-10 h-full w-full p-4 flex flex-col items-center justify-center">
+        <div className="card max-w-md w-full bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-display text-gray-800 mb-2">Canjear Código</h1>
+            <p className="text-gray-600">Ingresa el código de tu producto para recibir recompensas exclusivas</p>
           </div>
           
-          <div className="text-center">
+          <form onSubmit={handleRedeemCode} className="space-y-4">
+            <div>
+              <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
+                Código
+              </label>
+              <input
+                id="code"
+                type="text"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="Ej: ZUCARITAS"
+                disabled={isLoading}
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Puedes encontrar códigos en los productos Kellogg's participantes
+              </p>
+            </div>
+            
+            <div className="text-center">
+              <button 
+                type="submit" 
+                className={`btn bg-blue-500 hover:bg-blue-600 text-white w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Procesando...' : 'Canjear Código'}
+              </button>
+            </div>
+          </form>
+
+          {result && (
+            <div className={`mt-4 p-4 rounded-lg ${result.success ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+              {result.message}
+            </div>
+          )}
+
+          <div className="mt-6 text-center">
             <button 
-              type="submit" 
-              className={`btn bg-blue-500 hover:bg-blue-600 text-white w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
-              disabled={isLoading}
+              onClick={handleGoBack}
+              className="text-gray-600 hover:text-gray-800"
             >
-              {isLoading ? 'Procesando...' : 'Canjear Código'}
+              Volver al Menú
             </button>
           </div>
-        </form>
-        
-        {result && (
-          <div className={`mt-6 p-4 rounded-lg ${result.success ? 'bg-green-100' : 'bg-red-100'}`}>
-            <p className={`font-medium ${result.success ? 'text-green-800' : 'text-red-800'}`}>
-              {result.message}
-            </p>
-            {result.success && result.reward && (
-              <div className="mt-2">
-                <p className="text-sm text-gray-700 font-medium">Recompensa obtenida:</p>
-                <div className="flex items-center mt-1 bg-white p-2 rounded-lg">
-                  <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-accent text-xs">🎁</span>
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900">{result.reward.name}</p>
-                    <p className="text-xs text-gray-600">{result.reward.description}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-        
-        <div className="mt-6 text-center">
-          <button 
-            onClick={handleGoBack}
-            className="text-primary hover:underline text-sm"
-          >
-            ← Volver al Menú Principal
-          </button>
-        </div>
-        
-        {/* Ayuda para pruebas */}
-        <div className="mt-8 border-t border-gray-200 pt-4">
-          <details>
-            <summary className="text-sm text-gray-600 cursor-pointer hover:text-primary">
-              Códigos para pruebas (Demo)
-            </summary>
-            <div className="mt-2 text-xs text-gray-600 space-y-1">
-              <p>ZUCARITAS - Gorra de Tony el Tigre</p>
-              <p>CHOCOKRISPIS - Sombrero de Melvin</p>
-              <p>FROOTLOOPS - Collar de Sam el tucán</p>
-              <p>KELLOGS2023 - Capa de Superhéroe Kelloggs</p>
-            </div>
-          </details>
         </div>
       </div>
     </div>

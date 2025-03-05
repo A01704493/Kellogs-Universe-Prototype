@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import universalBackground from '../assets/images/UniversalBackground.png';
 
 interface BuildingInfo {
   id: string;
@@ -66,28 +67,46 @@ const Building = () => {
   }
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center p-6 bg-background">
+    <div className="h-full w-full relative overflow-hidden">
+      {/* Fondo */}
       <div 
-        className="w-full max-w-2xl bg-white rounded-xl shadow-lg overflow-hidden" 
-        style={{ borderTop: `8px solid ${buildingInfo.color}` }}
+        className="absolute inset-0 z-0 overflow-hidden"
+        style={{ backgroundColor: '#1a1a1a' }}
       >
-        <div className="p-6">
-          <h2 className="text-3xl font-display text-primary mb-4">{buildingInfo.name}</h2>
-          <p className="text-gray-700 mb-6">{buildingInfo.description}</p>
-          
-          <div className="flex justify-between items-center">
-            <button
-              className="btn btn-secondary"
-              onClick={handleGoBack}
-            >
-              Volver al Menú
-            </button>
-            <button
-              className="btn btn-primary"
-              onClick={handleStartGame}
-            >
-              Comenzar Juego
-            </button>
+        <img 
+          src={universalBackground} 
+          alt="Background" 
+          className="absolute w-full h-full object-cover"
+          style={{
+            opacity: 0.6
+          }}
+        />
+      </div>
+
+      {/* Contenido */}
+      <div className="relative z-10 h-full w-full flex flex-col items-center justify-center p-6">
+        <div 
+          className="w-full max-w-2xl bg-white/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden" 
+          style={{ borderTop: `8px solid ${buildingInfo.color}` }}
+        >
+          <div className="p-6">
+            <h2 className="text-3xl font-display text-gray-800 mb-4">{buildingInfo.name}</h2>
+            <p className="text-gray-700 mb-6">{buildingInfo.description}</p>
+            
+            <div className="flex justify-between items-center">
+              <button
+                className="btn bg-gray-500 hover:bg-gray-600 text-white"
+                onClick={handleGoBack}
+              >
+                Volver al Menú
+              </button>
+              <button
+                className="btn bg-blue-500 hover:bg-blue-600 text-white"
+                onClick={handleStartGame}
+              >
+                Comenzar Juego
+              </button>
+            </div>
           </div>
         </div>
       </div>
