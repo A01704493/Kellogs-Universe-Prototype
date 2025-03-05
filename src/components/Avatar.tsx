@@ -65,20 +65,30 @@ const Avatar = () => {
     navigate('/menu');
   };
 
+  useEffect(() => {
+    // Forzar que el body tenga scroll en esta página
+    document.body.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+    
+    return () => {
+      // Restaurar el overflow hidden al salir
+      document.body.style.overflow = 'hidden';
+      document.body.style.height = '100%';
+    };
+  }, []);
+
   return (
-    <div className="scrollable-page min-h-screen w-full flex flex-col relative">
+    <div className="pb-20" style={{ minHeight: '100vh' }}>
       {/* Fondo */}
       <div 
-        className="fixed inset-0 z-0 overflow-hidden"
+        className="fixed inset-0 z-0"
         style={{ backgroundColor: '#1a1a1a' }}
       >
         <img 
           src={universalBackground} 
           alt="Background" 
           className="absolute w-full h-full object-cover"
-          style={{
-            opacity: 0.6
-          }}
+          style={{ opacity: 0.6 }}
         />
       </div>
 
@@ -93,9 +103,9 @@ const Avatar = () => {
         </button>
       </header>
 
-      <div className="relative z-10 flex-1 flex flex-col md:flex-row p-4 gap-4 min-h-[600px]">
+      <div className="relative z-10 p-4 gap-4 flex flex-col md:flex-row">
         {/* Preview del Avatar */}
-        <div className="flex-1 flex justify-center items-center">
+        <div className="flex-1 flex justify-center items-center mb-6 md:mb-0">
           <div className="relative w-80 h-80 md:w-[40vw] md:h-[40vw] max-w-[600px] max-h-[600px] bg-white/40 backdrop-blur-sm rounded-xl p-4">
             {/* Capa del cuerpo */}
             <img
