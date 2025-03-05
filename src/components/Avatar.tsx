@@ -66,7 +66,7 @@ const Avatar = () => {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col relative overflow-y-auto">
+    <div className="scrollable-page min-h-screen w-full flex flex-col relative">
       {/* Fondo */}
       <div 
         className="fixed inset-0 z-0 overflow-hidden"
