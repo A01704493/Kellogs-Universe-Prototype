@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Importar los assets
+// Importar los assets para el preview
 import body1 from '../assets/character/body1.png';
 import body2 from '../assets/character/body2.png';
 import body3 from '../assets/character/body3.png';
@@ -12,10 +12,27 @@ import acc1 from '../assets/character/acc1.png';
 import acc2 from '../assets/character/acc2.png';
 import acc3 from '../assets/character/acc3.png';
 
+// Importar los iconos para el menú
+import body1Icon from '../assets/character/body1_icon.png';
+import body2Icon from '../assets/character/body2_icon.png';
+import body3Icon from '../assets/character/body3_icon.png';
+import head1Icon from '../assets/character/head1_icon.png';
+import head2Icon from '../assets/character/head2_icon.png';
+import head3Icon from '../assets/character/head3_icon.png';
+import acc1Icon from '../assets/character/acc1_icon.png';
+import acc2Icon from '../assets/character/acc2_icon.png';
+import acc3Icon from '../assets/character/acc3_icon.png';
+import removeIcon from '../assets/character/remove_icon.png';
+
 // Definir las opciones disponibles para cada capa
 const bodyOptions = [body1, body2, body3];
 const headOptions = [head1, head2, head3];
-const accOptions = [null, acc1, acc2, acc3]; // Agregamos null como primera opción para "sin accesorio"
+const accOptions = [null, acc1, acc2, acc3];
+
+// Definir los iconos para el menú
+const bodyIcons = [body1Icon, body2Icon, body3Icon];
+const headIcons = [head1Icon, head2Icon, head3Icon];
+const accIcons = [removeIcon, acc1Icon, acc2Icon, acc3Icon];
 
 const Avatar = () => {
   const navigate = useNavigate();
@@ -88,12 +105,12 @@ const Avatar = () => {
         </div>
 
         {/* Panel de selección */}
-        <div className="flex-1 flex flex-col gap-6 bg-white/90 backdrop-blur-sm p-6 rounded-xl max-w-2xl mx-auto">
+        <div className="flex-1 flex flex-col gap-6 bg-white/90 backdrop-blur-sm p-6 rounded-xl max-w-2xl">
           {/* Selector de cuerpo */}
           <div className="space-y-2">
             <h2 className="text-lg font-semibold text-gray-800">Cuerpo</h2>
-            <div className="flex gap-4 flex-wrap justify-center">
-              {bodyOptions.map((body, index) => (
+            <div className="flex gap-4">
+              {bodyIcons.map((icon, index) => (
                 <button
                   key={`body-${index}`}
                   onClick={() => setSelectedBody(index)}
@@ -101,7 +118,7 @@ const Avatar = () => {
                     selectedBody === index ? 'border-primary scale-110' : 'border-transparent hover:border-primary/50'
                   }`}
                 >
-                  <img src={body} alt={`Cuerpo ${index + 1}`} className="w-full h-full object-contain" />
+                  <img src={icon} alt={`Cuerpo ${index + 1}`} className="w-full h-full object-contain" />
                 </button>
               ))}
             </div>
@@ -110,8 +127,8 @@ const Avatar = () => {
           {/* Selector de cabeza */}
           <div className="space-y-2">
             <h2 className="text-lg font-semibold text-gray-800">Cabeza</h2>
-            <div className="flex gap-4 flex-wrap justify-center">
-              {headOptions.map((head, index) => (
+            <div className="flex gap-4">
+              {headIcons.map((icon, index) => (
                 <button
                   key={`head-${index}`}
                   onClick={() => setSelectedHead(index)}
@@ -119,7 +136,7 @@ const Avatar = () => {
                     selectedHead === index ? 'border-primary scale-110' : 'border-transparent hover:border-primary/50'
                   }`}
                 >
-                  <img src={head} alt={`Cabeza ${index + 1}`} className="w-full h-full object-contain" />
+                  <img src={icon} alt={`Cabeza ${index + 1}`} className="w-full h-full object-contain" />
                 </button>
               ))}
             </div>
@@ -128,22 +145,16 @@ const Avatar = () => {
           {/* Selector de accesorios */}
           <div className="space-y-2">
             <h2 className="text-lg font-semibold text-gray-800">Accesorios</h2>
-            <div className="flex gap-4 flex-wrap justify-center">
-              {accOptions.map((acc, index) => (
+            <div className="flex gap-4">
+              {accIcons.map((icon, index) => (
                 <button
                   key={`acc-${index}`}
                   onClick={() => setSelectedAcc(index)}
                   className={`w-20 h-20 rounded-lg overflow-hidden border-4 transition-all ${
                     selectedAcc === index ? 'border-primary scale-110' : 'border-transparent hover:border-primary/50'
-                  } ${!acc ? 'bg-gray-100' : ''}`}
+                  }`}
                 >
-                  {acc ? (
-                    <img src={acc} alt={`Accesorio ${index}`} className="w-full h-full object-contain" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-400">
-                      Sin accesorio
-                    </div>
-                  )}
+                  <img src={icon} alt={`Accesorio ${index}`} className="w-full h-full object-contain" />
                 </button>
               ))}
             </div>
