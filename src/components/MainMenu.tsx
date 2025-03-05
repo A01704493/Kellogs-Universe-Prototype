@@ -7,6 +7,7 @@ import frostedFlakesIcon from '../assets/images/FrostedFlakes_Island.png';
 // Importar el fondo del menú y el logo
 import menuBackground from '../assets/images/Menu_Background.png';
 import kellogsLogo from '../assets/images/KellogsUniverse_Logo.png';
+import FloatingAvatar from './FloatingAvatar';
 
 interface Building {
   id: string;
@@ -128,106 +129,63 @@ const MainMenu = () => {
   };
 
   return (
-    <div className="h-full w-full relative overflow-hidden">
-      {/* Implementación del fondo con parallax usando una imagen con posicionamiento absoluto */}
-      <div 
-        className="absolute inset-0 z-0 overflow-hidden"
-        style={{ backgroundColor: '#1a1a1a' }} /* Color de fondo por si acaso hay espacios */
-      >
-        <img 
-          src={menuBackground} 
-          alt="Background" 
-          className="absolute object-cover"
-          style={{
-            width: '180%',
-            height: '180%',
-            left: '-40%',
-            top: '-40%',
-            maxWidth: 'none',
-            transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)`,
-            transition: 'transform 0.3s ease-out'
-          }}
-        />
-      </div>
-      
-      {/* Capa de oscurecimiento para mejorar contraste */}
-      <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
-      
-      {/* Encabezado */}
-      <header className="relative z-20 p-4 flex justify-between items-center">
-        <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 shadow-md flex flex-col items-start">
-          <img src={kellogsLogo} alt="Kellogs Universe" className="h-12 object-contain" />
-          <p className="text-sm text-gray-600 mt-1">Hola, {username}!</p>
-        </div>
-        
-        <div className="flex gap-2">
-          <button 
-            onClick={handleAvatarClick}
-            className="btn btn-secondary text-sm"
-          >
-            Avatar
-          </button>
-          <button 
-            onClick={handleRedeemClick}
-            className="btn btn-accent text-sm"
-          >
-            Canjear Código
-          </button>
-        </div>
-      </header>
-      
-      {/* Contenedor de islas */}
-      <div ref={islandContainerRef} className="relative z-10 h-full w-full">
-        {buildings.map((building) => {
-          const isHovered = hoveredIsland === building.id;
-          
-          // Calcular el tamaño basado en el viewport y la escala de la isla
-          const baseSize = Math.min(viewportSize.width, viewportSize.height) * 0.32;
-          const size = building.scale * baseSize;
-          
-          return (
-            <div
-              key={building.id}
-              className={`absolute cursor-pointer island-hover ${isHovered ? 'z-20' : 'z-10'}`}
-              style={{
-                left: `${building.position.x}%`,
-                top: `${building.position.y}%`,
-                width: size,
-                height: size,
-                transform: isHovered ? 'translate(-50%, -50%) scale(1.15)' : 'translate(-50%, -50%)'
-              }}
-              onClick={() => handleBuildingClick(building.id)}
-              onMouseEnter={() => handleIslandHover(building.id)}
-              onMouseLeave={() => handleIslandHover(null)}
+    <div className="relative h-full w-full overflow-hidden">
+      {/* Fondo con parallax */}
+      <img
+        src="/background.jpg"
+        alt="Background"
+        className="absolute w-[180%] h-[180%] object-cover -left-[40%] -top-[40%] transition-transform duration-300"
+        style={{
+          backgroundRepeat: 'no-repeat',
+          transform: `scale(1.3)`,
+        }}
+      />
+
+      {/* Overlay oscuro */}
+      <div className="absolute inset-0 bg-black/30" />
+
+      {/* Avatar flotante */}
+      <FloatingAvatar />
+
+      {/* Contenido */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-between p-8">
+        {/* Logo */}
+        <img src="/KellogsUniverse_Logo.png" alt="Kellogs Universe" className="w-96 max-w-full" />
+
+        {/* Islas flotantes */}
+        <div className="flex-1 flex items-center justify-center w-full max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 gap-8 w-full">
+            {/* Isla Avatar */}
+            <div 
+              className="animate-float cursor-pointer"
+              onClick={() => navigate('/avatar')}
             >
-              {/* Efecto de brillo - ahora detrás de la imagen */}
-              <div className="island-glow absolute inset-0 z-0"></div>
-              
-              {/* Imagen de la isla */}
-              <div className="relative h-full w-full z-10">
-                <img 
-                  src={building.image} 
-                  alt={building.name} 
-                  className="w-full h-full object-contain relative z-10"
-                  style={{ 
-                    filter: `drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4))`,
-                  }}
-                />
-              </div>
-              
-              {/* Nombre de la isla */}
-              <div 
-                className={`absolute left-1/2 -bottom-6 transform -translate-x-1/2 transition-all duration-300 z-20 ${
-                  isHovered ? 'opacity-100' : 'opacity-0'
-                }`}
-              >
-                <div className="text-white text-lg font-bold drop-shadow-lg bg-primary/80 px-4 py-1.5 rounded-lg backdrop-blur-sm">
-                  {building.name}
-                </div>
+              <div className="bg-blue-600/90 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:scale-105 transition-transform">
+                <h2 className="text-2xl font-bold text-white mb-2">Avatar</h2>
+                <p className="text-blue-100">Personaliza tu personaje</p>
               </div>
             </div>
-          );
-        })}
+
+            {/* Isla Canjear Código */}
+            <div 
+              className="animate-float-delayed cursor-pointer"
+              onClick={() => navigate('/redeem')}
+            >
+              <div className="bg-blue-600/90 backdrop-blur-sm p-6 rounded-xl shadow-lg hover:scale-105 transition-transform">
+                <h2 className="text-2xl font-bold text-white mb-2">Canjear Código</h2>
+                <p className="text-blue-100">Ingresa tu código promocional</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Botón Comenzar */}
+        <button
+          onClick={() => navigate('/game')}
+          className="mt-8 px-8 py-4 bg-gradient-to-r from-red-500 to-red-700 text-white text-xl font-bold rounded-full shadow-lg hover:scale-105 transition-transform animate-glow-red"
+        >
+          Comenzar Aventura
+        </button>
       </div>
     </div>
   );
