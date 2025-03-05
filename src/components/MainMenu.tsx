@@ -9,8 +9,19 @@ import menuBackground from '../assets/images/Menu_Background.png';
 import kellogsLogo from '../assets/images/KellogsUniverse_Logo.png';
 // Importar imágenes del avatar
 import body1 from '../assets/character/body1.png';
+import body2 from '../assets/character/body2.png';
+import body3 from '../assets/character/body3.png';
 import head1 from '../assets/character/head1.png';
+import head2 from '../assets/character/head2.png';
+import head3 from '../assets/character/head3.png';
 import acc1 from '../assets/character/acc1.png';
+import acc2 from '../assets/character/acc2.png';
+import acc3 from '../assets/character/acc3.png';
+
+// Definir las opciones disponibles para cada capa
+const bodyOptions = [body1, body2, body3];
+const headOptions = [head1, head2, head3];
+const accOptions = [null, acc1, acc2, acc3];
 
 interface Building {
   id: string;
@@ -19,6 +30,7 @@ interface Building {
   position: { x: number; y: number };
   image: string;
   scale: number;
+  floatSpeed: number;
 }
 
 const MainMenu = () => {
@@ -47,7 +59,8 @@ const MainMenu = () => {
       description: 'Aventuras con Melvin el elefante',
       position: { x: 25, y: 40 },
       image: chocoKrispiesIcon,
-      scale: 1.2
+      scale: 1.2,
+      floatSpeed: 3 // Velocidad de flotación personalizada
     },
     {
       id: 'zucaritas',
@@ -55,7 +68,8 @@ const MainMenu = () => {
       description: 'Desafíos con Tony el Tigre',
       position: { x: 70, y: 35 },
       image: frostedFlakesIcon,
-      scale: 1.3
+      scale: 1.3,
+      floatSpeed: 5 // Velocidad más lenta
     },
     {
       id: 'froot-loops',
@@ -63,7 +77,8 @@ const MainMenu = () => {
       description: 'Diversión colorida con Sam el tucán',
       position: { x: 45, y: 55 },
       image: frootLoopsIcon,
-      scale: 1.1
+      scale: 1.1,
+      floatSpeed: 4 // Velocidad intermedia
     }
   ];
 
@@ -206,18 +221,18 @@ const MainMenu = () => {
         >
           <div className="relative w-full h-full">
             <img
-              src={body1}
+              src={bodyOptions[avatarConfig.body]}
               alt="Cuerpo"
               className="absolute inset-0 w-full h-full object-contain"
             />
             <img
-              src={head1}
+              src={headOptions[avatarConfig.head]}
               alt="Cabeza"
               className="absolute inset-0 w-full h-full object-contain"
             />
             {avatarConfig.acc !== 0 && (
               <img
-                src={acc1}
+                src={accOptions[avatarConfig.acc]}
                 alt="Accesorio"
                 className="absolute inset-0 w-full h-full object-contain"
               />
@@ -266,7 +281,7 @@ const MainMenu = () => {
                 width: size,
                 height: size,
                 transform: `translate(-50%, -50%) ${isHovered ? 'scale(1.15)' : 'scale(1)'}`,
-                animation: 'float 4s ease-in-out infinite'
+                animation: `float ${building.floatSpeed}s ease-in-out infinite`
               }}
               onClick={() => handleBuildingClick(building.id)}
               onMouseEnter={() => handleIslandHover(building.id)}
