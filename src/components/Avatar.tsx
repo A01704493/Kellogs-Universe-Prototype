@@ -66,10 +66,10 @@ const Avatar = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col relative overflow-hidden">
+    <div className="min-h-screen w-full flex flex-col relative overflow-y-auto">
       {/* Fondo */}
       <div 
-        className="absolute inset-0 z-0 overflow-hidden"
+        className="fixed inset-0 z-0 overflow-hidden"
         style={{ backgroundColor: '#1a1a1a' }}
       >
         <img 
@@ -83,7 +83,7 @@ const Avatar = () => {
       </div>
 
       {/* Contenido */}
-      <header className="relative z-20 sticky top-0 p-4 flex justify-between items-center bg-white/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-20 p-4 flex justify-between items-center bg-white/80 backdrop-blur-sm">
         <h1 className="text-2xl font-bold text-gray-800">Personaliza tu Avatar</h1>
         <button
           onClick={saveAvatar}

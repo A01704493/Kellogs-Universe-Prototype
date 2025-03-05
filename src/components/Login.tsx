@@ -22,7 +22,7 @@ const Login = () => {
       {/* Capa de oscurecimiento para mejorar contraste */}
       <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
       
-      <div className="relative z-10 w-[95%] max-w-md mx-4 p-4 sm:p-8 bg-white/80 backdrop-blur-md rounded-xl shadow-2xl">
+      <div className="relative z-10 w-[95%] max-w-md mx-6 p-6 sm:p-10 bg-white/80 backdrop-blur-md rounded-xl shadow-2xl">
         <div className="text-center mb-6">
           <img src={kellogsLogo} alt="Kellogs Universe" className="h-16 sm:h-20 mx-auto mb-2" />
           <p className="text-gray-600">¡Ingresa para comenzar tu aventura!</p>
