@@ -15,7 +15,7 @@ import acc3 from '../assets/character/acc3.png';
 // Definir las opciones disponibles para cada capa
 const bodyOptions = [body1, body2, body3];
 const headOptions = [head1, head2, head3];
-const accOptions = [acc1, acc2, acc3];
+const accOptions = [null, acc1, acc2, acc3]; // Agregamos null como primera opción para "sin accesorio"
 
 const Avatar = () => {
   const navigate = useNavigate();
@@ -48,9 +48,9 @@ const Avatar = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col bg-gradient-to-br from-primary/10 to-blue-900/20">
+    <div className="h-full w-full flex flex-col bg-gradient-to-br from-primary/10 to-blue-900/20 overflow-auto">
       {/* Header */}
-      <header className="p-4 flex justify-between items-center bg-white/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-30 p-4 flex justify-between items-center bg-white/80 backdrop-blur-sm">
         <h1 className="text-2xl font-bold text-gray-800">Personaliza tu Avatar</h1>
         <button
           onClick={saveAvatar}
@@ -60,10 +60,10 @@ const Avatar = () => {
         </button>
       </header>
 
-      <div className="flex-1 flex flex-col md:flex-row p-4 gap-4">
+      <div className="flex-1 flex flex-col md:flex-row p-4 gap-4 min-h-[600px]">
         {/* Preview del Avatar */}
         <div className="flex-1 flex justify-center items-center">
-          <div className="relative w-80 h-80">
+          <div className="relative w-80 h-80 md:w-[40vw] md:h-[40vw] max-w-[600px] max-h-[600px]">
             {/* Capa del cuerpo */}
             <img
               src={bodyOptions[selectedBody]}
@@ -77,20 +77,22 @@ const Avatar = () => {
               className="absolute inset-0 w-full h-full object-contain"
             />
             {/* Capa de accesorios */}
-            <img
-              src={accOptions[selectedAcc]}
-              alt="Accesorio"
-              className="absolute inset-0 w-full h-full object-contain"
-            />
+            {accOptions[selectedAcc] && (
+              <img
+                src={accOptions[selectedAcc]}
+                alt="Accesorio"
+                className="absolute inset-0 w-full h-full object-contain"
+              />
+            )}
           </div>
         </div>
 
         {/* Panel de selección */}
-        <div className="flex-1 flex flex-col gap-6 bg-white/90 backdrop-blur-sm p-6 rounded-xl">
+        <div className="flex-1 flex flex-col gap-6 bg-white/90 backdrop-blur-sm p-6 rounded-xl max-w-2xl mx-auto">
           {/* Selector de cuerpo */}
           <div className="space-y-2">
             <h2 className="text-lg font-semibold text-gray-800">Cuerpo</h2>
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-wrap justify-center">
               {bodyOptions.map((body, index) => (
                 <button
                   key={`body-${index}`}
@@ -108,7 +110,7 @@ const Avatar = () => {
           {/* Selector de cabeza */}
           <div className="space-y-2">
             <h2 className="text-lg font-semibold text-gray-800">Cabeza</h2>
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-wrap justify-center">
               {headOptions.map((head, index) => (
                 <button
                   key={`head-${index}`}
@@ -126,16 +128,22 @@ const Avatar = () => {
           {/* Selector de accesorios */}
           <div className="space-y-2">
             <h2 className="text-lg font-semibold text-gray-800">Accesorios</h2>
-            <div className="flex gap-4">
+            <div className="flex gap-4 flex-wrap justify-center">
               {accOptions.map((acc, index) => (
                 <button
                   key={`acc-${index}`}
                   onClick={() => setSelectedAcc(index)}
                   className={`w-20 h-20 rounded-lg overflow-hidden border-4 transition-all ${
                     selectedAcc === index ? 'border-primary scale-110' : 'border-transparent hover:border-primary/50'
-                  }`}
+                  } ${!acc ? 'bg-gray-100' : ''}`}
                 >
-                  <img src={acc} alt={`Accesorio ${index + 1}`} className="w-full h-full object-contain" />
+                  {acc ? (
+                    <img src={acc} alt={`Accesorio ${index}`} className="w-full h-full object-contain" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-gray-400">
+                      Sin accesorio
+                    </div>
+                  )}
                 </button>
               ))}
             </div>
