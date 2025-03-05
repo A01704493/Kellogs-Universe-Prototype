@@ -143,7 +143,7 @@ const Redeem = () => {
             <div className="text-center">
               <button 
                 type="submit" 
-                className={`btn bg-blue-500 hover:bg-blue-600 text-white w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                className={`btn bg-primary hover:bg-primary/90 text-white w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                 disabled={isLoading}
               >
                 {isLoading ? 'Procesando...' : 'Canjear Código'}
