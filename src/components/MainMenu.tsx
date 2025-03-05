@@ -244,20 +244,24 @@ const MainMenu = () => {
       {/* Encabezado */}
       <header className="relative z-20 p-4 flex justify-between items-center">
         <div className="bg-white/80 backdrop-blur-sm rounded-lg p-2 shadow-md flex flex-col items-start">
-          <img src={kellogsLogo} alt="Kellogs Universe" className="h-12 object-contain" />
-          <p className="text-sm text-gray-600 mt-1">Hola, {username}!</p>
+          <img 
+            src={kellogsLogo} 
+            alt="Kellogs Universe" 
+            className="h-12 md:h-16 lg:h-20 object-contain" 
+          />
+          <p className="text-sm md:text-base text-gray-600 mt-1">Hola, {username}!</p>
         </div>
         
         <div className="flex gap-2">
           <button 
             onClick={handleAvatarClick}
-            className="btn bg-blue-500 hover:bg-blue-600 text-white text-sm"
+            className="btn bg-blue-500 hover:bg-blue-600 text-white text-sm md:text-base"
           >
             Avatar
           </button>
           <button 
             onClick={handleRedeemClick}
-            className="btn bg-blue-500 hover:bg-blue-600 text-white text-sm"
+            className="btn bg-blue-500 hover:bg-blue-600 text-white text-sm md:text-base"
           >
             Canjear Código
           </button>
@@ -300,11 +304,11 @@ const MainMenu = () => {
               </div>
               
               <div 
-                className={`absolute left-1/2 -bottom-6 transform -translate-x-1/2 transition-all duration-300 z-20 ${
+                className={`absolute left-1/2 -bottom-6 transform -translate-x-1/2 transition-all duration-300 z-20 w-max ${
                   isHovered ? 'opacity-100' : 'opacity-0'
                 }`}
               >
-                <div className="text-white text-lg font-bold drop-shadow-lg bg-primary/80 px-4 py-1.5 rounded-lg backdrop-blur-sm">
+                <div className="text-white text-lg font-bold drop-shadow-lg bg-primary/80 px-4 py-1.5 rounded-lg backdrop-blur-sm whitespace-nowrap text-center">
                   {building.name}
                 </div>
               </div>
