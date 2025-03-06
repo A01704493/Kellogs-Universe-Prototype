@@ -311,11 +311,18 @@ const MainMenu = () => {
           <span className="text-xs">Canjear</span>
         </button>
         <button 
-          onClick={() => navigate('/dashboard')}
-          className="flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-green-500 hover:bg-green-600 text-white shadow-lg transform hover:scale-105 transition-all"
+          onClick={() => {/* Función de tienda pendiente */}}
+          className="flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-orange-500 hover:bg-orange-600 text-white shadow-lg transform hover:scale-105 transition-all"
         >
-          <span className="text-2xl mb-1">📊</span>
-          <span className="text-xs">Progreso</span>
+          <span className="text-2xl mb-1">🛍️</span>
+          <span className="text-xs">Tienda</span>
+        </button>
+        <button 
+          onClick={() => {/* Función de inventario pendiente */}}
+          className="flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-teal-500 hover:bg-teal-600 text-white shadow-lg transform hover:scale-105 transition-all"
+        >
+          <span className="text-2xl mb-1">🎒</span>
+          <span className="text-xs">Inventario</span>
         </button>
       </div>
       
