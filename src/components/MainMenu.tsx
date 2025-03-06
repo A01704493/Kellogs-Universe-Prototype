@@ -101,11 +101,11 @@ const MainMenu = () => {
     const count = 35; // Cantidad de estrellas
     return Array.from({ length: count }, (_, i) => ({
       id: i,
-      size: Math.random() * 1.5 + 0.5, // Tamaño entre 0.5px y 2px
+      size: Math.random() * 3 + 2, // Tamaño entre 2px y 5px
       left: Math.random() * 100, // Posición horizontal
       duration: Math.random() * 15 + 15, // Duración entre 15 y 30 segundos
       delay: Math.random() * 10, // Retraso para que no empiecen todas a la vez
-      opacity: Math.random() * 0.5 + 0.3 // Opacidad entre 0.3 y 0.8
+      opacity: Math.random() * 0.7 + 0.3 // Opacidad entre 0.3 y 1.0
     }));
   }, []);
 
@@ -222,18 +222,31 @@ const MainMenu = () => {
 
   return (
     <div className="main-menu w-full h-full relative overflow-hidden">
-      {/* Barra de economía */}
-      <GameEconomyBar />
+      {/* Fondo del menú con efecto parallax */}
+      <div 
+        className="absolute inset-0 z-0 overflow-hidden bg-black"
+      >
+        <img
+          src={menuBackground}
+          alt="Menu Background"
+          className="absolute object-cover"
+          style={{
+            width: '180%',
+            height: '180%',
+            left: '-40%',
+            top: '-40%',
+            maxWidth: 'none',
+            transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)`,
+            transition: 'transform 0.3s ease-out'
+          }}
+        />
+      </div>
       
-      {/* Fondo del menú */}
-      <img
-        src={menuBackground}
-        alt="Menu Background"
-        className="absolute top-0 left-0 w-full h-full object-cover"
-      />
+      {/* Capa de oscurecimiento para mejorar contraste */}
+      <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
       
       {/* Estrellas flotantes */}
-      <div className="stars absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="stars absolute inset-0 overflow-hidden pointer-events-none z-10">
         {stars.map(star => (
           <div
             key={star.id}
@@ -242,13 +255,16 @@ const MainMenu = () => {
               width: `${star.size}px`,
               height: `${star.size}px`,
               left: `${star.left}%`,
-              bottom: '-10px',
+              bottom: '0',
               opacity: star.opacity,
               animation: `float ${star.duration}s linear ${star.delay}s infinite`
             }}
           />
         ))}
       </div>
+      
+      {/* Barra de economía (ahora en la parte inferior) */}
+      <GameEconomyBar />
       
       {/* Avatar flotante */}
       {avatarConfig && (
