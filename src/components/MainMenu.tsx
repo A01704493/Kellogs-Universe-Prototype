@@ -68,7 +68,7 @@ const MainMenu = () => {
       id: 'choco-krispis',
       name: 'Choco Krispis',
       description: 'Aventuras con Melvin el elefante',
-      position: { x: 25, y: 15 },
+      position: { x: 25, y: 20 },
       image: chocoKrispiesIcon,
       scale: 1.2,
       floatSpeed: 3 // Velocidad de flotación personalizada
@@ -77,7 +77,7 @@ const MainMenu = () => {
       id: 'zucaritas',
       name: 'Zucaritas',
       description: 'Desafíos con Tony el Tigre',
-      position: { x: 70, y: 13 },
+      position: { x: 70, y: 18 },
       image: frostedFlakesIcon,
       scale: 1.3,
       floatSpeed: 5 // Velocidad más lenta
@@ -86,7 +86,7 @@ const MainMenu = () => {
       id: 'froot-loops',
       name: 'Froot Loops',
       description: 'Diversión colorida con Sam el tucán',
-      position: { x: 45, y: 25 },
+      position: { x: 45, y: 35 },
       image: frootLoopsIcon,
       scale: 1.1,
       floatSpeed: 4 // Velocidad intermedia
