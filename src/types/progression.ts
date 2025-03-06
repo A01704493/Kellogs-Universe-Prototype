@@ -41,14 +41,13 @@ export interface Reward {
 }
 
 // Tipos de actividad
-export enum ActivityType {
-  GAME_PLAYED = 'game_played',
-  CODE_REDEEMED = 'code_redeemed',
-  LEVEL_UP = 'level_up',
-  LOGIN = 'login',
-  AVATAR_CUSTOMIZED = 'avatar_customized',
-  DAILY_BONUS = 'daily_bonus'
-}
+export type ActivityType = 
+  | 'game_played'
+  | 'code_redeemed'
+  | 'level_up'
+  | 'login'
+  | 'avatar_customized'
+  | 'daily_bonus';
 
 // Registro de actividad
 export interface ActivityRecord {

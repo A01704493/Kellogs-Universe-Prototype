@@ -28,14 +28,14 @@ class GameIntegrator {
     // Si no hay registro o es de un día anterior, dar recompensa diaria
     if (!lastLoginStr || parseInt(lastLoginStr) < today) {
       const dailyReward: Reward = {
+        xp: 15,
         coins: 5,
-        diamonds: 0,
-        items: []
+        description: 'Recompensa por iniciar sesión diaria'
       };
       
       progressionService.grantReward(
         dailyReward,
-        ActivityType.LOGIN,
+        ActivityType.DAILY_LOGIN,
         `Inicio de sesión diario - ${now.toLocaleDateString()}`
       );
       
