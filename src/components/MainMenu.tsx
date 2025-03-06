@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { progressionService } from '../services';
 // Importar las imágenes de los juegos
 import chocoKrispiesIcon from '../assets/images/ChocoKrispies_Island.png';
 import frootLoopsIcon from '../assets/images/FrootLoops_Island.png';
@@ -42,6 +43,63 @@ interface Star {
   delay: number;
   opacity: number;
 }
+
+// Barra de menú
+const MenuBar = () => {
+  const navigate = useNavigate();
+  const profile = progressionService.getPlayerProfile();
+
+  return (
+    <div className="menu-bar fixed bottom-0 left-0 right-0 flex justify-around items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-4 shadow-lg">
+      <button 
+        onClick={() => navigate('/avatar')}
+        className="menu-button"
+      >
+        Avatar
+      </button>
+      <button 
+        onClick={() => navigate('/redeem-code')}
+        className="menu-button"
+      >
+        Canjear Código
+      </button>
+      <button 
+        onClick={() => navigate('/store')}
+        className="menu-button"
+      >
+        Tienda
+      </button>
+      <button 
+        onClick={() => navigate('/achievements')}
+        className="menu-button"
+      >
+        Logros
+      </button>
+      <button 
+        onClick={() => navigate('/inventory')}
+        className="menu-button"
+      >
+        Inventario
+      </button>
+      {profile && (
+        <div className="menu-stats flex gap-4">
+          <div className="stat-item">
+            <span className="stat-label">Nivel:</span> {profile.level}
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">XP:</span> {profile.xp}
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Diamantes:</span> {profile.diamonds}
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Monedas:</span> {profile.coins}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const MainMenu = () => {
   const navigate = useNavigate();
@@ -306,14 +364,11 @@ const MainMenu = () => {
           >
             Canjear
           </button>
-          <button 
-            onClick={() => navigate('/dashboard')}
-            className="btn bg-green-500 hover:bg-green-600 text-white text-sm md:text-base"
-          >
-            Progreso
-          </button>
         </div>
       </header>
+      
+      {/* Barra de menú */}
+      <MenuBar />
       
       {/* Contenedor de islas */}
       <div ref={islandContainerRef} className="relative z-10 h-full w-full">
@@ -372,6 +427,44 @@ const MainMenu = () => {
           50% {
             transform: translate(-50%, -50%) translateY(-10px);
           }
+        }
+
+        .menu-bar {
+          background: linear-gradient(90deg, #ff7e5f, #feb47b);
+          padding: 10px;
+          border-radius: 10px 10px 0 0;
+          box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        .menu-button {
+          background: white;
+          color: #333;
+          padding: 10px 15px;
+          border-radius: 5px;
+          font-weight: bold;
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .menu-button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .menu-stats {
+          display: flex;
+          gap: 10px;
+          color: white;
+          font-weight: bold;
+        }
+
+        .stat-item {
+          background: rgba(255, 255, 255, 0.2);
+          padding: 5px 10px;
+          border-radius: 5px;
+        }
+
+        .stat-label {
+          margin-right: 5px;
         }
       `}</style>
     </div>
