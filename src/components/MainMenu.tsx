@@ -302,9 +302,15 @@ const MainMenu = () => {
           </button>
           <button 
             onClick={handleRedeemClick}
-            className="btn bg-blue-500 hover:bg-blue-600 text-white text-sm md:text-base"
+            className="btn bg-purple-500 hover:bg-purple-600 text-white text-sm md:text-base"
           >
-            Canjear Código
+            Canjear
+          </button>
+          <button 
+            onClick={() => navigate('/dashboard')}
+            className="btn bg-green-500 hover:bg-green-600 text-white text-sm md:text-base"
+          >
+            Progreso
           </button>
         </div>
       </header>
