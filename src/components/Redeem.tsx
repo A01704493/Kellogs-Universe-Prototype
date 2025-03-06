@@ -115,64 +115,66 @@ const Redeem = () => {
           opacity: 0.6 
         }}
       />
+
+      {/* Contenido - Añadir padding-bottom para evitar superposición con la barra */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center pb-16">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg w-full max-w-md p-6">
+          <h1 className="text-2xl font-bold text-center mb-6">Canjear Código</h1>
+          
+          <form onSubmit={handleRedeemCode} className="mb-6">
+            <div className="mb-4">
+              <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
+                Ingresa tu código:
+              </label>
+              <input
+                type="text"
+                id="code"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                placeholder="Ej: KELLOGS2023"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                disabled={isLoading}
+              />
+            </div>
+            
+            <button
+              type="submit"
+              className={`w-full py-3 px-4 rounded-lg text-white font-medium transition-colors ${
+                isLoading 
+                  ? 'bg-gray-400 cursor-not-allowed' 
+                  : 'bg-primary hover:bg-primary-dark'
+              }`}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Verificando...' : 'Canjear Código'}
+            </button>
+          </form>
+          
+          {result && (
+            <div className={`p-4 rounded-lg mb-6 ${
+              result.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+            }`}>
+              <p className="font-medium">{result.message}</p>
+              {result.reward && (
+                <div className="mt-2">
+                  <p className="font-bold">{result.reward.name}</p>
+                  <p>{result.reward.description}</p>
+                </div>
+              )}
+            </div>
+          )}
+          
+          <button
+            onClick={handleGoBack}
+            className="w-full py-2 px-4 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+          >
+            Volver al Menú
+          </button>
+        </div>
+      </div>
       
       {/* Barra de economía */}
       <GameEconomyBar />
-
-      {/* Contenido */}
-      <div className="relative z-10 h-full w-full p-4 flex flex-col items-center justify-center">
-        <div className="card max-w-md w-full bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6">
-          <div className="text-center mb-6">
-            <h1 className="text-2xl font-display text-gray-800 mb-2">Canjear Código</h1>
-            <p className="text-gray-600">Ingresa el código de tu producto para recibir recompensas exclusivas</p>
-          </div>
-          
-          <form onSubmit={handleRedeemCode} className="space-y-4">
-            <div>
-              <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
-                Código
-              </label>
-              <input
-                id="code"
-                type="text"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="Ej: ZUCARITAS"
-                disabled={isLoading}
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                Puedes encontrar códigos en los productos Kellogg's participantes
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <button 
-                type="submit" 
-                className={`btn bg-primary hover:bg-primary/90 text-white w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
-                disabled={isLoading}
-              >
-                {isLoading ? 'Procesando...' : 'Canjear Código'}
-              </button>
-            </div>
-          </form>
-
-          {result && (
-            <div className={`mt-4 p-4 rounded-lg ${result.success ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-              {result.message}
-            </div>
-          )}
-
-          <div className="mt-6 text-center">
-            <button 
-              onClick={handleGoBack}
-              className="text-gray-600 hover:text-gray-800"
-            >
-              Volver al Menú
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

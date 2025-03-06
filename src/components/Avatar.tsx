@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import universalBackground from '../assets/images/UniversalBackground.png';
+import GameEconomyBar from './GameEconomyBar';
 
 // Importar los assets para el preview
 import body1 from '../assets/character/body1.png';
@@ -102,273 +103,189 @@ const Avatar = () => {
   }, []);
 
   return (
-    <div style={{ 
-      minHeight: '100vh', 
-      paddingBottom: '100px', 
-      position: 'absolute', 
-      top: 0, 
-      left: 0, 
-      width: '100%' 
-    }}>
-      {/* Fondo */}
+    <div className="h-full w-full relative overflow-hidden">
+      {/* Fondo universal con opacidad */}
       <div 
+        className="absolute inset-0 z-0" 
         style={{ 
-          position: 'fixed', 
-          top: 0, 
-          left: 0, 
-          right: 0, 
-          bottom: 0,
-          zIndex: 0,
-          backgroundColor: '#1a1a1a' 
+          backgroundImage: `url(${universalBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.6 
         }}
-      >
-        <img 
-          src={universalBackground} 
-          alt="Background" 
-          style={{ 
-            position: 'absolute', 
-            width: '100%', 
-            height: '100%', 
-            objectFit: 'cover',
-            opacity: 0.6 
-          }}
-        />
-      </div>
+      />
 
-      {/* Contenido */}
-      <header style={{ 
-        position: 'sticky', 
-        top: 0, 
-        zIndex: 20, 
-        padding: '1rem', 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        backdropFilter: 'blur(8px)'
-      }}>
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#1f2937' }}>
-          Personaliza tu Avatar
-        </h1>
-        <button
-          onClick={saveAvatar}
-          style={{ 
-            padding: '0.5rem 1rem', 
-            backgroundColor: '#ef0e44', 
-            color: 'white', 
-            borderRadius: '0.5rem',
-            fontWeight: '500',
-            cursor: 'pointer'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#d00c3c'}
-          onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ef0e44'}
-        >
-          Guardar y Volver
-        </button>
-      </header>
-
-      <div style={{ 
-        position: 'relative', 
-        zIndex: 10, 
-        padding: '1rem', 
-        display: 'flex', 
-        flexDirection: window.innerWidth < 768 ? 'column' : 'row',
-        gap: '1rem',
-        maxWidth: '1400px',
-        margin: '0 auto'
-      }}>
-        {/* Preview del Avatar */}
-        <div style={{ 
-          flex: '0 0 auto',
-          width: window.innerWidth < 768 ? '100%' : '45%',
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          marginBottom: window.innerWidth < 768 ? '1.5rem' : 0
-        }}>
-          <div style={{ 
-            position: 'relative', 
-            width: window.innerWidth < 768 ? '20rem' : '30rem',
-            height: window.innerWidth < 768 ? '20rem' : '30rem',
-            maxWidth: '100%',
-            maxHeight: window.innerWidth < 1024 ? '450px' : '600px',
-            backgroundColor: 'rgba(255, 255, 255, 0.4)',
-            backdropFilter: 'blur(8px)',
-            borderRadius: '0.75rem',
-            padding: '1rem'
-          }}>
-            {/* Capas del avatar */}
-            {/* Capa del cuerpo */}
-            <img
-              src={bodyOptions[selectedBody]}
-              alt="Cuerpo"
-              style={{ 
-                position: 'absolute', 
-                inset: 0, 
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'contain'
-              }}
-            />
-            {/* Capa de la cabeza */}
-            <img
-              src={headOptions[selectedHead]}
-              alt="Cabeza"
-              style={{ 
-                position: 'absolute', 
-                inset: 0, 
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'contain'
-              }}
-            />
-            {/* Capa de accesorios */}
-            {accOptions[selectedAcc] && (
-              <img
-                src={accOptions[selectedAcc]}
-                alt="Accesorio"
-                style={{ 
-                  position: 'absolute', 
-                  inset: 0, 
-                  width: '100%', 
-                  height: '100%', 
-                  objectFit: 'contain'
-                }}
-              />
-            )}
-          </div>
+      {/* Contenido principal - Añadir padding-bottom para evitar superposición con la barra */}
+      <div className="relative z-10 flex flex-col h-full pb-16">
+        {/* Encabezado */}
+        <div className="p-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-white">Personaliza tu Avatar</h1>
+          <button 
+            onClick={saveAvatar}
+            className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark"
+          >
+            Guardar y Volver
+          </button>
         </div>
 
-        {/* Panel de selección */}
-        <div style={{ 
-          flex: 1, 
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '1.5rem', 
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(8px)', 
-          padding: window.innerWidth < 768 ? '1rem' : '2rem',
-          borderRadius: '0.75rem', 
-          maxWidth: window.innerWidth < 768 ? '100%' : '55%'
-        }}>
-          {/* Selector de cuerpo */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1f2937', marginBottom: '0.75rem' }}>Cuerpo</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-              {bodyIcons.map((icon, index) => (
-                <button
-                  key={`body-${index}`}
-                  onClick={() => setSelectedBody(index)}
-                  style={{ 
-                    width: window.innerWidth < 768 ? '4.5rem' : '5.5rem', 
-                    height: window.innerWidth < 768 ? '4.5rem' : '5.5rem',
-                    borderRadius: '0.5rem',
-                    overflow: 'hidden',
-                    border: selectedBody === index ? '4px solid #ef0e44' : '4px solid transparent',
-                    transform: selectedBody === index ? 'scale(1.1)' : 'scale(1)',
-                    transition: 'all 0.2s ease',
-                    backgroundColor: 'white'
-                  }}
-                  onMouseOver={(e) => {
-                    if (selectedBody !== index) {
-                      e.currentTarget.style.border = '4px solid rgba(239, 14, 68, 0.5)';
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    if (selectedBody !== index) {
-                      e.currentTarget.style.border = '4px solid transparent';
-                    }
-                  }}
-                >
-                  <img 
-                    src={icon} 
-                    alt={`Cuerpo ${index + 1}`} 
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
-                  />
-                </button>
-              ))}
+        {/* Área principal */}
+        <div className="flex-1 flex flex-col md:flex-row">
+          {/* Vista previa del avatar */}
+          <div className="w-full md:w-1/2 flex items-center justify-center p-4">
+            <div className="relative w-64 h-64 bg-white/20 backdrop-blur-sm rounded-full">
+              {/* Cuerpo */}
+              {selectedBody !== null && (
+                <img 
+                  src={bodyOptions[selectedBody]} 
+                  alt="Body" 
+                  className="absolute inset-0 w-full h-full object-contain"
+                />
+              )}
+              
+              {/* Cabeza */}
+              {selectedHead !== null && (
+                <img 
+                  src={headOptions[selectedHead]} 
+                  alt="Head" 
+                  className="absolute inset-0 w-full h-full object-contain"
+                />
+              )}
+              
+              {/* Accesorio (opcional) */}
+              {selectedAcc !== 0 && accOptions[selectedAcc] && (
+                <img 
+                  src={accOptions[selectedAcc]} 
+                  alt="Accessory" 
+                  className="absolute inset-0 w-full h-full object-contain"
+                />
+              )}
             </div>
           </div>
-
-          {/* Selector de cabeza */}
-          <div style={{ marginBottom: '1.5rem' }}>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1f2937', marginBottom: '0.75rem' }}>Cabeza</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-              {headIcons.map((icon, index) => (
-                <button
-                  key={`head-${index}`}
-                  onClick={() => setSelectedHead(index)}
-                  style={{ 
-                    width: window.innerWidth < 768 ? '4.5rem' : '5.5rem', 
-                    height: window.innerWidth < 768 ? '4.5rem' : '5.5rem',
-                    borderRadius: '0.5rem',
-                    overflow: 'hidden',
-                    border: selectedHead === index ? '4px solid #ef0e44' : '4px solid transparent',
-                    transform: selectedHead === index ? 'scale(1.1)' : 'scale(1)',
-                    transition: 'all 0.2s ease',
-                    backgroundColor: 'white'
-                  }}
-                  onMouseOver={(e) => {
-                    if (selectedHead !== index) {
-                      e.currentTarget.style.border = '4px solid rgba(239, 14, 68, 0.5)';
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    if (selectedHead !== index) {
-                      e.currentTarget.style.border = '4px solid transparent';
-                    }
-                  }}
-                >
-                  <img 
-                    src={icon} 
-                    alt={`Cabeza ${index + 1}`} 
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
-                  />
-                </button>
-              ))}
+          
+          {/* Selector de partes */}
+          <div className="w-full md:w-1/2 p-4 overflow-y-auto">
+            {/* Selector de cuerpo */}
+            <div style={{ marginBottom: '1.5rem' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1f2937', marginBottom: '0.75rem' }}>Cuerpo</h2>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                {bodyIcons.map((icon, index) => (
+                  <button
+                    key={`body-${index}`}
+                    onClick={() => setSelectedBody(index)}
+                    style={{ 
+                      width: window.innerWidth < 768 ? '4.5rem' : '5.5rem', 
+                      height: window.innerWidth < 768 ? '4.5rem' : '5.5rem',
+                      borderRadius: '0.5rem',
+                      overflow: 'hidden',
+                      border: selectedBody === index ? '4px solid #ef0e44' : '4px solid transparent',
+                      transform: selectedBody === index ? 'scale(1.1)' : 'scale(1)',
+                      transition: 'all 0.2s ease',
+                      backgroundColor: 'white'
+                    }}
+                    onMouseOver={(e) => {
+                      if (selectedBody !== index) {
+                        e.currentTarget.style.border = '4px solid rgba(239, 14, 68, 0.5)';
+                      }
+                    }}
+                    onMouseOut={(e) => {
+                      if (selectedBody !== index) {
+                        e.currentTarget.style.border = '4px solid transparent';
+                      }
+                    }}
+                  >
+                    <img 
+                      src={icon} 
+                      alt={`Cuerpo ${index + 1}`} 
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Selector de accesorios */}
-          <div>
-            <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1f2937', marginBottom: '0.75rem' }}>Accesorios</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-              {accIcons.map((icon, index) => (
-                <button
-                  key={`acc-${index}`}
-                  onClick={() => setSelectedAcc(index)}
-                  style={{ 
-                    width: window.innerWidth < 768 ? '4.5rem' : '5.5rem', 
-                    height: window.innerWidth < 768 ? '4.5rem' : '5.5rem',
-                    borderRadius: '0.5rem',
-                    overflow: 'hidden',
-                    border: selectedAcc === index ? '4px solid #ef0e44' : '4px solid transparent',
-                    transform: selectedAcc === index ? 'scale(1.1)' : 'scale(1)',
-                    transition: 'all 0.2s ease',
-                    backgroundColor: 'white'
-                  }}
-                  onMouseOver={(e) => {
-                    if (selectedAcc !== index) {
-                      e.currentTarget.style.border = '4px solid rgba(239, 14, 68, 0.5)';
-                    }
-                  }}
-                  onMouseOut={(e) => {
-                    if (selectedAcc !== index) {
-                      e.currentTarget.style.border = '4px solid transparent';
-                    }
-                  }}
-                >
-                  <img 
-                    src={icon} 
-                    alt={`Accesorio ${index}`} 
-                    style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
-                  />
-                </button>
-              ))}
+            {/* Selector de cabeza */}
+            <div style={{ marginBottom: '1.5rem' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1f2937', marginBottom: '0.75rem' }}>Cabeza</h2>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                {headIcons.map((icon, index) => (
+                  <button
+                    key={`head-${index}`}
+                    onClick={() => setSelectedHead(index)}
+                    style={{ 
+                      width: window.innerWidth < 768 ? '4.5rem' : '5.5rem', 
+                      height: window.innerWidth < 768 ? '4.5rem' : '5.5rem',
+                      borderRadius: '0.5rem',
+                      overflow: 'hidden',
+                      border: selectedHead === index ? '4px solid #ef0e44' : '4px solid transparent',
+                      transform: selectedHead === index ? 'scale(1.1)' : 'scale(1)',
+                      transition: 'all 0.2s ease',
+                      backgroundColor: 'white'
+                    }}
+                    onMouseOver={(e) => {
+                      if (selectedHead !== index) {
+                        e.currentTarget.style.border = '4px solid rgba(239, 14, 68, 0.5)';
+                      }
+                    }}
+                    onMouseOut={(e) => {
+                      if (selectedHead !== index) {
+                        e.currentTarget.style.border = '4px solid transparent';
+                      }
+                    }}
+                  >
+                    <img 
+                      src={icon} 
+                      alt={`Cabeza ${index + 1}`} 
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Selector de accesorios */}
+            <div>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: '600', color: '#1f2937', marginBottom: '0.75rem' }}>Accesorios</h2>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                {accIcons.map((icon, index) => (
+                  <button
+                    key={`acc-${index}`}
+                    onClick={() => setSelectedAcc(index)}
+                    style={{ 
+                      width: window.innerWidth < 768 ? '4.5rem' : '5.5rem', 
+                      height: window.innerWidth < 768 ? '4.5rem' : '5.5rem',
+                      borderRadius: '0.5rem',
+                      overflow: 'hidden',
+                      border: selectedAcc === index ? '4px solid #ef0e44' : '4px solid transparent',
+                      transform: selectedAcc === index ? 'scale(1.1)' : 'scale(1)',
+                      transition: 'all 0.2s ease',
+                      backgroundColor: 'white'
+                    }}
+                    onMouseOver={(e) => {
+                      if (selectedAcc !== index) {
+                        e.currentTarget.style.border = '4px solid rgba(239, 14, 68, 0.5)';
+                      }
+                    }}
+                    onMouseOut={(e) => {
+                      if (selectedAcc !== index) {
+                        e.currentTarget.style.border = '4px solid transparent';
+                      }
+                    }}
+                  >
+                    <img 
+                      src={icon} 
+                      alt={`Accesorio ${index}`} 
+                      style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </div>
+      
+      {/* Barra de economía */}
+      <GameEconomyBar />
     </div>
   );
 };

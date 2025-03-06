@@ -296,9 +296,7 @@ const SimpleGame = ({ gameType }) => {
   
   return (
     <div className="h-full w-full flex flex-col bg-gray-100">
-      {/* Barra de economía */}
-      <GameEconomyBar />
-      
+      {/* Título del juego */}
       <h1 className="text-3xl font-bold text-center py-4">
         {gameType === 'zucaritas' && 'Zucaritas: Aventura con Tony'}
         {gameType === 'choco-krispis' && 'Choco Krispis: Aventura con Melvin'}
@@ -306,7 +304,8 @@ const SimpleGame = ({ gameType }) => {
         {!gameType && 'Minijuego Kelloggs'}
       </h1>
       
-      <div className="flex-1 flex flex-col items-center justify-center p-4">
+      {/* Contenido principal - Añadir padding-bottom para evitar superposición con la barra */}
+      <div className="flex-1 flex flex-col items-center justify-center p-4 pb-16">
         {!gameStarted && !gameOver ? (
           <div className="text-center p-6 bg-white rounded-lg shadow-lg max-w-md">
             <h2 className="text-2xl font-bold mb-4">¡Prepárate para jugar!</h2>
@@ -328,7 +327,7 @@ const SimpleGame = ({ gameType }) => {
             </div>
             
             {gameOver && (
-              <div className="mt-8 text-center p-6 bg-white rounded-lg shadow-lg max-w-md">
+              <div className="mt-8 text-center p-6 bg-white rounded-lg shadow-lg max-w-md mb-8">
                 <h2 className="text-2xl font-bold mb-2">¡Juego Terminado!</h2>
                 <p className="text-lg mb-4">Tu puntuación: {score}</p>
                 <p className="text-lg mb-4">Monedas ganadas: {coinsEarned}</p>
@@ -354,7 +353,7 @@ const SimpleGame = ({ gameType }) => {
         )}
       </div>
       
-      {/* Botón para volver al menú si el juego está en curso */}
+      {/* Botón para terminar juego si está en curso */}
       {gameStarted && !gameOver && (
         <div className="absolute top-20 right-4 z-10">
           <button 
@@ -367,6 +366,9 @@ const SimpleGame = ({ gameType }) => {
           </button>
         </div>
       )}
+      
+      {/* Barra de economía */}
+      <GameEconomyBar />
     </div>
   );
 };

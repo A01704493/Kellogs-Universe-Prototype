@@ -79,37 +79,38 @@ const Building = () => {
           opacity: 0.6 
         }}
       />
+
+      {/* Contenido - Añadir padding-bottom para evitar superposición con la barra */}
+      <div className="relative z-10 h-full flex flex-col items-center justify-center p-4 pb-16">
+        <div className="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-xl max-w-md text-center">
+          {buildingInfo && (
+            <>
+              <h1 className="text-3xl font-bold mb-2" style={{ color: buildingInfo.color }}>
+                {buildingInfo.name}
+              </h1>
+              <p className="text-gray-700 mb-6">{buildingInfo.description}</p>
+              
+              <div className="flex gap-4 justify-center">
+                <button 
+                  onClick={handleStartGame}
+                  className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark transition-colors"
+                >
+                  Comenzar juego
+                </button>
+                <button 
+                  onClick={handleGoBack}
+                  className="px-6 py-3 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-colors"
+                >
+                  Volver
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
       
       {/* Barra de economía */}
       <GameEconomyBar />
-
-      {/* Contenido */}
-      <div className="relative z-10 h-full w-full flex flex-col items-center justify-center p-6">
-        <div 
-          className="w-full max-w-2xl bg-white/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden" 
-          style={{ borderTop: `8px solid ${buildingInfo.color}` }}
-        >
-          <div className="p-6">
-            <h2 className="text-3xl font-display text-gray-800 mb-4">{buildingInfo.name}</h2>
-            <p className="text-gray-700 mb-6">{buildingInfo.description}</p>
-            
-            <div className="flex justify-between items-center">
-              <button
-                className="btn bg-gray-500 hover:bg-gray-600 text-white"
-                onClick={handleGoBack}
-              >
-                Volver al Menú
-              </button>
-              <button
-                className="btn bg-blue-500 hover:bg-blue-600 text-white"
-                onClick={handleStartGame}
-              >
-                Comenzar Juego
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
