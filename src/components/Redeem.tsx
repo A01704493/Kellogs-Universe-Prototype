@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import universalBackground from '../assets/images/UniversalBackground.png';
-import { addDiamonds, addXp } from '../services/ProgressService';
 
 // Códigos de redención simulados y sus recompensas
 const validCodes: Record<string, { type: string; name: string; description: string; }> = {
@@ -32,32 +31,65 @@ const Redeem = () => {
   const [code, setCode] = useState('');
   const [result, setResult] = useState<{ success: boolean; message: string; reward?: typeof validCodes[keyof typeof validCodes] } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleRedeemCode = () => {
+  const handleRedeemCode = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Resetear el resultado anterior
+    setResult(null);
+    
+    // Simular carga
     setIsLoading(true);
     
-    // Simulando verificación de código (en una app real esto sería una llamada a API)
+    // Simulación de validación de código
     setTimeout(() => {
-      setIsLoading(false);
+      const trimmedCode = code.trim().toUpperCase();
       
-      // Lista de códigos válidos (esto sería una verificación en el servidor en una app real)
-      const validCodes = ['KELLOGGS2023', 'UNIVERSE', 'TONY2023', 'MELVIN2023', 'SAM2023'];
-      
-      if (validCodes.includes(code.toUpperCase())) {
-        // Otorgar recompensas por canjear un código
-        addDiamonds(1);
-        addXp(50);
+      if (validCodes[trimmedCode]) {
+        // Código válido
+        const reward = validCodes[trimmedCode];
         
-        setSuccessMessage('¡Código canjeado correctamente! Has recibido 1 diamante K y 50 XP.');
-        setErrorMessage('');
-        setCode('');
+        // Almacenar la recompensa (en un caso real, esto se haría en la base de datos)
+        // Para la demo, lo guardamos en localStorage
+        const redeemedCodes = JSON.parse(localStorage.getItem('kellogsRedeemedCodes') || '[]');
+        
+        if (redeemedCodes.includes(trimmedCode)) {
+          setResult({
+            success: false,
+            message: 'Este código ya ha sido canjeado anteriormente.'
+          });
+        } else {
+          // Añadir código a la lista de canjeados
+          redeemedCodes.push(trimmedCode);
+          localStorage.setItem('kellogsRedeemedCodes', JSON.stringify(redeemedCodes));
+          
+          // Si es un accesorio, añadirlo a los items del usuario
+          if (reward.type === 'accessory') {
+            const userItems = JSON.parse(localStorage.getItem('kellogsUserItems') || '[]');
+            userItems.push({
+              id: trimmedCode,
+              name: reward.name,
+              type: reward.type
+            });
+            localStorage.setItem('kellogsUserItems', JSON.stringify(userItems));
+          }
+          
+          setResult({
+            success: true,
+            message: '¡Código canjeado con éxito!',
+            reward
+          });
+        }
       } else {
-        setErrorMessage('El código ingresado no es válido o ya ha sido utilizado.');
-        setSuccessMessage('');
+        // Código inválido
+        setResult({
+          success: false,
+          message: 'Código inválido o expirado. Por favor, verifica e intenta de nuevo.'
+        });
       }
-    }, 1500);
+      
+      setIsLoading(false);
+    }, 1500); // Simular tiempo de procesamiento
   };
 
   const handleGoBack = () => {
@@ -119,15 +151,9 @@ const Redeem = () => {
             </div>
           </form>
 
-          {successMessage && (
-            <div className="mt-4 p-4 rounded-lg bg-green-100 text-green-700">
-              {successMessage}
-            </div>
-          )}
-
-          {errorMessage && (
-            <div className="mt-4 p-4 rounded-lg bg-red-100 text-red-700">
-              {errorMessage}
+          {result && (
+            <div className={`mt-4 p-4 rounded-lg ${result.success ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+              {result.message}
             </div>
           )}
 

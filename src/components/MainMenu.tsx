@@ -17,7 +17,6 @@ import head3 from '../assets/character/head3.png';
 import acc1 from '../assets/character/acc1.png';
 import acc2 from '../assets/character/acc2.png';
 import acc3 from '../assets/character/acc3.png';
-import { getUserProgress } from '../services/ProgressService';
 
 // Definir las opciones disponibles para cada capa
 const bodyOptions = [body1, body2, body3];
@@ -61,13 +60,6 @@ const MainMenu = () => {
   const [avatarPosition, setAvatarPosition] = useState({ x: 50, y: 30 });
   const [avatarDirection, setAvatarDirection] = useState({ x: 1, y: 1 });
   const [avatarConfig, setAvatarConfig] = useState<any>(null);
-  const [userProgress, setUserProgress] = useState({
-    level: 1,
-    xp: 0,
-    xpToNextLevel: 100,
-    coins: 0,
-    diamonds: 0
-  });
 
   // Lista de edificios/islas en la plaza
   const buildings: Building[] = [
@@ -196,20 +188,6 @@ const MainMenu = () => {
     }
   }, []);
 
-  // Establecer los datos de progreso al cargar
-  useEffect(() => {
-    const progress = getUserProgress();
-    setUserProgress(progress);
-    
-    // Actualizar progreso cada 30 segundos (acumular XP por tiempo)
-    const timer = setInterval(() => {
-      const updatedProgress = getUserProgress();
-      setUserProgress(updatedProgress);
-    }, 30000);
-    
-    return () => clearInterval(timer);
-  }, []);
-
   const handleBuildingClick = (buildingId: string) => {
     navigate(`/games/${buildingId}`);
   };
@@ -251,39 +229,6 @@ const MainMenu = () => {
       
       {/* Capa de oscurecimiento para mejorar contraste */}
       <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
-      
-      {/* Barra de progreso en la parte inferior */}
-      <div className="progress-bar">
-        <div className="level-badge">
-          <span>{userProgress.level}</span>
-        </div>
-        
-        <div className="xp-bar-container">
-          <div 
-            className="xp-bar" 
-            style={{ width: `${(userProgress.xp / userProgress.xpToNextLevel) * 100}%` }}
-          ></div>
-          <span className="xp-text">
-            {userProgress.xp} / {userProgress.xpToNextLevel} XP
-          </span>
-        </div>
-        
-        <div className="resource-counters">
-          <div className="resource-counter">
-            <div className="resource-icon coin-icon">
-              <span>🪙</span>
-            </div>
-            <span className="resource-value">{userProgress.coins}</span>
-          </div>
-          
-          <div className="resource-counter">
-            <div className="resource-icon diamond-icon">
-              <span>💎</span>
-            </div>
-            <span className="resource-value">{userProgress.diamonds}</span>
-          </div>
-        </div>
-      </div>
       
       {/* Capa de estrellas flotantes */}
       <div className="stars">

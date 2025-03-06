@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import universalBackground from '../assets/images/UniversalBackgorund.png';
-import { addXp } from '../services/ProgressService';
+import universalBackground from '../assets/images/UniversalBackground.png';
 
 interface BuildingInfo {
   id: string;
@@ -54,8 +53,6 @@ const Building = () => {
   }, [id, navigate]);
 
   const handleStartGame = () => {
-    // Otorgar XP al iniciar un juego
-    addXp(5);
     if (buildingInfo) {
       navigate(buildingInfo.route);
     }
@@ -112,9 +109,6 @@ const Building = () => {
             </div>
           </div>
         </div>
-        <p className="max-w-md text-sm mt-4 text-gray-800">
-          Juega este minijuego y gana monedas por cada objeto recogido. También recibirás XP por tu tiempo de juego y puntuación total.
-        </p>
       </div>
     </div>
   );
