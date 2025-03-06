@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { progressionService } from '../services';
 // Importar las imágenes de los juegos
 import chocoKrispiesIcon from '../assets/images/ChocoKrispies_Island.png';
 import frootLoopsIcon from '../assets/images/FrootLoops_Island.png';
@@ -18,6 +17,9 @@ import head3 from '../assets/character/head3.png';
 import acc1 from '../assets/character/acc1.png';
 import acc2 from '../assets/character/acc2.png';
 import acc3 from '../assets/character/acc3.png';
+// Importamos el servicio de progresión para obtener los datos del perfil
+import { progressionService } from '../services';
+import { PlayerProfile } from '../types/progression';
 
 // Definir las opciones disponibles para cada capa
 const bodyOptions = [body1, body2, body3];
@@ -44,63 +46,6 @@ interface Star {
   opacity: number;
 }
 
-// Barra de menú
-const MenuBar = () => {
-  const navigate = useNavigate();
-  const profile = progressionService.getPlayerProfile();
-
-  return (
-    <div className="menu-bar fixed bottom-0 left-0 right-0 flex justify-around items-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-4 shadow-lg">
-      <button 
-        onClick={() => navigate('/avatar')}
-        className="menu-button"
-      >
-        Avatar
-      </button>
-      <button 
-        onClick={() => navigate('/redeem-code')}
-        className="menu-button"
-      >
-        Canjear Código
-      </button>
-      <button 
-        onClick={() => navigate('/store')}
-        className="menu-button"
-      >
-        Tienda
-      </button>
-      <button 
-        onClick={() => navigate('/achievements')}
-        className="menu-button"
-      >
-        Logros
-      </button>
-      <button 
-        onClick={() => navigate('/inventory')}
-        className="menu-button"
-      >
-        Inventario
-      </button>
-      {profile && (
-        <div className="menu-stats flex gap-4">
-          <div className="stat-item">
-            <span className="stat-label">Nivel:</span> {profile.level}
-          </div>
-          <div className="stat-item">
-            <span className="stat-label">XP:</span> {profile.xp}
-          </div>
-          <div className="stat-item">
-            <span className="stat-label">Diamantes:</span> {profile.diamonds}
-          </div>
-          <div className="stat-item">
-            <span className="stat-label">Monedas:</span> {profile.coins}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
 const MainMenu = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('Aventurero');
@@ -118,6 +63,9 @@ const MainMenu = () => {
   const [avatarPosition, setAvatarPosition] = useState({ x: 50, y: 30 });
   const [avatarDirection, setAvatarDirection] = useState({ x: 1, y: 1 });
   const [avatarConfig, setAvatarConfig] = useState<any>(null);
+  
+  // Estado para el perfil del jugador
+  const [playerProfile, setPlayerProfile] = useState<PlayerProfile | null>(null);
 
   // Lista de edificios/islas en la plaza
   const buildings: Building[] = [
@@ -163,16 +111,28 @@ const MainMenu = () => {
     }));
   }, []);
 
-  // Efecto para cargar la configuración del avatar
   useEffect(() => {
-    const savedAvatar = localStorage.getItem('kellogsAvatar');
-    if (savedAvatar) {
-      setAvatarConfig(JSON.parse(savedAvatar));
+    // Cargar la configuración del avatar al montar el componente
+    const avatarConfig = localStorage.getItem('avatarConfig');
+    if (avatarConfig) {
+      setAvatarConfig(JSON.parse(avatarConfig));
+    } else {
+      // Configuración por defecto
+      setAvatarConfig({
+        body: 0,
+        head: 0,
+        acc: 0
+      });
     }
-  }, []);
-
-  // Efecto para animar el avatar flotante
-  useEffect(() => {
+    
+    // Cargar el perfil del jugador
+    const profile = progressionService.getPlayerProfile();
+    if (profile) {
+      setPlayerProfile(profile);
+      setUsername(profile.username);
+    }
+    
+    // Efecto para animar el avatar flotante
     const moveAvatar = () => {
       setAvatarPosition(prev => {
         const newX = prev.x + avatarDirection.x * 0.1;
@@ -238,14 +198,6 @@ const MainMenu = () => {
     };
   }, []);
 
-  // Efecto para recuperar el nombre de usuario
-  useEffect(() => {
-    const savedUsername = localStorage.getItem('kellogsUsername');
-    if (savedUsername) {
-      setUsername(savedUsername);
-    }
-  }, []);
-
   const handleBuildingClick = (buildingId: string) => {
     navigate(`/games/${buildingId}`);
   };
@@ -256,6 +208,21 @@ const MainMenu = () => {
 
   const handleRedeemClick = () => {
     navigate('/redeem');
+  };
+
+  const handleStoreClick = () => {
+    // Por ahora solo mostramos un mensaje, cuando la tienda esté implementada
+    alert('¡Tienda en construcción! Estará disponible pronto.');
+  };
+
+  const handleAchievementsClick = () => {
+    // Por ahora solo mostramos un mensaje, cuando los logros estén implementados
+    alert('¡Logros en construcción! Estarán disponibles pronto.');
+  };
+
+  const handleInventoryClick = () => {
+    // Por ahora solo mostramos un mensaje, cuando el inventario esté implementado
+    alert('¡Inventario en construcción! Estará disponible pronto.');
   };
 
   const handleIslandHover = (buildingId: string | null) => {
@@ -350,25 +317,7 @@ const MainMenu = () => {
           />
           <p className="text-sm md:text-base text-gray-600 mt-1">Hola, {username}!</p>
         </div>
-        
-        <div className="flex gap-2">
-          <button 
-            onClick={handleAvatarClick}
-            className="btn bg-blue-500 hover:bg-blue-600 text-white text-sm md:text-base"
-          >
-            Avatar
-          </button>
-          <button 
-            onClick={handleRedeemClick}
-            className="btn bg-purple-500 hover:bg-purple-600 text-white text-sm md:text-base"
-          >
-            Canjear
-          </button>
-        </div>
       </header>
-      
-      {/* Barra de menú */}
-      <MenuBar />
       
       {/* Contenedor de islas */}
       <div ref={islandContainerRef} className="relative z-10 h-full w-full">
@@ -419,52 +368,192 @@ const MainMenu = () => {
         })}
       </div>
 
+      {/* Barra de Menú en la parte inferior */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center mb-2">
+        <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-2 md:p-3 rounded-2xl shadow-xl mx-auto flex items-center space-x-2 md:space-x-3 overflow-x-auto max-w-5xl border-2 border-white/30">
+          {/* Contadores de estadísticas */}
+          <div className="flex space-x-3 bg-black/40 backdrop-blur-md px-3 py-2 rounded-full mr-2 border border-white/20">
+            <div className="flex items-center text-white">
+              <div className="menu-icon-container bg-gradient-to-br from-yellow-300 to-yellow-600 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-yellow">
+                <span className="text-xs font-bold">{playerProfile?.level || 1}</span>
+              </div>
+              <span className="text-xs font-bold ml-1">NIVEL</span>
+            </div>
+            
+            <div className="flex items-center text-white">
+              <div className="menu-icon-container bg-gradient-to-br from-blue-300 to-blue-600 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-blue">
+                <span className="text-xs">⭐</span>
+              </div>
+              <span className="text-xs font-bold">{playerProfile?.xp || 0}</span>
+            </div>
+            
+            <div className="flex items-center text-white">
+              <div className="menu-icon-container bg-gradient-to-br from-purple-300 to-purple-600 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-purple">
+                <span className="text-xs">💎</span>
+              </div>
+              <span className="text-xs font-bold">{playerProfile?.diamonds || 0}</span>
+            </div>
+            
+            <div className="flex items-center text-white">
+              <div className="menu-icon-container bg-gradient-to-br from-yellow-400 to-yellow-700 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-gold">
+                <span className="text-xs">🪙</span>
+              </div>
+              <span className="text-xs font-bold">{playerProfile?.coins || 0}</span>
+            </div>
+          </div>
+          
+          {/* Separador decorativo */}
+          <div className="h-10 w-0.5 bg-white/20 rounded-full mx-1"></div>
+          
+          {/* Botones de menú */}
+          <button 
+            onClick={handleAvatarClick}
+            className="menu-button bg-gradient-to-br from-blue-400 to-blue-600"
+          >
+            👤 AVATAR
+          </button>
+          
+          <button 
+            onClick={handleRedeemClick}
+            className="menu-button bg-gradient-to-br from-purple-400 to-purple-600"
+          >
+            🎁 CANJEAR
+          </button>
+          
+          <button 
+            onClick={handleStoreClick}
+            className="menu-button bg-gradient-to-br from-green-400 to-green-600"
+          >
+            🛒 TIENDA
+          </button>
+          
+          <button 
+            onClick={handleAchievementsClick}
+            className="menu-button bg-gradient-to-br from-yellow-400 to-yellow-600"
+          >
+            🏆 LOGROS
+          </button>
+          
+          <button 
+            onClick={handleInventoryClick}
+            className="menu-button bg-gradient-to-br from-red-400 to-red-600"
+          >
+            🎒 INVENTARIO
+          </button>
+        </div>
+      </div>
+      
+      {/* Estilos específicos para los botones del menú */}
       <style jsx>{`
         @keyframes float {
-          0%, 100% {
-            transform: translate(-50%, -50%) translateY(0px);
-          }
-          50% {
-            transform: translate(-50%, -50%) translateY(-10px);
-          }
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+          100% { transform: translateY(0px); }
         }
 
-        .menu-bar {
-          background: linear-gradient(90deg, #ff7e5f, #feb47b);
-          padding: 10px;
-          border-radius: 10px 10px 0 0;
-          box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        .star {
+          position: absolute;
+          background-color: white;
+          border-radius: 50%;
+          opacity: 0.7;
+          animation: twinkle 5s infinite;
         }
 
+        @keyframes twinkle {
+          0% { opacity: 0.2; }
+          50% { opacity: 0.8; }
+          100% { opacity: 0.2; }
+        }
+        
+        .island-hover {
+          transition: transform 0.3s ease-out;
+        }
+        
+        .island-hover:hover {
+          transform: translateY(-10px) scale(1.05);
+        }
+        
         .menu-button {
-          background: white;
-          color: #333;
-          padding: 10px 15px;
-          border-radius: 5px;
-          font-weight: bold;
-          transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .menu-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .menu-stats {
-          display: flex;
-          gap: 10px;
           color: white;
           font-weight: bold;
+          padding: 8px 16px;
+          border-radius: 20px;
+          font-size: 0.85rem;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+          cursor: pointer;
+          border: 2px solid rgba(255, 255, 255, 0.5);
+          white-space: nowrap;
+          transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+          position: relative;
+          overflow: hidden;
+          z-index: 1;
         }
-
-        .stat-item {
-          background: rgba(255, 255, 255, 0.2);
-          padding: 5px 10px;
-          border-radius: 5px;
+        
+        .menu-button::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          transition: all 0.6s;
+          z-index: -1;
         }
-
-        .stat-label {
-          margin-right: 5px;
+        
+        .menu-button:hover {
+          transform: scale(1.1) translateY(-5px);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+          letter-spacing: 0.5px;
+        }
+        
+        .menu-button:hover::before {
+          left: 100%;
+        }
+        
+        .menu-button:active {
+          transform: scale(0.95) translateY(2px);
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+        
+        .menu-icon-container {
+          transition: all 0.3s ease;
+          animation: pulse 2s infinite;
+          box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+          100% { transform: scale(1); }
+        }
+        
+        .shadow-glow-yellow {
+          box-shadow: 0 0 8px 2px rgba(250, 204, 21, 0.6);
+        }
+        
+        .shadow-glow-blue {
+          box-shadow: 0 0 8px 2px rgba(59, 130, 246, 0.6);
+        }
+        
+        .shadow-glow-purple {
+          box-shadow: 0 0 8px 2px rgba(168, 85, 247, 0.6);
+        }
+        
+        .shadow-glow-gold {
+          box-shadow: 0 0 8px 2px rgba(217, 119, 6, 0.6);
+        }
+        
+        /* Animación de rebote para los botones */
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          40% { transform: translateY(-20px); }
+          60% { transform: translateY(-10px); }
+        }
+        
+        .menu-button:hover {
+          animation: bounce 0.8s ease;
         }
       `}</style>
     </div>
