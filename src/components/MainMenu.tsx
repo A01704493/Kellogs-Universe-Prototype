@@ -70,31 +70,31 @@ const MainMenu = () => {
   // Lista de edificios/islas en la plaza
   const buildings: Building[] = [
     {
-      id: 'choco-krispis',
+      id: 'choco-krispies',
       name: 'Choco Krispis',
-      description: 'Aventuras con Melvin el elefante',
+      description: 'Juego de Choco Krispis',
       position: { x: 25, y: 40 },
       image: chocoKrispiesIcon,
       scale: 1.2,
-      floatSpeed: 3 // Velocidad de flotación personalizada
-    },
-    {
-      id: 'zucaritas',
-      name: 'Zucaritas',
-      description: 'Desafíos con Tony el Tigre',
-      position: { x: 70, y: 35 },
-      image: frostedFlakesIcon,
-      scale: 1.3,
-      floatSpeed: 5 // Velocidad más lenta
+      floatSpeed: 5
     },
     {
       id: 'froot-loops',
       name: 'Froot Loops',
-      description: 'Diversión colorida con Sam el tucán',
-      position: { x: 45, y: 55 },
+      description: 'Juego de Froot Loops',
+      position: { x: 50, y: 35 },
       image: frootLoopsIcon,
-      scale: 1.1,
-      floatSpeed: 4 // Velocidad intermedia
+      scale: 1.3,
+      floatSpeed: 6
+    },
+    {
+      id: 'zucaritas',
+      name: 'Zucaritas',
+      description: 'Juego de Zucaritas',
+      position: { x: 75, y: 40 },
+      image: frostedFlakesIcon,
+      scale: 1.2,
+      floatSpeed: 5.5
     }
   ];
 
@@ -175,17 +175,18 @@ const MainMenu = () => {
   // Efecto para el parallax con mouse y touch
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 2;
-      const y = (e.clientY / window.innerHeight - 0.5) * 2;
-      setMousePosition({ x, y });
+      setMousePosition({
+        x: (e.clientX / window.innerWidth - 0.5) * 0.5,
+        y: (e.clientY / window.innerHeight - 0.5) * 0.5
+      });
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (e.touches.length > 0) {
-        const touch = e.touches[0];
-        const x = (touch.clientX / window.innerWidth - 0.5) * 2;
-        const y = (touch.clientY / window.innerHeight - 0.5) * 2;
-        setMousePosition({ x, y });
+      if (e.touches && e.touches[0]) {
+        setMousePosition({
+          x: (e.touches[0].clientX / window.innerWidth - 0.5) * 0.3,
+          y: (e.touches[0].clientY / window.innerHeight - 0.5) * 0.3
+        });
       }
     };
 
@@ -241,12 +242,12 @@ const MainMenu = () => {
           alt="Background" 
           className="absolute object-cover"
           style={{
-            width: '180%',
-            height: '180%',
-            left: '-40%',
-            top: '-40%',
+            width: '140%',
+            height: '140%',
+            left: '-20%',
+            top: '-20%',
             maxWidth: 'none',
-            transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)`,
+            transform: `translate(${mousePosition.x * 8}px, ${mousePosition.y * 8}px)`,
             transition: 'transform 0.3s ease-out'
           }}
         />
@@ -256,7 +257,7 @@ const MainMenu = () => {
       <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
       
       {/* Capa de estrellas flotantes */}
-      <div className="stars">
+      <div className="stars absolute inset-0 overflow-hidden z-5">
         {stars.map((star) => (
           <div
             key={star.id}
@@ -276,7 +277,7 @@ const MainMenu = () => {
       {/* Avatar flotante */}
       {avatarConfig && (
         <div 
-          className="absolute z-20 w-32 h-32 cursor-pointer transition-transform hover:scale-110"
+          className="absolute z-20 w-24 h-24 md:w-32 md:h-32 cursor-pointer transition-transform hover:scale-110"
           style={{
             left: `${avatarPosition.x}%`,
             top: `${avatarPosition.y}%`,
@@ -320,10 +321,10 @@ const MainMenu = () => {
       </header>
       
       {/* Contenedor de islas */}
-      <div ref={islandContainerRef} className="relative z-10 h-full w-full">
+      <div ref={islandContainerRef} className="relative z-10 h-3/4 w-full pt-8">
         {buildings.map((building) => {
           const isHovered = hoveredIsland === building.id;
-          const baseSize = Math.min(viewportSize.width, viewportSize.height) * 0.32;
+          const baseSize = Math.min(viewportSize.width, viewportSize.height) * 0.28;
           const size = building.scale * baseSize;
           
           return (
@@ -335,7 +336,7 @@ const MainMenu = () => {
                 top: `${building.position.y}%`,
                 width: size,
                 height: size,
-                transform: `translate(-50%, -50%) ${isHovered ? 'scale(1.15)' : 'scale(1)'}`,
+                transform: `translate(-50%, -50%) ${isHovered ? 'scale(1.1)' : 'scale(1)'}`,
                 animation: `float ${building.floatSpeed}s ease-in-out infinite`
               }}
               onClick={() => handleBuildingClick(building.id)}
@@ -368,77 +369,79 @@ const MainMenu = () => {
         })}
       </div>
 
-      {/* Barra de Menú en la parte inferior */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center mb-2">
-        <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-2 md:p-3 rounded-2xl shadow-xl mx-auto flex items-center space-x-2 md:space-x-3 overflow-x-auto max-w-5xl border-2 border-white/30">
-          {/* Contadores de estadísticas */}
-          <div className="flex space-x-3 bg-black/40 backdrop-blur-md px-3 py-2 rounded-full mr-2 border border-white/20">
-            <div className="flex items-center text-white">
-              <div className="menu-icon-container bg-gradient-to-br from-yellow-300 to-yellow-600 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-yellow">
-                <span className="text-xs font-bold">{playerProfile?.level || 1}</span>
-              </div>
-              <span className="text-xs font-bold ml-1">NIVEL</span>
+      {/* Barra de Menú en la parte inferior con nueva estructura */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col items-center mb-2">
+        {/* Stats Bar - Now positioned above the menu buttons */}
+        <div className="bg-black/60 backdrop-blur-md px-3 py-2 rounded-xl mb-2 border border-white/20 flex justify-center flex-wrap gap-3 max-w-md">
+          <div className="flex items-center text-white">
+            <div className="menu-icon-container bg-gradient-to-br from-yellow-300 to-yellow-600 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-yellow">
+              <span className="text-xs font-bold">{playerProfile?.level || 1}</span>
             </div>
-            
-            <div className="flex items-center text-white">
-              <div className="menu-icon-container bg-gradient-to-br from-blue-300 to-blue-600 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-blue">
-                <span className="text-xs">⭐</span>
-              </div>
-              <span className="text-xs font-bold">{playerProfile?.xp || 0}</span>
-            </div>
-            
-            <div className="flex items-center text-white">
-              <div className="menu-icon-container bg-gradient-to-br from-purple-300 to-purple-600 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-purple">
-                <span className="text-xs">💎</span>
-              </div>
-              <span className="text-xs font-bold">{playerProfile?.diamonds || 0}</span>
-            </div>
-            
-            <div className="flex items-center text-white">
-              <div className="menu-icon-container bg-gradient-to-br from-yellow-400 to-yellow-700 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-gold">
-                <span className="text-xs">🪙</span>
-              </div>
-              <span className="text-xs font-bold">{playerProfile?.coins || 0}</span>
-            </div>
+            <span className="text-xs font-bold ml-1">NIVEL</span>
           </div>
           
-          {/* Separador decorativo */}
-          <div className="h-10 w-0.5 bg-white/20 rounded-full mx-1"></div>
+          <div className="flex items-center text-white">
+            <div className="menu-icon-container bg-gradient-to-br from-blue-300 to-blue-600 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-blue">
+              <span className="text-xs">⭐</span>
+            </div>
+            <span className="text-xs font-bold">{playerProfile?.xp || 0}</span>
+          </div>
           
-          {/* Botones de menú */}
+          <div className="flex items-center text-white">
+            <div className="menu-icon-container bg-gradient-to-br from-purple-300 to-purple-600 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-purple">
+              <span className="text-xs">💎</span>
+            </div>
+            <span className="text-xs font-bold">{playerProfile?.diamonds || 0}</span>
+          </div>
+          
+          <div className="flex items-center text-white">
+            <div className="menu-icon-container bg-gradient-to-br from-yellow-400 to-yellow-700 flex items-center justify-center rounded-full w-7 h-7 mr-1 shadow-glow-gold">
+              <span className="text-xs">🪙</span>
+            </div>
+            <span className="text-xs font-bold">{playerProfile?.coins || 0}</span>
+          </div>
+        </div>
+        
+        {/* Main Menu Buttons - Now square with emoji on top, text below */}
+        <div className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 p-2 rounded-2xl shadow-xl mx-auto flex justify-center flex-wrap gap-2 max-w-md border-2 border-white/30">
           <button 
             onClick={handleAvatarClick}
             className="menu-button bg-gradient-to-br from-blue-400 to-blue-600"
           >
-            👤 AVATAR
+            <span className="emoji">👤</span>
+            <span className="text">AVATAR</span>
           </button>
           
           <button 
             onClick={handleRedeemClick}
             className="menu-button bg-gradient-to-br from-purple-400 to-purple-600"
           >
-            🎁 CANJEAR
+            <span className="emoji">🎁</span>
+            <span className="text">CANJEAR</span>
           </button>
           
           <button 
             onClick={handleStoreClick}
             className="menu-button bg-gradient-to-br from-green-400 to-green-600"
           >
-            🛒 TIENDA
+            <span className="emoji">🛒</span>
+            <span className="text">TIENDA</span>
           </button>
           
           <button 
             onClick={handleAchievementsClick}
             className="menu-button bg-gradient-to-br from-yellow-400 to-yellow-600"
           >
-            🏆 LOGROS
+            <span className="emoji">🏆</span>
+            <span className="text">LOGROS</span>
           </button>
           
           <button 
             onClick={handleInventoryClick}
             className="menu-button bg-gradient-to-br from-red-400 to-red-600"
           >
-            🎒 INVENTARIO
+            <span className="emoji">🎒</span>
+            <span className="text">INVENTARIO</span>
           </button>
         </div>
       </div>
@@ -447,8 +450,15 @@ const MainMenu = () => {
       <style jsx>{`
         @keyframes float {
           0% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
+          50% { transform: translateY(-6px); }
           100% { transform: translateY(0px); }
+        }
+
+        .stars {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          z-index: 5;
         }
 
         .star {
@@ -461,7 +471,7 @@ const MainMenu = () => {
 
         @keyframes twinkle {
           0% { opacity: 0.2; }
-          50% { opacity: 0.8; }
+          50% { opacity: 0.7; }
           100% { opacity: 0.2; }
         }
         
@@ -470,62 +480,60 @@ const MainMenu = () => {
         }
         
         .island-hover:hover {
-          transform: translateY(-10px) scale(1.05);
+          transform: translateY(-5px) scale(1.05);
         }
         
         .menu-button {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
           color: white;
           font-weight: bold;
-          padding: 8px 16px;
-          border-radius: 20px;
-          font-size: 0.85rem;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+          padding: 8px;
+          width: 70px;
+          height: 70px;
+          border-radius: 12px;
+          font-size: 0.7rem;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
           text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
           cursor: pointer;
           border: 2px solid rgba(255, 255, 255, 0.5);
-          white-space: nowrap;
-          transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+          transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
           position: relative;
           overflow: hidden;
           z-index: 1;
         }
         
-        .menu-button::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-          transition: all 0.6s;
-          z-index: -1;
+        .menu-button .emoji {
+          font-size: 1.5rem;
+          margin-bottom: 4px;
+        }
+        
+        .menu-button .text {
+          font-size: 0.7rem;
+          letter-spacing: 0;
         }
         
         .menu-button:hover {
-          transform: scale(1.1) translateY(-5px);
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-          letter-spacing: 0.5px;
-        }
-        
-        .menu-button:hover::before {
-          left: 100%;
+          transform: scale(1.05);
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
         
         .menu-button:active {
-          transform: scale(0.95) translateY(2px);
+          transform: scale(0.95);
           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
         }
         
         .menu-icon-container {
           transition: all 0.3s ease;
-          animation: pulse 2s infinite;
+          animation: pulse 3s infinite;
           box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
         }
         
         @keyframes pulse {
           0% { transform: scale(1); }
-          50% { transform: scale(1.1); }
+          50% { transform: scale(1.05); }
           100% { transform: scale(1); }
         }
         
@@ -545,15 +553,30 @@ const MainMenu = () => {
           box-shadow: 0 0 8px 2px rgba(217, 119, 6, 0.6);
         }
         
-        /* Animación de rebote para los botones */
         @keyframes bounce {
           0%, 100% { transform: translateY(0); }
-          40% { transform: translateY(-20px); }
-          60% { transform: translateY(-10px); }
+          50% { transform: translateY(-3px); }
         }
         
         .menu-button:hover {
-          animation: bounce 0.8s ease;
+          animation: bounce 1s ease infinite;
+        }
+        
+        @media (max-width: 640px) {
+          .menu-button {
+            width: 60px;
+            height: 60px;
+            font-size: 0.65rem;
+            padding: 6px;
+          }
+          
+          .menu-button .emoji {
+            font-size: 1.2rem;
+          }
+          
+          .menu-button .text {
+            font-size: 0.6rem;
+          }
         }
       `}</style>
     </div>
