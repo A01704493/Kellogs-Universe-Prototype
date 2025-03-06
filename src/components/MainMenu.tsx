@@ -292,28 +292,32 @@ const MainMenu = () => {
           />
           <p className="text-sm md:text-base text-gray-600 mt-1">Hola, {username}!</p>
         </div>
-        
-        <div className="flex gap-2">
-          <button 
-            onClick={handleAvatarClick}
-            className="btn bg-blue-500 hover:bg-blue-600 text-white text-sm md:text-base"
-          >
-            Avatar
-          </button>
-          <button 
-            onClick={handleRedeemClick}
-            className="btn bg-purple-500 hover:bg-purple-600 text-white text-sm md:text-base"
-          >
-            Canjear
-          </button>
-          <button 
-            onClick={() => navigate('/dashboard')}
-            className="btn bg-green-500 hover:bg-green-600 text-white text-sm md:text-base"
-          >
-            Progreso
-          </button>
-        </div>
       </header>
+      
+      {/* Botones de navegación centrados y abajo */}
+      <div className="absolute bottom-8 left-0 right-0 z-30 flex justify-center items-center gap-6">
+        <button 
+          onClick={handleAvatarClick}
+          className="flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-blue-500 hover:bg-blue-600 text-white shadow-lg transform hover:scale-105 transition-all"
+        >
+          <span className="text-2xl mb-1">👤</span>
+          <span className="text-xs">Avatar</span>
+        </button>
+        <button 
+          onClick={handleRedeemClick}
+          className="flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-purple-500 hover:bg-purple-600 text-white shadow-lg transform hover:scale-105 transition-all"
+        >
+          <span className="text-2xl mb-1">🎁</span>
+          <span className="text-xs">Canjear</span>
+        </button>
+        <button 
+          onClick={() => navigate('/dashboard')}
+          className="flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-green-500 hover:bg-green-600 text-white shadow-lg transform hover:scale-105 transition-all"
+        >
+          <span className="text-2xl mb-1">📊</span>
+          <span className="text-xs">Progreso</span>
+        </button>
+      </div>
       
       {/* Contenedor de islas */}
       <div ref={islandContainerRef} className="relative z-10 h-full w-full">
