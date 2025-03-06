@@ -17,10 +17,7 @@ import head3 from '../assets/character/head3.png';
 import acc1 from '../assets/character/acc1.png';
 import acc2 from '../assets/character/acc2.png';
 import acc3 from '../assets/character/acc3.png';
-// Importar el componente de la barra de economía
-import GameEconomyBar from './GameEconomyBar';
-// Importar el contexto de economía del juego
-import { useGameEconomy } from '../contexts/GameEconomyContext';
+import { getUserProgress } from '../services/ProgressService';
 
 // Definir las opciones disponibles para cada capa
 const bodyOptions = [body1, body2, body3];
@@ -64,6 +61,13 @@ const MainMenu = () => {
   const [avatarPosition, setAvatarPosition] = useState({ x: 50, y: 30 });
   const [avatarDirection, setAvatarDirection] = useState({ x: 1, y: 1 });
   const [avatarConfig, setAvatarConfig] = useState<any>(null);
+  const [userProgress, setUserProgress] = useState({
+    level: 1,
+    xp: 0,
+    xpToNextLevel: 100,
+    coins: 0,
+    diamonds: 0
+  });
 
   // Lista de edificios/islas en la plaza
   const buildings: Building[] = [
@@ -101,25 +105,13 @@ const MainMenu = () => {
     const count = 35; // Cantidad de estrellas
     return Array.from({ length: count }, (_, i) => ({
       id: i,
-      size: Math.random() * 3 + 2, // Tamaño entre 2px y 5px
+      size: Math.random() * 1.5 + 0.5, // Tamaño entre 0.5px y 2px
       left: Math.random() * 100, // Posición horizontal
       duration: Math.random() * 15 + 15, // Duración entre 15 y 30 segundos
       delay: Math.random() * 10, // Retraso para que no empiecen todas a la vez
-      opacity: Math.random() * 0.7 + 0.3 // Opacidad entre 0.3 y 1.0
+      opacity: Math.random() * 0.5 + 0.3 // Opacidad entre 0.3 y 0.8
     }));
   }, []);
-
-  // Añadir recompensa de XP por tiempo
-  const { addXP } = useGameEconomy();
-
-  // Cada 30 segundos otorgar 1 XP por estar en el menú principal
-  useEffect(() => {
-    const xpInterval = setInterval(() => {
-      addXP(1);
-    }, 30000); // 30 segundos
-
-    return () => clearInterval(xpInterval);
-  }, [addXP]);
 
   // Efecto para cargar la configuración del avatar
   useEffect(() => {
@@ -204,6 +196,20 @@ const MainMenu = () => {
     }
   }, []);
 
+  // Establecer los datos de progreso al cargar
+  useEffect(() => {
+    const progress = getUserProgress();
+    setUserProgress(progress);
+    
+    // Actualizar progreso cada 30 segundos (acumular XP por tiempo)
+    const timer = setInterval(() => {
+      const updatedProgress = getUserProgress();
+      setUserProgress(updatedProgress);
+    }, 30000);
+    
+    return () => clearInterval(timer);
+  }, []);
+
   const handleBuildingClick = (buildingId: string) => {
     navigate(`/games/${buildingId}`);
   };
@@ -221,14 +227,15 @@ const MainMenu = () => {
   };
 
   return (
-    <div className="main-menu w-full h-full relative overflow-hidden">
-      {/* Fondo del menú con efecto parallax */}
+    <div className="h-full w-full relative overflow-hidden">
+      {/* Implementación del fondo con parallax usando una imagen con posicionamiento absoluto */}
       <div 
-        className="absolute inset-0 z-0 overflow-hidden bg-black"
+        className="absolute inset-0 z-0 overflow-hidden"
+        style={{ backgroundColor: '#1a1a1a' }}
       >
-        <img
-          src={menuBackground}
-          alt="Menu Background"
+        <img 
+          src={menuBackground} 
+          alt="Background" 
           className="absolute object-cover"
           style={{
             width: '180%',
@@ -245,26 +252,56 @@ const MainMenu = () => {
       {/* Capa de oscurecimiento para mejorar contraste */}
       <div className="absolute inset-0 z-0 bg-black opacity-30"></div>
       
-      {/* Estrellas flotantes */}
-      <div className="stars absolute inset-0 overflow-hidden pointer-events-none z-10">
-        {stars.map(star => (
+      {/* Barra de progreso en la parte inferior */}
+      <div className="progress-bar">
+        <div className="level-badge">
+          <span>{userProgress.level}</span>
+        </div>
+        
+        <div className="xp-bar-container">
+          <div 
+            className="xp-bar" 
+            style={{ width: `${(userProgress.xp / userProgress.xpToNextLevel) * 100}%` }}
+          ></div>
+          <span className="xp-text">
+            {userProgress.xp} / {userProgress.xpToNextLevel} XP
+          </span>
+        </div>
+        
+        <div className="resource-counters">
+          <div className="resource-counter">
+            <div className="resource-icon coin-icon">
+              <span>🪙</span>
+            </div>
+            <span className="resource-value">{userProgress.coins}</span>
+          </div>
+          
+          <div className="resource-counter">
+            <div className="resource-icon diamond-icon">
+              <span>💎</span>
+            </div>
+            <span className="resource-value">{userProgress.diamonds}</span>
+          </div>
+        </div>
+      </div>
+      
+      {/* Capa de estrellas flotantes */}
+      <div className="stars">
+        {stars.map((star) => (
           <div
             key={star.id}
-            className="star absolute rounded-full bg-white"
+            className="star"
             style={{
               width: `${star.size}px`,
               height: `${star.size}px`,
               left: `${star.left}%`,
-              bottom: '0',
               opacity: star.opacity,
-              animation: `float ${star.duration}s linear ${star.delay}s infinite`
+              animationDuration: `${star.duration}s`,
+              animationDelay: `${star.delay}s`
             }}
           />
         ))}
       </div>
-      
-      {/* Barra de economía (ahora en la parte inferior) */}
-      <GameEconomyBar />
       
       {/* Avatar flotante */}
       {avatarConfig && (

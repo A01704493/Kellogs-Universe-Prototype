@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import universalBackground from '../assets/images/UniversalBackground.png';
-import GameEconomyBar from './GameEconomyBar';
-import { useGameEconomy } from '../contexts/GameEconomyContext';
+import { addDiamonds, addXp } from '../services/ProgressService';
 
 // Códigos de redención simulados y sus recompensas
 const validCodes: Record<string, { type: string; name: string; description: string; }> = {
@@ -33,70 +32,32 @@ const Redeem = () => {
   const [code, setCode] = useState('');
   const [result, setResult] = useState<{ success: boolean; message: string; reward?: typeof validCodes[keyof typeof validCodes] } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { addKDiamonds, addXP } = useGameEconomy();
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleRedeemCode = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Resetear el resultado anterior
-    setResult(null);
-    
-    // Simular carga
+  const handleRedeemCode = () => {
     setIsLoading(true);
     
-    // Simulación de validación de código
+    // Simulando verificación de código (en una app real esto sería una llamada a API)
     setTimeout(() => {
-      const trimmedCode = code.trim().toUpperCase();
-      
-      if (validCodes[trimmedCode]) {
-        // Código válido
-        const reward = validCodes[trimmedCode];
-        
-        // Almacenar la recompensa (en un caso real, esto se haría en la base de datos)
-        // Para la demo, lo guardamos en localStorage
-        const redeemedCodes = JSON.parse(localStorage.getItem('kellogsRedeemedCodes') || '[]');
-        
-        if (redeemedCodes.includes(trimmedCode)) {
-          setResult({
-            success: false,
-            message: 'Este código ya ha sido canjeado anteriormente.'
-          });
-        } else {
-          // Añadir código a la lista de canjeados
-          redeemedCodes.push(trimmedCode);
-          localStorage.setItem('kellogsRedeemedCodes', JSON.stringify(redeemedCodes));
-          
-          // Si es un accesorio, añadirlo a los items del usuario
-          if (reward.type === 'accessory') {
-            const userItems = JSON.parse(localStorage.getItem('kellogsUserItems') || '[]');
-            userItems.push({
-              id: trimmedCode,
-              name: reward.name,
-              type: reward.type
-            });
-            localStorage.setItem('kellogsUserItems', JSON.stringify(userItems));
-          }
-          
-          // Otorgar 1 diamante K y 50 XP por canjear un código exitosamente
-          addKDiamonds(1);
-          addXP(50);
-          
-          setResult({
-            success: true,
-            message: '¡Código canjeado con éxito! Has recibido 1 Diamante K y 50 XP.',
-            reward
-          });
-        }
-      } else {
-        // Código inválido
-        setResult({
-          success: false,
-          message: 'Código inválido o expirado. Por favor, verifica e intenta de nuevo.'
-        });
-      }
-      
       setIsLoading(false);
-    }, 1500); // Simular tiempo de procesamiento
+      
+      // Lista de códigos válidos (esto sería una verificación en el servidor en una app real)
+      const validCodes = ['KELLOGGS2023', 'UNIVERSE', 'TONY2023', 'MELVIN2023', 'SAM2023'];
+      
+      if (validCodes.includes(code.toUpperCase())) {
+        // Otorgar recompensas por canjear un código
+        addDiamonds(1);
+        addXp(50);
+        
+        setSuccessMessage('¡Código canjeado correctamente! Has recibido 1 diamante K y 50 XP.');
+        setErrorMessage('');
+        setCode('');
+      } else {
+        setErrorMessage('El código ingresado no es válido o ya ha sido utilizado.');
+        setSuccessMessage('');
+      }
+    }, 1500);
   };
 
   const handleGoBack = () => {
@@ -105,76 +66,81 @@ const Redeem = () => {
 
   return (
     <div className="h-full w-full relative overflow-hidden">
-      {/* Fondo universal con opacidad */}
+      {/* Fondo */}
       <div 
-        className="absolute inset-0 z-0" 
-        style={{ 
-          backgroundImage: `url(${universalBackground})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.6 
-        }}
-      />
+        className="absolute inset-0 z-0 overflow-hidden"
+        style={{ backgroundColor: '#1a1a1a' }}
+      >
+        <img 
+          src={universalBackground} 
+          alt="Background" 
+          className="absolute w-full h-full object-cover"
+          style={{
+            opacity: 0.6
+          }}
+        />
+      </div>
 
-      {/* Contenido - Añadir padding-bottom para evitar superposición con la barra */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center pb-16">
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg w-full max-w-md p-6">
-          <h1 className="text-2xl font-bold text-center mb-6">Canjear Código</h1>
+      {/* Contenido */}
+      <div className="relative z-10 h-full w-full p-4 flex flex-col items-center justify-center">
+        <div className="card max-w-md w-full bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-display text-gray-800 mb-2">Canjear Código</h1>
+            <p className="text-gray-600">Ingresa el código de tu producto para recibir recompensas exclusivas</p>
+          </div>
           
-          <form onSubmit={handleRedeemCode} className="mb-6">
-            <div className="mb-4">
+          <form onSubmit={handleRedeemCode} className="space-y-4">
+            <div>
               <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-1">
-                Ingresa tu código:
+                Código
               </label>
               <input
-                type="text"
                 id="code"
+                type="text"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                placeholder="Ej: KELLOGS2023"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+                placeholder="Ej: ZUCARITAS"
                 disabled={isLoading}
               />
+              <p className="text-xs text-gray-500 mt-1">
+                Puedes encontrar códigos en los productos Kellogg's participantes
+              </p>
             </div>
             
-            <button
-              type="submit"
-              className={`w-full py-3 px-4 rounded-lg text-white font-medium transition-colors ${
-                isLoading 
-                  ? 'bg-gray-400 cursor-not-allowed' 
-                  : 'bg-primary hover:bg-primary-dark'
-              }`}
-              disabled={isLoading}
-            >
-              {isLoading ? 'Verificando...' : 'Canjear Código'}
-            </button>
+            <div className="text-center">
+              <button 
+                type="submit" 
+                className={`btn bg-primary hover:bg-primary/90 text-white w-full ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Procesando...' : 'Canjear Código'}
+              </button>
+            </div>
           </form>
-          
-          {result && (
-            <div className={`p-4 rounded-lg mb-6 ${
-              result.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-            }`}>
-              <p className="font-medium">{result.message}</p>
-              {result.reward && (
-                <div className="mt-2">
-                  <p className="font-bold">{result.reward.name}</p>
-                  <p>{result.reward.description}</p>
-                </div>
-              )}
+
+          {successMessage && (
+            <div className="mt-4 p-4 rounded-lg bg-green-100 text-green-700">
+              {successMessage}
             </div>
           )}
-          
-          <button
-            onClick={handleGoBack}
-            className="w-full py-2 px-4 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
-          >
-            Volver al Menú
-          </button>
+
+          {errorMessage && (
+            <div className="mt-4 p-4 rounded-lg bg-red-100 text-red-700">
+              {errorMessage}
+            </div>
+          )}
+
+          <div className="mt-6 text-center">
+            <button 
+              onClick={handleGoBack}
+              className="text-gray-600 hover:text-gray-800"
+            >
+              Volver al Menú
+            </button>
+          </div>
         </div>
       </div>
-      
-      {/* Barra de economía */}
-      <GameEconomyBar />
     </div>
   );
 };

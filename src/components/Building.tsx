@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import universalBackground from '../assets/images/UniversalBackground.png';
-import GameEconomyBar from './GameEconomyBar';
+import universalBackground from '../assets/images/UniversalBackgorund.png';
+import { addXp } from '../services/ProgressService';
 
 interface BuildingInfo {
   id: string;
@@ -54,6 +54,8 @@ const Building = () => {
   }, [id, navigate]);
 
   const handleStartGame = () => {
+    // Otorgar XP al iniciar un juego
+    addXp(5);
     if (buildingInfo) {
       navigate(buildingInfo.route);
     }
@@ -69,48 +71,51 @@ const Building = () => {
 
   return (
     <div className="h-full w-full relative overflow-hidden">
-      {/* Fondo universal con opacidad */}
+      {/* Fondo */}
       <div 
-        className="absolute inset-0 z-0" 
-        style={{ 
-          backgroundImage: `url(${universalBackground})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          opacity: 0.6 
-        }}
-      />
-
-      {/* Contenido - Añadir padding-bottom para evitar superposición con la barra */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center p-4 pb-16">
-        <div className="bg-white/80 backdrop-blur-sm p-8 rounded-xl shadow-xl max-w-md text-center">
-          {buildingInfo && (
-            <>
-              <h1 className="text-3xl font-bold mb-2" style={{ color: buildingInfo.color }}>
-                {buildingInfo.name}
-              </h1>
-              <p className="text-gray-700 mb-6">{buildingInfo.description}</p>
-              
-              <div className="flex gap-4 justify-center">
-                <button 
-                  onClick={handleStartGame}
-                  className="px-6 py-3 bg-primary text-white rounded-xl hover:bg-primary-dark transition-colors"
-                >
-                  Comenzar juego
-                </button>
-                <button 
-                  onClick={handleGoBack}
-                  className="px-6 py-3 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition-colors"
-                >
-                  Volver
-                </button>
-              </div>
-            </>
-          )}
-        </div>
+        className="absolute inset-0 z-0 overflow-hidden"
+        style={{ backgroundColor: '#1a1a1a' }}
+      >
+        <img 
+          src={universalBackground} 
+          alt="Background" 
+          className="absolute w-full h-full object-cover"
+          style={{
+            opacity: 0.6
+          }}
+        />
       </div>
-      
-      {/* Barra de economía */}
-      <GameEconomyBar />
+
+      {/* Contenido */}
+      <div className="relative z-10 h-full w-full flex flex-col items-center justify-center p-6">
+        <div 
+          className="w-full max-w-2xl bg-white/80 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden" 
+          style={{ borderTop: `8px solid ${buildingInfo.color}` }}
+        >
+          <div className="p-6">
+            <h2 className="text-3xl font-display text-gray-800 mb-4">{buildingInfo.name}</h2>
+            <p className="text-gray-700 mb-6">{buildingInfo.description}</p>
+            
+            <div className="flex justify-between items-center">
+              <button
+                className="btn bg-gray-500 hover:bg-gray-600 text-white"
+                onClick={handleGoBack}
+              >
+                Volver al Menú
+              </button>
+              <button
+                className="btn bg-blue-500 hover:bg-blue-600 text-white"
+                onClick={handleStartGame}
+              >
+                Comenzar Juego
+              </button>
+            </div>
+          </div>
+        </div>
+        <p className="max-w-md text-sm mt-4 text-gray-800">
+          Juega este minijuego y gana monedas por cada objeto recogido. También recibirás XP por tu tiempo de juego y puntuación total.
+        </p>
+      </div>
     </div>
   );
 };

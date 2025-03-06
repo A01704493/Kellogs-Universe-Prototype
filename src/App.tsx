@@ -5,24 +5,21 @@ import Avatar from './components/Avatar';
 import Redeem from './components/Redeem';
 import Building from './components/Building';
 import SimpleGame from './components/SimpleGame';
-import { GameEconomyProvider } from './contexts/GameEconomyContext';
 
 function App() {
   return (
-    <GameEconomyProvider>
-      <div className="app full-viewport">
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/menu" element={<MainMenu />} />
-          <Route path="/avatar" element={<Avatar />} />
-          <Route path="/redeem" element={<Redeem />} />
-          <Route path="/minigames/zucaritas" element={<SimpleGame gameType="zucaritas" />} />
-          <Route path="/minigames/choco-krispis" element={<SimpleGame gameType="choco-krispis" />} />
-          <Route path="/minigames/froot-loops" element={<SimpleGame gameType="froot-loops" />} />
-          <Route path="/games/:id" element={<Building />} />
-        </Routes>
-      </div>
-    </GameEconomyProvider>
+    <div className="app full-viewport">
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/menu" element={<MainMenu />} />
+        <Route path="/avatar" element={<Avatar />} />
+        <Route path="/redeem" element={<Redeem />} />
+        <Route path="/minigames/zucaritas" element={<SimpleGame gameType="zucaritas" />} />
+        <Route path="/minigames/choco-krispis" element={<SimpleGame gameType="choco-krispis" />} />
+        <Route path="/minigames/froot-loops" element={<SimpleGame gameType="froot-loops" />} />
+        <Route path="/games/:id" element={<Building />} />
+      </Routes>
+    </div>
   );
 }
 
