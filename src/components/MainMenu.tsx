@@ -68,28 +68,28 @@ const MainMenu = () => {
       id: 'choco-krispis',
       name: 'Choco Krispis',
       description: 'Aventuras con Melvin el elefante',
-      position: { x: 25, y: 15 },
+      position: { x: 25, y: 20 },
       image: chocoKrispiesIcon,
       scale: 1.2,
-      floatSpeed: 3
+      floatSpeed: 3 // Velocidad de flotación personalizada
     },
     {
       id: 'zucaritas',
       name: 'Zucaritas',
       description: 'Desafíos con Tony el Tigre',
-      position: { x: 70, y: 13 },
+      position: { x: 70, y: 18 },
       image: frostedFlakesIcon,
       scale: 1.3,
-      floatSpeed: 5
+      floatSpeed: 5 // Velocidad más lenta
     },
     {
       id: 'froot-loops',
       name: 'Froot Loops',
       description: 'Diversión colorida con Sam el tucán',
-      position: { x: 45, y: 30 },
+      position: { x: 45, y: 35 },
       image: frootLoopsIcon,
       scale: 1.1,
-      floatSpeed: 4
+      floatSpeed: 4 // Velocidad intermedia
     }
   ];
 
