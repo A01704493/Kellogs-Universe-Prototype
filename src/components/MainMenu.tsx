@@ -295,34 +295,34 @@ const MainMenu = () => {
       </header>
       
       {/* Botones de navegación centrados y abajo */}
-      <div className="absolute bottom-8 left-0 right-0 z-30 flex justify-center items-center gap-6">
+      <div className="absolute bottom-8 left-0 right-0 z-30 flex justify-center items-center gap-6 px-4 sm:px-6 md:px-8 flex-wrap">
         <button 
           onClick={handleAvatarClick}
-          className="flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-blue-500 hover:bg-blue-600 text-white shadow-lg transform hover:scale-105 transition-all"
+          className="flex flex-col items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-lg bg-blue-500 hover:bg-blue-600 text-white shadow-lg transform hover:scale-105 transition-all m-1"
         >
-          <span className="text-2xl mb-1">👤</span>
-          <span className="text-xs">Avatar</span>
+          <span className="text-xl sm:text-2xl mb-1">👤</span>
+          <span className="text-[10px] sm:text-xs">Avatar</span>
         </button>
         <button 
           onClick={handleRedeemClick}
-          className="flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-purple-500 hover:bg-purple-600 text-white shadow-lg transform hover:scale-105 transition-all"
+          className="flex flex-col items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-lg bg-purple-500 hover:bg-purple-600 text-white shadow-lg transform hover:scale-105 transition-all m-1"
         >
-          <span className="text-2xl mb-1">🎁</span>
-          <span className="text-xs">Canjear</span>
+          <span className="text-xl sm:text-2xl mb-1">🎁</span>
+          <span className="text-[10px] sm:text-xs">Canjear</span>
         </button>
         <button 
           onClick={() => {/* Función de tienda pendiente */}}
-          className="flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-orange-500 hover:bg-orange-600 text-white shadow-lg transform hover:scale-105 transition-all"
+          className="flex flex-col items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-lg bg-orange-500 hover:bg-orange-600 text-white shadow-lg transform hover:scale-105 transition-all m-1"
         >
-          <span className="text-2xl mb-1">🛍️</span>
-          <span className="text-xs">Tienda</span>
+          <span className="text-xl sm:text-2xl mb-1">🛍️</span>
+          <span className="text-[10px] sm:text-xs">Tienda</span>
         </button>
         <button 
           onClick={() => {/* Función de inventario pendiente */}}
-          className="flex flex-col items-center justify-center w-20 h-20 rounded-lg bg-teal-500 hover:bg-teal-600 text-white shadow-lg transform hover:scale-105 transition-all"
+          className="flex flex-col items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-lg bg-teal-500 hover:bg-teal-600 text-white shadow-lg transform hover:scale-105 transition-all m-1"
         >
-          <span className="text-2xl mb-1">🎒</span>
-          <span className="text-xs">Inventario</span>
+          <span className="text-xl sm:text-2xl mb-1">🎒</span>
+          <span className="text-[10px] sm:text-xs">Inventario</span>
         </button>
       </div>
       
