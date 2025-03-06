@@ -63,38 +63,62 @@
 
 /* Animaciones para las islas */
 .island-hover {
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-origin: center;
+  position: relative;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
 }
 
 .island-hover:hover {
-  transform: scale(1.15);
+  transform: scale(1.18) translateY(-8px) rotate(1deg);
+  filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.5));
+  z-index: 30;
+}
+
+.island-hover:active {
+  transform: scale(1.1) translateY(-4px);
+  transition: all 0.2s ease;
 }
 
 .island-name {
   opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.3s ease-in-out;
+  transform: translateY(15px);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
 }
 
 .island-hover:hover .island-name {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1.1);
 }
 
 .island-glow {
   position: absolute;
-  inset: -10%;
+  inset: -20%;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
+  background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(180,180,255,0.4) 30%, rgba(100,100,255,0) 70%);
   opacity: 0;
-  transition: opacity 0.4s ease-in-out;
+  transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
   pointer-events: none;
   z-index: 0;
+  transform: scale(0.8);
 }
 
 .island-hover:hover .island-glow {
   opacity: 1;
+  transform: scale(1.1);
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% { 
+    transform: scale(1.1);
+    opacity: 1;
+  }
 }
 
 /* Gradientes animados para el login */
@@ -186,11 +210,86 @@
 
 /* Estilos para la barra de menú del juego */
 .game-menu-bar {
-  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(to top, #121236, #232355);
+  border-top: 2px solid rgba(120, 120, 255, 0.4);
 }
 
 .stats-counter {
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(to right, #1a1a40, #2d2d7a);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(130, 130, 255, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.stats-counter:hover {
+  border: 1px solid rgba(160, 160, 255, 0.7);
+  box-shadow: 0 4px 15px rgba(100, 100, 255, 0.4);
+}
+
+/* Botones del menú con colores más vibrantes y animaciones */
+.menu-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: linear-gradient(135deg, #3838aa, #222266);
+  border: 2px solid rgba(120, 120, 255, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.menu-button:hover {
+  transform: scale(1.15) translateY(-5px);
+  background: linear-gradient(135deg, #4a4aff, #3333cc);
+  border-color: rgba(170, 170, 255, 0.7);
+  box-shadow: 0 10px 20px rgba(50, 50, 255, 0.4);
+}
+
+.menu-button:active {
+  transform: scale(0.92) translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: all 0.1s ease;
+}
+
+/* Estilos para los contadores */
+.counter-badge {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.counter-badge:hover {
+  transform: scale(1.15) translateY(-2px);
+  z-index: 2;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Para el nivel */
+.level-badge {
+  background: linear-gradient(135deg, #f59e0b, #b45309);
+  border: 1px solid #fbbf24;
+  box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+/* Para el XP */
+.xp-badge {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  border: 1px solid #60a5fa;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+}
+
+/* Para los diamantes */
+.diamond-badge {
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  border: 1px solid #c4b5fd;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+}
+
+/* Para las monedas */
+.coin-badge {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  border: 1px solid #fdba74;
+  box-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
 } 

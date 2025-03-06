@@ -57,45 +57,45 @@ const GameMenuBar: React.FC<GameMenuBarProps> = ({ className = '' }) => {
       <div className="flex flex-col items-center max-w-screen-lg mx-auto">
         {/* Contadores */}
         <div className="bg-black/80 backdrop-blur-sm rounded-t-lg px-3 py-2 flex items-center gap-3 md:gap-6 shadow-lg w-full justify-center flex-wrap stats-counter">
-          <div className="flex items-center gap-1 text-yellow-400">
+          <div className="flex items-center gap-1 text-yellow-400 counter-badge">
             <span className="text-xs md:text-sm font-bold">Nivel:</span>
-            <span className="px-2 py-1 bg-yellow-900/60 rounded-md text-xs md:text-sm font-bold">
+            <span className="px-2 py-1 rounded-md text-xs md:text-sm font-bold level-badge">
               {playerStats.level}
             </span>
           </div>
           
-          <div className="flex items-center gap-1 text-blue-400">
+          <div className="flex items-center gap-1 text-blue-400 counter-badge">
             <span className="text-xs md:text-sm font-bold">XP:</span>
-            <span className="px-2 py-1 bg-blue-900/60 rounded-md text-xs md:text-sm font-bold">
+            <span className="px-2 py-1 rounded-md text-xs md:text-sm font-bold xp-badge">
               {playerStats.xp}
             </span>
           </div>
           
-          <div className="flex items-center gap-1 text-purple-400">
+          <div className="flex items-center gap-1 text-purple-400 counter-badge">
             <span className="text-xs md:text-sm font-bold">💎</span>
-            <span className="px-2 py-1 bg-purple-900/60 rounded-md text-xs md:text-sm font-bold">
+            <span className="px-2 py-1 rounded-md text-xs md:text-sm font-bold diamond-badge">
               {playerStats.diamonds}
             </span>
           </div>
           
-          <div className="flex items-center gap-1 text-amber-400">
+          <div className="flex items-center gap-1 text-amber-400 counter-badge">
             <span className="text-xs md:text-sm font-bold">🪙</span>
-            <span className="px-2 py-1 bg-amber-900/60 rounded-md text-xs md:text-sm font-bold">
+            <span className="px-2 py-1 rounded-md text-xs md:text-sm font-bold coin-badge">
               {playerStats.coins}
             </span>
           </div>
         </div>
         
         {/* Botones */}
-        <div className="w-full bg-gray-900/90 backdrop-blur-md p-2 md:p-3 flex justify-center gap-1 md:gap-3 shadow-lg overflow-x-auto">
+        <div className="w-full backdrop-blur-md p-2 md:p-3 flex justify-center gap-2 md:gap-4 shadow-lg overflow-x-auto">
           {menuItems.map((item, index) => (
             <button
               key={index}
               onClick={item.action}
-              className="px-2 md:px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-md transition-colors flex flex-col items-center text-white min-w-[60px] md:min-w-[80px]"
+              className="px-2 md:px-4 py-2 rounded-md transition-all flex flex-col items-center text-white min-w-[65px] md:min-w-[85px] menu-button"
             >
-              <span className="text-base md:text-lg mb-1">{item.icon}</span>
-              <span className="text-[10px] md:text-xs whitespace-nowrap">{item.name}</span>
+              <span className="text-xl md:text-2xl mb-1">{item.icon}</span>
+              <span className="text-[10px] md:text-xs whitespace-nowrap font-bold">{item.name}</span>
             </button>
           ))}
         </div>
