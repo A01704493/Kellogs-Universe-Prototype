@@ -390,7 +390,7 @@ class ProgressionService {
     
     return this.grantReward(
       reward, 
-      ActivityType.MINIGAME_COMPLETION, 
+      ActivityType.GAME_PLAYED, 
       `Minijuego ${gameId} completado con ${score} puntos`
     );
   }
@@ -411,7 +411,7 @@ class ProgressionService {
     
     return this.grantReward(
       reward, 
-      ActivityType.CODE_REDEMPTION, 
+      ActivityType.CODE_REDEEMED, 
       `Código ${code} canjeado`
     );
   }
