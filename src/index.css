@@ -177,4 +177,20 @@
     opacity: 0;
     transform: translateY(-10vh);
   }
+}
+
+/* Soporte para áreas seguras en dispositivos móviles */
+.mb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+/* Estilos para la barra de menú del juego */
+.game-menu-bar {
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.stats-counter {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 } 

@@ -17,6 +17,7 @@ import head3 from '../assets/character/head3.png';
 import acc1 from '../assets/character/acc1.png';
 import acc2 from '../assets/character/acc2.png';
 import acc3 from '../assets/character/acc3.png';
+import GameMenuBar from './GameMenuBar';
 
 // Definir las opciones disponibles para cada capa
 const bodyOptions = [body1, body2, body3];
@@ -292,28 +293,10 @@ const MainMenu = () => {
           />
           <p className="text-sm md:text-base text-gray-600 mt-1">Hola, {username}!</p>
         </div>
-        
-        <div className="flex gap-2">
-          <button 
-            onClick={handleAvatarClick}
-            className="btn bg-blue-500 hover:bg-blue-600 text-white text-sm md:text-base"
-          >
-            Avatar
-          </button>
-          <button 
-            onClick={handleRedeemClick}
-            className="btn bg-purple-500 hover:bg-purple-600 text-white text-sm md:text-base"
-          >
-            Canjear
-          </button>
-          <button 
-            onClick={() => navigate('/dashboard')}
-            className="btn bg-green-500 hover:bg-green-600 text-white text-sm md:text-base"
-          >
-            Progreso
-          </button>
-        </div>
       </header>
+
+      {/* Barra de menú en la parte inferior */}
+      <GameMenuBar />
       
       {/* Contenedor de islas */}
       <div ref={islandContainerRef} className="relative z-10 h-full w-full">
