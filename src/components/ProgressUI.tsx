@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { progressionService, gameIntegrator, minigameService } from '../services';
-import { PlayerProfile } from '../types/progression';
+import { PlayerProfile, ActivityType } from '../types/progression';
 
 /**
  * Componente para mostrar la progresión del jugador
@@ -18,11 +18,12 @@ const ProgressUI: React.FC = () => {
     const currentProfile = progressionService.getPlayerProfile();
     if (!currentProfile) {
       // Si no hay perfil, crear uno nuevo
-      const newProfile = progressionService.resetPlayerProfile();
+      const newProfile = progressionService.initializePlayer('Jugador');
       setProfile(newProfile);
       
       // Registrar inicio de sesión
-      progressionService.recordLogin();
+      const loginResult = progressionService.addXP(10, "Inicio de sesión");
+      console.log('Login XP added:', loginResult);
     } else {
       setProfile(currentProfile);
     }
@@ -43,11 +44,21 @@ const ProgressUI: React.FC = () => {
       
       // Calcular progreso hacia el siguiente nivel
       if (currentProfile.xp > 0) {
-        setProgressPercent(progressionService.getLevelProgress(currentProfile.xp));
+        // Calcular porcentaje de progreso
+        const currentLevel = currentProfile.level;
+        const xpForCurrentLevel = progressionService.getXPForLevel(currentLevel);
+        const xpForNextLevel = progressionService.getXPForLevel(currentLevel + 1);
         
-        const nextLevelXp = progressionService.getXpForNextLevel(currentProfile.level);
-        if (nextLevelXp !== -1) {
-          setXpToNextLevel(nextLevelXp - currentProfile.xp);
+        if (xpForNextLevel > xpForCurrentLevel) {
+          const xpInCurrentLevel = currentProfile.xp - xpForCurrentLevel;
+          const xpRequiredForNextLevel = xpForNextLevel - xpForCurrentLevel;
+          
+          setProgressPercent(Math.min(100, Math.floor((xpInCurrentLevel / xpRequiredForNextLevel) * 100)));
+          setXpToNextLevel(xpForNextLevel - currentProfile.xp);
+        } else {
+          // Si es el nivel máximo
+          setProgressPercent(100);
+          setXpToNextLevel(0);
         }
       }
       
@@ -159,12 +170,12 @@ const ProgressUI: React.FC = () => {
             activityHistory.map((activity, index) => (
               <li key={index} className="activity-item">
                 <div className="activity-type">
-                  {activity.type === 'game_played' && '🎮 Juego'}
-                  {activity.type === 'code_redeemed' && '🎁 Código'}
-                  {activity.type === 'level_up' && '⬆️ Subida de nivel'}
-                  {activity.type === 'login' && '🔑 Inicio de sesión'}
-                  {activity.type === 'avatar_customized' && '👤 Avatar personalizado'}
-                  {activity.type === 'daily_bonus' && '📅 Bono diario'}
+                  {activity.type === ActivityType.GAME_PLAYED && '🎮 Juego'}
+                  {activity.type === ActivityType.CODE_REDEEMED && '🎁 Código'}
+                  {activity.type === ActivityType.LEVEL_UP && '⬆️ Subida de nivel'}
+                  {activity.type === ActivityType.LOGIN && '🔑 Inicio de sesión'}
+                  {activity.type === ActivityType.AVATAR_CUSTOMIZED && '👤 Avatar personalizado'}
+                  {activity.type === ActivityType.DAILY_BONUS && '📅 Bono diario'}
                 </div>
                 <div className="activity-info">
                   {activity.xpEarned > 0 && <span>+{activity.xpEarned} XP</span>}
